@@ -1,0 +1,141 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* Light background */
+  color: #00296B; /* Dark blue text */
+}
+ 
+h2 {
+  margin-bottom: 20px;
+  color: #00509D; /* Medium blue headings */
+}
+ 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+ 
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+ 
+th {
+  background-color: #003F88; /* Medium-dark blue table headers */
+  color: white;
+}
+ 
+/* Form Styles */
+form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+ 
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #00296B;
+}
+ 
+input[type="text"],
+input[type="email"],
+select {
+  width: calc(100% - 12px); /* Adjust for padding and border */
+  padding: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+ 
+button {
+  background-color: #FDC500; /* Yellow button */
+  color: #00296B; /* Dark blue text on button */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+ 
+button:hover {
+  background-color: #FFD500; /* Lighter yellow hover */
+}
+ 
+/* Navigation/Sidebar Styles (Example) */
+.sidebar {
+  width: 200px;
+  background-color: #00296B; /* Dark blue sidebar */
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+}
+ 
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+ 
+.sidebar li {
+  margin-bottom: 10px;
+}
+ 
+.sidebar a {
+  color: white;
+  text-decoration: none;
+}
+ 
+.sidebar a:hover {
+  text-decoration: underline;
+}
+ 
+.content {
+  margin-left: 220px; /* Adjust for sidebar width */
+  padding: 20px;
+}
+ 
+/* Attendance Form Styles */
+.attendance-container {
+    padding: 20px;
+}
+ 
+.attendance-container select {
+    margin-left: 10px;
+    padding: 5px;
+}
+ 
+/* Responsive Design (Example) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: static;
+    height: auto;
+  }
+ 
+  .content {
+    margin-left: 0;
+  }
+}
+ 
+/* Specific styling for list items */
+li {
+    list-style: none;
+}
+
+.nav__logo {
+  width: 3rem;
+  display: block;
+}
+
+img {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
