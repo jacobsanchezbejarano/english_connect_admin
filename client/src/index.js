@@ -4,11 +4,15 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 import './index.css';
 import ErrorPage from './pages/ErrorPage';
-import Layout from './components/Layout';
 import Home from './pages/Home';
-import StudentList from './pages/StudentList';
-import AttendanceForm from './pages/AttendanceForm';
 import Login from './pages/Login';
+import StudentList from './pages/StudentList';
+import AttendanceForm from './pages/Attendance';
+import Create from './pages/Create';
+import Delete from './pages/Delete';
+import Edit from './pages/Edit';
+import Instructors from './pages/Instructors';
+import Layout from './components/Layout';
 
 const router = createBrowserRouter ([
   {
@@ -18,8 +22,13 @@ const router = createBrowserRouter ([
     children: [
       {index: true, element: <Home/>},
       {path: "students", element: <StudentList/>},
-      {path: "attendance/:id", element: <AttendanceForm/>},
-      {path: "login", element: <Login/>}
+      {path: "attendance", element: <AttendanceForm/>},
+      {path: "login", element: <Login/>},
+      {path: "create", element: <Create/>},
+      {path: "delete", element: <Delete/>},
+      {path: "edit/:id", element: <Edit/>},
+      {path: "instructors", element: <Instructors/>},
+      {path: "units", element: <Instructors/>}
     ]
   }
 ])
