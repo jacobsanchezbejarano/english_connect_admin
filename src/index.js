@@ -29,6 +29,8 @@ const router = createBrowserRouter ([
       {path: "create", element: <Create/>},
       {path: "delete/:id", element: <Delete/>},
       {path: "edit/:id", element: <Edit/>},
+      {path: "editInstructor/:id", element: <Edit/>},
+      {path: "deleteInstructor/:id", element: <Delete/>},
       {path: "instructors/:id", element: <Instructors/>},
       {path: "units", element: <Units/>},
       {path: "register", element: <Register/>}

@@ -9,6 +9,7 @@ import Avatar6 from '../images/Avatar6.jpg'
 import Avatar7 from '../images/Avatar7.jpg'
 import Avatar8 from '../images/Avatar8.jpg'
 import { Link } from 'react-router-dom'
+import GenericOptions from '../components/GenericOptions'
 
 const instructorsData = [
   {id: 1, avatar: Avatar1, name: "John Smith", course: "English Connect 1"},
@@ -21,6 +22,17 @@ const instructorsData = [
   {id: 8, avatar: Avatar8, name: "Samuel Jackson", course: "English Connect 2"}
 ]
 
+const options = [
+  {
+    label: 'Edit',
+    route: '/editInstructor/:id',
+  },
+  {
+    label: 'Delete',
+    route: '/deleteInstructor/:id',
+  },
+];
+
 const Instructors = () => {
   const [instructors, setInstructors] = useState(instructorsData)
   return (
@@ -30,20 +42,13 @@ const Instructors = () => {
         {
           instructors.map(({id, avatar, name, course}) => {
             return <Link key={id} to={`/instructors/sdfsdf`} className='instructor'>
+              <GenericOptions options={options} itemId={id}/>
                <div className='instructor__avatar'>
                 <img src={avatar} alt={`Image of ${name}`}></img>
                </div>
                <div className='instructor__info'>
                 <h4>{name}</h4>
                 <p>{course}</p>
-               </div>
-               <div className='instructor__edit-delete'>
-                  <div>
-                      <Link to="/edit/sdfsdf" className='instructor__edit'>Edit</Link>
-                  </div>
-                  <div>
-                      <Link to="/edit/sdfsdf" className='btn danger'>Delete</Link>
-                  </div>
                </div>
             </Link>
           })
