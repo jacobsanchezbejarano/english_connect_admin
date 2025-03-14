@@ -1,9 +1,9 @@
 import React from 'react'
-import CreateInstructor from '../components/CreateInstructor'
+import CreateStudent from '../components/CreateStudent'
 
 const Create = () => {
   return (
-    <CreateInstructor/>
+    <CreateStudent/>
   )
 }
 

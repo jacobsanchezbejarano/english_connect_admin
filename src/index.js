@@ -6,15 +6,17 @@ import './index.css';
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import StudentList from './pages/StudentList';
+import Students from './pages/Students';
 import AttendanceForm from './pages/Attendance';
-import Create from './pages/CreateInstructor';
-import Delete from './pages/Delete';
-import Edit from './pages/Edit';
+import Edit from './pages/InstructorProfile';
 import Instructors from './pages/Instructors';
 import Layout from './components/Layout';
 import Register from './pages/Register';
 import Units from './pages/Units';
+import InstructorProfile from './pages/InstructorProfile';
+import StudentProfile from './pages/StudentProfile';
+import CreateStudent from './components/CreateStudent';
+import CreateInstructor from './components/CreateInstructor';
 
 const router = createBrowserRouter ([
   {
@@ -23,15 +25,15 @@ const router = createBrowserRouter ([
     errorElement: <ErrorPage/>,
     children: [
       {index: true, element: <Home/>},
-      {path: "students", element: <StudentList/>},
+      {path: "students/:id", element: <Students/>},
+      {path: "studentProfile/:id", element: <StudentProfile/>},
+      {path: "createStudent/:id", element: <CreateStudent/>},
       {path: "attendance", element: <AttendanceForm/>},
       {path: "login", element: <Login/>},
-      {path: "create", element: <Create/>},
-      {path: "delete/:id", element: <Delete/>},
-      {path: "edit/:id", element: <Edit/>},
+      {path: "instructorProfile/:id", element: <InstructorProfile/>},
       {path: "editInstructor/:id", element: <Edit/>},
-      {path: "deleteInstructor/:id", element: <Delete/>},
       {path: "instructors/:id", element: <Instructors/>},
+      {path: "createInstructor/:id", element: <CreateInstructor/>},
       {path: "units", element: <Units/>},
       {path: "register", element: <Register/>}
     ]

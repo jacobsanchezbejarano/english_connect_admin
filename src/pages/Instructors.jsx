@@ -25,11 +25,11 @@ const instructorsData = [
 const options = [
   {
     label: 'Edit',
-    route: '/editInstructor/:id',
+    route: '/instructorProfile/:id',
   },
   {
     label: 'Delete',
-    route: '/deleteInstructor/:id',
+    route: '/delete/:id',
   },
 ];
 
@@ -44,7 +44,7 @@ const Instructors = () => {
             return <Link key={id} to={`/instructors/sdfsdf`} className='instructor'>
               <GenericOptions options={options} itemId={id}/>
                <div className='instructor__avatar'>
-                <img src={avatar} alt={`Image of ${name}`}></img>
+                <img src={avatar} alt={`Dp of ${name}`}></img>
                </div>
                <div className='instructor__info'>
                 <h4>{name}</h4>
@@ -54,6 +54,9 @@ const Instructors = () => {
           })
         }
       </div> : <h2>No users/instructors found</h2> }
+      <div className='add__instructor'>
+          <button className='add__instructor-btn'><Link to="/createInstructor/sdfsdf">Add an instructor</Link></button>
+      </div>
     </section>
   )
 }
