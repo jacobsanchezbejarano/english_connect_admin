@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/english_connect_admin/static/css/main.be4affef.css",
-    "main.js": "/english_connect_admin/static/js/main.bf244793.js",
+    "main.css": "/english_connect_admin/static/css/main.3347f956.css",
+    "main.js": "/english_connect_admin/static/js/main.888aaa6c.js",
     "static/media/HeroImage2.png": "/english_connect_admin/static/media/HeroImage2.f27a3e53c95a0ea8257d.png",
     "static/media/HeroImage.png": "/english_connect_admin/static/media/HeroImage.2acd960abf0e7904f21c.png",
     "static/media/Avatar7.jpg": "/english_connect_admin/static/media/Avatar7.3ec32480cb67354bc623.jpg",
@@ -13,11 +13,11 @@
     "static/media/Avatar1.jpg": "/english_connect_admin/static/media/Avatar1.c71753dc3b4db9a9963d.jpg",
     "static/media/Logo.png": "/english_connect_admin/static/media/Logo.0c240637f4458faba463.png",
     "index.html": "/english_connect_admin/index.html",
-    "main.be4affef.css.map": "/english_connect_admin/static/css/main.be4affef.css.map",
-    "main.bf244793.js.map": "/english_connect_admin/static/js/main.bf244793.js.map"
+    "main.3347f956.css.map": "/english_connect_admin/static/css/main.3347f956.css.map",
+    "main.888aaa6c.js.map": "/english_connect_admin/static/js/main.888aaa6c.js.map"
   },
   "entrypoints": [
-    "static/css/main.be4affef.css",
-    "static/js/main.bf244793.js"
+    "static/css/main.3347f956.css",
+    "static/js/main.888aaa6c.js"
   ]
 }
