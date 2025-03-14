@@ -17,6 +17,9 @@ import InstructorProfile from './pages/InstructorProfile';
 import StudentProfile from './pages/StudentProfile';
 import CreateStudent from './components/CreateStudent';
 import CreateInstructor from './components/CreateInstructor';
+import CreateUnit from './pages/CreateUnit';
+import EditUnitInfo from './components/EditUnitInfo';
+import UnitInfo from './pages/UnitInfo';
 
 const router = createBrowserRouter ([
   {
@@ -34,8 +37,11 @@ const router = createBrowserRouter ([
       {path: "editInstructor/:id", element: <Edit/>},
       {path: "instructors/:id", element: <Instructors/>},
       {path: "createInstructor/:id", element: <CreateInstructor/>},
+      {path: "register", element: <Register/>},
       {path: "units", element: <Units/>},
-      {path: "register", element: <Register/>}
+      {path: "createUnit", element: <CreateUnit/>},
+      {path: "editUnitInfo", element: <EditUnitInfo/>},
+      {path: "unitInfo/:id", element: <UnitInfo/>},
     ]
   }
 ])
