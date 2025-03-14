@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/english_connect_admin/static/css/main.3347f956.css",
-    "main.js": "/english_connect_admin/static/js/main.888aaa6c.js",
-    "static/media/HeroImage2.png": "/english_connect_admin/static/media/HeroImage2.f27a3e53c95a0ea8257d.png",
-    "static/media/HeroImage.png": "/english_connect_admin/static/media/HeroImage.2acd960abf0e7904f21c.png",
-    "static/media/Avatar7.jpg": "/english_connect_admin/static/media/Avatar7.3ec32480cb67354bc623.jpg",
-    "static/media/Avatar2.jpg": "/english_connect_admin/static/media/Avatar2.58de787698a475723aca.jpg",
-    "static/media/Avatar3.jpg": "/english_connect_admin/static/media/Avatar3.32688adaf2977b273788.jpg",
-    "static/media/Avatar4.jpg": "/english_connect_admin/static/media/Avatar4.6ba3ec2e10fe7645c3ad.jpg",
-    "static/media/Avatar5.jpg": "/english_connect_admin/static/media/Avatar5.9cb770ca70acd8c5d5ca.jpg",
-    "static/media/Avatar6.jpg": "/english_connect_admin/static/media/Avatar6.977b45f77d52e81b4b8f.jpg",
-    "static/media/Avatar1.jpg": "/english_connect_admin/static/media/Avatar1.c71753dc3b4db9a9963d.jpg",
-    "static/media/Logo.png": "/english_connect_admin/static/media/Logo.0c240637f4458faba463.png",
-    "index.html": "/english_connect_admin/index.html",
-    "main.3347f956.css.map": "/english_connect_admin/static/css/main.3347f956.css.map",
-    "main.888aaa6c.js.map": "/english_connect_admin/static/js/main.888aaa6c.js.map"
+    "main.css": "/static/css/main.3347f956.css",
+    "main.js": "/static/js/main.79f52671.js",
+    "static/media/HeroImage2.png": "/static/media/HeroImage2.f27a3e53c95a0ea8257d.png",
+    "static/media/HeroImage.png": "/static/media/HeroImage.2acd960abf0e7904f21c.png",
+    "static/media/Avatar7.jpg": "/static/media/Avatar7.3ec32480cb67354bc623.jpg",
+    "static/media/Avatar2.jpg": "/static/media/Avatar2.58de787698a475723aca.jpg",
+    "static/media/Avatar3.jpg": "/static/media/Avatar3.32688adaf2977b273788.jpg",
+    "static/media/Avatar4.jpg": "/static/media/Avatar4.6ba3ec2e10fe7645c3ad.jpg",
+    "static/media/Avatar5.jpg": "/static/media/Avatar5.9cb770ca70acd8c5d5ca.jpg",
+    "static/media/Avatar6.jpg": "/static/media/Avatar6.977b45f77d52e81b4b8f.jpg",
+    "static/media/Avatar1.jpg": "/static/media/Avatar1.c71753dc3b4db9a9963d.jpg",
+    "static/media/Logo.png": "/static/media/Logo.0c240637f4458faba463.png",
+    "index.html": "/index.html",
+    "main.3347f956.css.map": "/static/css/main.3347f956.css.map",
+    "main.79f52671.js.map": "/static/js/main.79f52671.js.map"
   },
   "entrypoints": [
     "static/css/main.3347f956.css",
-    "static/js/main.888aaa6c.js"
+    "static/js/main.79f52671.js"
   ]
 }
