@@ -257,12 +257,12 @@ footer {
   border-radius: var(--radius-2);
   text-align: center;
   width: 400px;
-  height:100px;
+  height:50px;
+  font-weight: 900;
 }
 
 .call__to-action-btn a {
   color: var(--color-white);
-  font-weight: 300;
 }
 
 
@@ -290,7 +290,7 @@ input, select, textarea {
   margin-bottom: 1rem;
 }
 
-.register, .login, .create-post {
+.register, .login, .create-instructor {
   width: var(--form-width);
   margin-inline: auto;
   height: calc(100vh - 12rem);
@@ -298,7 +298,7 @@ input, select, textarea {
   place-items: center;
 }
 
-.register h2, .login h2 {
+.register h2, .login h2, .create-instructor h2 {
   margin-bottom: 2rem;
 }
 
@@ -350,27 +350,29 @@ input, select, textarea {
   margin-top: 8rem;
 }
 
-.instructor__edit-delete {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
 
-.instructor__edit {
-  display: inline-block;
-  width: 80px;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-2);
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  background: var(--color-primary);
-  color: var(--color-white);
+.add__instructor {
+  gap: 0.8rem;
+  padding: 1rem;
   text-align: center;
+  margin-top: 5rem;
 }
 
-.instructor__edit:hover {
+.add__instructor-btn:hover {
   background: var(--color-gray-900);
+  color: var(--color-white);
+}
+
+.add__instructor-btn {
+  background: var(--color-primary);
+  border-radius: var(--radius-2);
+  text-align: center;
+  width: 400px;
+  height:50px;
+  font-weight: 900;
+}
+
+.add__instructor-btn a {
   color: var(--color-white);
 }
 
@@ -469,4 +471,140 @@ input, select, textarea {
 .modalContent-no {
   background-color: #f44336;
   color: white;
+}
+
+
+
+/*======================================= STUDENTS ================================*/
+.students__container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.student {
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: var(--radius-3);
+  display: flex;
+  flex-direction: column;
+  grid-gap: 1rem;
+  transition: var(--transition);
+}
+
+.student:hover {
+  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0, 0.7);
+}
+
+.student__avatar {
+  width: 5rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 0.3rem solid var(--color-bg);
+  overflow: hidden;
+}
+
+.student__info p {
+  margin-top: 1rem;
+}
+
+.students__header {
+  text-align: center;
+  margin-bottom: 5rem;
+  margin-top: 8rem;
+}
+
+
+.add__student {
+  gap: 0.8rem;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.add__student-btn {
+  background: var(--color-primary);
+  border-radius: var(--radius-2);
+  text-align: center;
+  width: 400px;
+  height:50px;
+  font-weight: 900;
+}
+
+.add__student-btn a {
+  color: var(--color-white);
+}
+
+.add__student-btn:hover {
+  background: var(--color-gray-900);
+  color: var(--color-white);
+}
+
+/*======================================= USER PRFILE ================================*/
+.profile__container {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.student__profile-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.profile__details {
+  width: 100%;
+}
+
+.avatar__wrapper {
+  width: 15rem;
+  aspect-ratio: 1/1;
+  position: relative;
+  margin-inline: auto;
+  margin-top: 1rem;
+}
+
+.profile__avatar {
+  height: 100%;
+  border-radius: 50%;
+  border: 1rem solid var(--color-white);
+  overflow: hidden;
+}
+
+.avatar__form {
+  height: 1rem;
+}
+
+.avatar__form input{
+  visibility: hidden;
+}
+
+.avatar__form label, .profile__avatar-btn {
+  background: var(--color-gray-900);
+  color: var(--color-white);
+  font-size: 1.3rem;
+  position: absolute;
+  right: 2rem;
+  bottom: 1.4rem;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.profile__avatar-btn {
+  cursor: pointer;
+  padding: 0;
+  background: var(--color-primary);
+}
+
+.profile__details h1 {
+  margin-top: 1.5rem;
+}
+
+.form.profile__form {
+  margin-top: 3rem;
+  margin-inline: auto;
+  width: var(--form-width);
 }

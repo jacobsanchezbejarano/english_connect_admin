@@ -7,8 +7,8 @@ const Welcome = () => {
   return (
     <section className='hero_image'>
         <div className='hero__image-grid'>
-            <div className='hero__image-one'><img src={Hero1} alt='Hero Image-one' /></div>
-            <div className='hero__image-two'><img src={Hero2} alt='Hero Image-two' /></div>
+            <div className='hero__image-one'><img src={Hero1} alt='Hero-one' /></div>
+            <div className='hero__image-two'><img src={Hero2} alt='Hero-two' /></div>
         </div>
         <div className='call__to-action'>
             <button className='call__to-action-btn'><Link to="/register">Click here to Register</Link></button>

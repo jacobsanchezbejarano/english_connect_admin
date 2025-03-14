@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Edit = () => {
+const Delete = () => {
   return (
     <div>
-      Edit
+      
     </div>
   )
 }
 
-export default Edit
+export default Delete
