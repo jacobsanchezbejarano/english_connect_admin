@@ -11,6 +11,7 @@ const Header = () => {
           <img src={Logo} alt='Navbar Logo' />
         </Link>
         <ul className='nav__menu'>
+          <li><Link to="/">Home</Link></li>
           <li><Link to="/attendance">Attendance</Link></li>
           <li><Link to="/students/sdfsdf">Students</Link></li>
           <li><Link to="/units">Wards & Branches</Link></li>

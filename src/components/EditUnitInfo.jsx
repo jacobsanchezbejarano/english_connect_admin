@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 const EditUnitInfo = () => {
   const [name, setName] = useState ('')
+  const [header, setHeader] = useState('Ikot Akpaden Ward')
   const [location, setLocation] = useState ('')
   const [unitNumber, setUnitNumber] = useState ('')
 
@@ -12,7 +13,7 @@ const EditUnitInfo = () => {
 
         <div className='profile__details'>
 
-          <h1>Edit Unit - Ikot Akpaden Ward</h1>
+          <h1>Edit Unit - {header}</h1>
 
           {/*Form to update user details*/}
           <form className='form profile__form'>
