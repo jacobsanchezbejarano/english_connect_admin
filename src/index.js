@@ -7,7 +7,7 @@ import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Students from './pages/Students';
-import AttendanceForm from './pages/Attendance';
+import Attendance from './pages/Attendance';
 import Edit from './pages/InstructorProfile';
 import Instructors from './pages/Instructors';
 import Layout from './components/Layout';
@@ -31,7 +31,7 @@ const router = createBrowserRouter ([
       {path: "students/:id", element: <Students/>},
       {path: "studentProfile/:id", element: <StudentProfile/>},
       {path: "createStudent/:id", element: <CreateStudent/>},
-      {path: "attendance", element: <AttendanceForm/>},
+      {path: "attendance", element: <Attendance/>},
       {path: "login", element: <Login/>},
       {path: "instructorProfile/:id", element: <InstructorProfile/>},
       {path: "editInstructor/:id", element: <Edit/>},
