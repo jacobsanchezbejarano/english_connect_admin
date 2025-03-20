@@ -797,6 +797,11 @@ input, select, textarea {
   margin-top: 2rem;
 }
 
+.pagination__control {
+  margin-left: 8rem;
+  margin-top: 2rem;
+}
+
 .pagination {
   padding: 2rem;
 }
