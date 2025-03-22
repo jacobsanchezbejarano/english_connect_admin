@@ -823,3 +823,22 @@ input, select, textarea {
 .gender {
   margin-left: 8rem;
 }
+
+
+/* Statistics */
+
+.container-graph {
+  margin-top: 100px!important;
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label,
+select {
+  display: block;
+  margin-bottom: 10px;
+}
