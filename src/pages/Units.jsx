@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import UnitInformation from '../components/UnitInformation'
 
 const Units = () => {
-  const [unit, setUnit] = useState('Ikot Akpaden Nigeria Stake')
+  const [unit, setUnit] = useState('')
 
-  const UNITS = ["Ikot Akpaden ward", "Ikot Isighe ward", "Mkpat Enin ward",
+  const UNITS = ["Select a Unit","Ikot Akpaden ward", "Ikot Isighe ward", "Mkpat Enin ward",
     "Ibotio Branch", "Ikot Ekpenyong Branch", "Ikot Ekong ward", "Ndiko Ward", "Ette Branch", 
     "Ikot Akpaden Nigeria Stake"
   ]
@@ -24,7 +24,7 @@ const Units = () => {
             <button className='create__unit-btn'><Link to="/createUnit">Create a unit</Link></button>
           </div>
         </form>
-        <UnitInformation/>
+        <UnitInformation unit={unit}/>
       </div>
     </section>
   )
