@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
+import ErrorMessage from '../components/ErrorMessage'
 
 const Login = () => {
     const [userData, setUserData] = useState({
@@ -18,7 +19,7 @@ const Login = () => {
             <div className='container'>
                 <h2>Sign In</h2>
                 <form className='form login__form'>
-                    <p className='form__error-message'>This is an error message</p>
+                    <ErrorMessage/>
                     <input type='email' placeholder='Email' name='email' value={userData.email} onChange={cangeInputHandler} autoFocus></input>
                     <input type='password' placeholder='Password' name='password' value={userData.password} onChange={cangeInputHandler}></input>
                     <button type='submit' className='btn primary'>Login</button>

@@ -594,7 +594,7 @@ input, select, textarea {
   visibility: hidden;
 }
 
-.avatar__form label, .profile__avatar-btn {
+.avatar__form label {
   background: var(--color-gray-900);
   color: var(--color-white);
   font-size: 1.3rem;
@@ -607,6 +607,19 @@ input, select, textarea {
   place-items: center;
   border-radius: 50%;
 }
+
+.profile__avatar-btn {
+  background: var(--color-gray-900);
+  color: var(--color-white);
+  font-size: 1.3rem;
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;}
 
 .profile__avatar-btn {
   cursor: pointer;
@@ -623,6 +636,9 @@ input, select, textarea {
   margin-inline: auto;
   width: var(--form-width);
 }
+
+
+/*======================================= UNITS ================================*/
 
 .create-unit__form {
   margin-bottom: 15.5rem;
@@ -661,6 +677,7 @@ input, select, textarea {
   width: 200px;
   height:50px;
   font-weight: 900;
+  margin-bottom: 1rem;
 }
 
 .create__unit-btn a {
