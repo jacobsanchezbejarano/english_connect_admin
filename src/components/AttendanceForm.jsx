@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { URL } from '../constants/url';
-import axios, { all } from 'axios';
+import axios from 'axios';
 
 const AttendanceForm = () => {
+  const [groupId, setGroupId] = useState("67def02c189395ecba1fd906");
   const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [meetings, setMeetings] = useState([]);
@@ -67,7 +68,7 @@ const AttendanceForm = () => {
   async function fetchData() {
     try {
       const attendanceResponse = await axios.get(
-        URL + `/attendance/group/67def02c189395ecba1fd906`
+        URL + `/attendance/group/${groupId}`
       );
       const attendanceData = attendanceResponse.data;
       setAllAttendances(attendanceData); // Add this line
@@ -75,7 +76,7 @@ const AttendanceForm = () => {
       setMeetings(meetingsData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
       const studentsResponse = await axios.get(
-        URL + `/registrations/group/67def02c189395ecba1fd906/students`
+        URL + `/registrations/group/${groupId}/students`
       );
       const studentsData = studentsResponse.data;
 
@@ -145,7 +146,7 @@ const AttendanceForm = () => {
         if (isChecked) {
           const response = await axios.post(URL + '/attendance', {
             studentId: studentId,
-            groupId: '67def02c189395ecba1fd906',
+            groupId: groupId,
             date: dateISO,
             isPresent: true,
             notes: 'Attendance recorded',
