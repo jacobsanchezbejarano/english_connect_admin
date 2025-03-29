@@ -152,15 +152,12 @@ const AttendanceForm = () => {
           });
 
           fetchData();
-          
         } else {
           // Delete attendance using _id
           const attendanceId = student.attendance[day]._id;
           if (attendanceId) {
             await axios.delete(URL + `/attendance/${attendanceId}`);
-            setAllAttendances((prevAttendances) =>
-              prevAttendances.filter((a) => a._id !== attendanceId)
-            );
+            fetchData();
           } else {
             console.error('Attendance record not found for deletion.');
           }
@@ -219,7 +216,7 @@ const AttendanceForm = () => {
                       <label className='attendance__input-container'>
                         <input
                           type='checkbox'
-                          checked={student.attendance[day]}
+                          checked={student.attendance[day].isPresent}
                           onChange={(e) => toggleAttendance(student.id, day, e.target.checked)}
                         />
                         <span className='checkmark'></span>
