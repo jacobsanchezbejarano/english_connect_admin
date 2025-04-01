@@ -9,11 +9,8 @@ const CreateUnit = () => {
   return (
     <section className='profile'>
       <div className='container profile__container'>
-
         <div className='profile__details'>
-
           <h1>Create Unit</h1>
-
           {/*Form to update user details*/}
           <form className='form profile__form'>
             <p className='form__error-message'>This is an error message</p>
