@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Groups = () => {
   const groups = [
-    { name: 'English Connect 1', description: 'Beginner level courses focused on basic communication skills.' },
-    { name: 'English Connect 2', description: 'Intermediate level courses aimed at enhancing fluency and comprehension.' },
-    { name: 'English Connect 3', description: 'Advanced level courses designed to refine language skills and accuracy.' }
+    { name: 'English Connect 1', description: 'Beginner levels course focused on basic communication skills.' },
+    { name: 'English Connect 2', description: 'Intermediate levels course aimed at enhancing fluency and comprehension.' },
+    { name: 'English Connect 3', description: 'Advanced levels course designed to refine language skills and accuracy.' }
   ];
 
   return (
