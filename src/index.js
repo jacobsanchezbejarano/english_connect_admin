@@ -21,6 +21,8 @@ import CreateUnit from './pages/CreateUnit';
 import EditUnitInfo from './components/EditUnitInfo';
 import UnitInfo from './pages/UnitInfo';
 import Statistics from './pages/Statistics';
+import Groups from './pages/Groups';
+
 
 const router = createBrowserRouter ([
   {
@@ -44,6 +46,7 @@ const router = createBrowserRouter ([
       {path: "editUnitInfo", element: <EditUnitInfo/>},
       {path: "unitInfo/:id", element: <UnitInfo/>},
       {path: "statistics", element: <Statistics/>},
+      {path: "groups", element: <Groups/>}
     ]
   }
 ])

@@ -20,18 +20,6 @@ const Header = () => {
         <Link to="/" className='nav__logo' onClick={closeNavHandler}>
           <img src={Logo} alt='Navbar Logo' />
         </Link>
-        {isNavShowing && <ul className='nav__menu'>
-          <li><Link to="/" onClick={closeNavHandler}>Home</Link></li>
-          <li><Link to="/attendance" onClick={closeNavHandler}>Attendance</Link></li>
-          <li><Link to="/students/sdfsdf" onClick={closeNavHandler}>Students</Link></li>
-          <li><Link to="/units" onClick={closeNavHandler}>Wards & Branches</Link></li>
-          <li><Link to="/statistics" onClick={closeNavHandler}>Statistics</Link></li>
-          <li><Link to="/register" onClick={closeNavHandler}>Register</Link></li>
-          <li><Link to="/login" onClick={closeNavHandler}>Login</Link></li>
-        </ul>}
-        <button className='nav__toggle-btn' onClick={() => setIsNavShowing(!isNavShowing)}>
-          {isNavShowing ? <AiOutlineClose/> : <FaBars/>}
-        </button>
       </div>
     </nav>
   )
