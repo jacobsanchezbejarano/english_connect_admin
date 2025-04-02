@@ -904,3 +904,20 @@ select {
       opacity: 1;
   }
 }
+
+/*======================================= GROUPS ================================*/
+.groups__container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+.groups {
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: var(--radius-3);
+  display: flex;
+  flex-direction: column;
+  grid-gap: 1rem;
+  transition: var(--transition);
+}
