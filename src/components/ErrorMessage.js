@@ -1,8 +1,10 @@
 import React from 'react'
 
-const ErrorMessage = () => {
+const ErrorMessage = ( { message }) => {
+  if (!message) return null;
+
   return (
-    <p className='form__error-message'>This is an error message</p>
+    <p className='form__error-message'>{message}</p>
   )
 }
 
