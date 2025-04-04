@@ -10,16 +10,17 @@ const Groups = () => {
 
   return (
     <section className='container'>
+      <h1 className='groups__header'>Groups</h1>
         <div className="container groups__container">
         {groups.map((group, index) => (
+          <Link to="/groupInfo">
             <div key={index} className="groups">
-            <h2 className="text-xl font-bold mb-2">{group.name}</h2>
-            <p className="text-gray-600">{group.description}</p>
-            <Link to={group.link}>
-            <button className="btn primary">View Info</button>
-            </Link>
+              <h2 className="group__header">{group.name}</h2>
+              <p className="group__desc">{group.description}</p>
             </div>
+          </Link>
         ))}
+        <button className='create__unit-btn'><Link to="/createGroup">Create a group</Link></button>
         </div>
     </section>
   )

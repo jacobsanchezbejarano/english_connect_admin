@@ -1,4 +1,5 @@
 import React from 'react'
+import {useState} from 'react'
 
 const CreateGroup = () => {
   const [name, setName] = useState('')
@@ -15,10 +16,10 @@ const CreateGroup = () => {
         <form className='form create-instructor__form'>
           <input type='text' placeholder='Name' value={name} onChange={e => setName(e.target.value)} autoFocus/>
           <input type='text' placeholder='Stake' value={stake} onChange={e => setStake(e.target.value)} autoFocus/>
-          <input type='text' placeholder='Stake' value={ward} onChange={e => setWard(e.target.value)} autoFocus/>
-          <input type='text' placeholder='Stake' value={startDate} onChange={e => setStartDate(e.target.value)} autoFocus/>
-          <input type='text' placeholder='Stake' value={endDate} onChange={e => setEndDate(e.target.value)} autoFocus/>
-          <input type='text' placeholder='Stake' value={schedule} onChange={e => setSchedule(e.target.value)} autoFocus/>
+          <input type='text' placeholder='Ward' value={ward} onChange={e => setWard(e.target.value)} autoFocus/>
+          <input type='text' placeholder='Start Date' value={startDate} onChange={e => setStartDate(e.target.value)} autoFocus/>
+          <input type='text' placeholder='End Date' value={endDate} onChange={e => setEndDate(e.target.value)} autoFocus/>
+          <input type='text' placeholder='Schedule' value={schedule} onChange={e => setSchedule(e.target.value)} autoFocus/>
           <button type='submit' className='btn primary'>Create</button>
         </form>
       </div>
