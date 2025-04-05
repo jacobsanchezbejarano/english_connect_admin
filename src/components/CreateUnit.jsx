@@ -3,14 +3,18 @@ import { countries } from "../constants/countries";
 import { URL } from '../constants/url';
 import axios from 'axios';
 import { useAuth } from '../context/authContext';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CreateUnit = () => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [unitNumber, setUnitNumber] = useState('');
   const [stakesInCountry, setStakesInCountry] = useState([]);
+  const [selectedStakeId, setSelectedStakeId] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStakesByCountry = async (country) => {
@@ -46,17 +50,53 @@ const CreateUnit = () => {
     }
   }, [location, isAuthenticated]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend to create a ward
-    // You would likely want to include the selected stake (from stakesInCountry)
-    // in this submission, along with the ward name (which is currently 'name').
-    console.log({ wardName: name, location, unitNumber, stakesInCountry });
-    // Reset the form after submission (optional)
-    setName('');
-    setLocation('');
-    setUnitNumber('');
-    setStakesInCountry([]); // Optionally clear the stakes dropdown
+    setError('');
+    setSuccessMessage('');
+
+    if (!isAuthenticated) {
+      setError('You must be logged in to create a ward.');
+      return;
+    }
+
+    if (!selectedStakeId) {
+      setError('Please select a stake for this ward.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `${URL}/wards`,
+        {
+          name: name,
+          location: location,
+          stakeId: selectedStakeId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log('Ward created successfully:', response.data);
+      setSuccessMessage('Ward created successfully!');
+      setTimeout(() => {
+        navigate('/units'); // Redirect to the units page or wherever appropriate
+      }, 1500);
+
+      setName('');
+      setLocation('');
+      setUnitNumber('');
+      setStakesInCountry([]);
+      setSelectedStakeId('');
+    } catch (err) {
+      console.error('Error creating ward:', err.response?.data?.error || err.message || err);
+      setError(err.response?.data?.error || 'Failed to create ward. Please try again.');
+    }
   };
 
   return (
@@ -65,8 +105,16 @@ const CreateUnit = () => {
         <div className='profile__details'>
           <h1>Create Unit (Ward)</h1>
           {error && <p className='form__error-message'>{error}</p>}
+          {successMessage && <p className='form__success-message'>{successMessage}</p>}
           {/*Form to update user details*/}
           <form className='form profile__form' onSubmit={handleSubmit}>
+            <input
+              type='text'
+              placeholder='Ward Name'
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
             <select value={location} onChange={e => setLocation(e.target.value)} required>
               <option value="" disabled>Select Country</option>
               {countries.map((country) => (
@@ -77,7 +125,12 @@ const CreateUnit = () => {
             </select>
 
             {location && stakesInCountry.length > 0 && (
-              <select name="stake" required>
+              <select
+                name="stakeId"
+                value={selectedStakeId}
+                onChange={e => setSelectedStakeId(e.target.value)}
+                required
+              >
                 <option value="" disabled>Select Stake</option>
                 {stakesInCountry.map(stake => (
                   <option key={stake._id} value={stake._id}>
@@ -86,15 +139,6 @@ const CreateUnit = () => {
                 ))}
               </select>
             )}
-            
-            <input
-              type='text'
-              placeholder='Ward Name'
-              value={name}
-              onChange={e => setName(e.target.value)}
-              required
-            />
-
             {location && stakesInCountry.length === 0 && error === '' && (
               <p>No stakes found in {location}.</p>
             )}
