@@ -12,6 +12,7 @@ const AttendanceForm = () => {
     new Date().toISOString().split('T')[0]
   );
   const [allAttendances, setAllAttendances] = useState([]);
+  const token = localStorage.getItem('accessToken'); // Get the token
 
   function buildInitialStudents(students, attendances, meetings) {
     if (!students || students.length === 0) {
@@ -68,7 +69,12 @@ const AttendanceForm = () => {
   async function fetchData() {
     try {
       const attendanceResponse = await axios.get(
-        URL + `/attendance/group/${groupId}`
+        URL + `/attendance/group/${groupId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add Bearer token
+          },
+        }
       );
       const attendanceData = attendanceResponse.data;
       setAllAttendances(attendanceData); // Add this line
@@ -76,7 +82,12 @@ const AttendanceForm = () => {
       setMeetings(meetingsData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
       const studentsResponse = await axios.get(
-        URL + `/registrations/group/${groupId}/students`
+        URL + `/registrations/group/${groupId}/students`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add Bearer token
+          },
+        }
       );
       const studentsData = studentsResponse.data;
 
@@ -144,20 +155,31 @@ const AttendanceForm = () => {
 
       try {
         if (isChecked) {
-          const response = await axios.post(URL + '/attendance', {
-            studentId: studentId,
-            groupId: groupId,
-            date: dateISO,
-            isPresent: true,
-            notes: 'Attendance recorded',
-          });
-
+          const response = await axios.post(
+            URL + '/attendance',
+            {
+              studentId: studentId,
+              groupId: groupId,
+              date: dateISO,
+              isPresent: true,
+              notes: 'Attendance recorded',
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Add Bearer token
+              },
+            }
+          );
           fetchData();
         } else {
           // Delete attendance using _id
           const attendanceId = student.attendance[day]._id;
           if (attendanceId) {
-            await axios.delete(URL + `/attendance/${attendanceId}`);
+            await axios.delete(URL + `/attendance/${attendanceId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Add Bearer token
+              },
+            });
             fetchData();
           } else {
             console.error('Attendance record not found for deletion.');

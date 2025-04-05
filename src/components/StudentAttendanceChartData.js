@@ -69,20 +69,33 @@ function StudentAttendanceChartData() {
   }
 
   async function fetchData() {
+    const token = localStorage.getItem('accessToken'); // Assuming your token is stored in localStorage
+  
     try {
       const attendanceResponse = await axios.get(
-        URL + `/attendance/group/${groupId}`
+        URL + `/attendance/group/${groupId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the Authorization header
+          },
+        }
       );
       const attendanceData = attendanceResponse.data;
       setAllAttendances(attendanceData);
       const meetingsData = getUniqueAttendanceDates(attendanceData);
       setMeetings(meetingsData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
+  
       const studentsResponse = await axios.get(
-        URL + `/registrations/group/${groupId}/students`
+        URL + `/registrations/group/${groupId}/students`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the Authorization header
+          },
+        }
       );
       const studentsData = studentsResponse.data;
-
+  
       const data = buildInitialStudents(
         studentsData,
         attendanceData,
@@ -91,7 +104,10 @@ function StudentAttendanceChartData() {
       setStudents(data);
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Handle error appropriately (e.g., show an error message)
+      if (error.response && error.response.status === 401) {
+        console.error('Unauthorized access. Redirecting to login.');
+        // navigate('/login');
+      }
     }
   }
 
