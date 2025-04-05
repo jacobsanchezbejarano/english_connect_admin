@@ -54,7 +54,7 @@ const router = createBrowserRouter ([
       {path: "unitInfo/:id", element: <UnitInfo/>},
       {path: "statistics", element: <Statistics/>},
       {path: "groups", element: <Groups/>},
-      {path: "groupInfo", element: <GroupInfo/>},
+      {path: "groupInfo/:id", element: <GroupInfo/>},
       {path: "createGroup", element: <CreateGroup/>},
     ]
   }
