@@ -723,10 +723,6 @@ input, select, textarea {
 
 /*======================================= ATTENDANCE ================================*/
 
-.attendance__form {
-  margin-top: 10rem;
-}
-
 .attendance {
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -829,20 +825,20 @@ input, select, textarea {
 .attendance__header {
   position: fixed;
   z-index: 1;
-  top: 5rem;
+  top: 30rem;
   background: var(255, 255, 255, 0.5);
   border-bottom: 2px solid #bbb;
   backdrop-filter: blur(20px);
-}
-
-.attendance__body {
-  margin-top: 10rem;
 }
 
 .gender {
   margin-left: 8rem;
 }
 
+.d-flex {
+  display: flex;
+  flex-direction: column;
+}
 
 /* Statistics */
 
@@ -936,6 +932,9 @@ select {
   margin-bottom: 3rem;
 }
 
+.attendance__body {
+  margin-top: 18rem;
+}
 
 /*======================================= GROUP INFO ================================*/
 .groupInfo {
