@@ -25,6 +25,7 @@ const Header = () => {
           <li><Link to="/attendance" onClick={closeNavHandler}>Attendance</Link></li>
           <li><Link to="/students/sdfsdf" onClick={closeNavHandler}>Students</Link></li>
           <li><Link to="/groups" onClick={closeNavHandler}>Groups</Link></li>
+          <li><Link to="/stakes" onClick={closeNavHandler}>Stakes</Link></li>
           <li><Link to="/units" onClick={closeNavHandler}>Wards & Branches</Link></li>
           <li><Link to="/statistics" onClick={closeNavHandler}>Statistics</Link></li>
           <li><Link to="/register" onClick={closeNavHandler}>Register</Link></li>

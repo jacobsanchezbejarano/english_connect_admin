@@ -13,18 +13,20 @@ import Instructors from './pages/Instructors';
 import Layout from './components/Layout';
 import Register from './pages/Register';
 import Units from './pages/Units';
+import Stakes from './pages/Stakes';
 import InstructorProfile from './pages/InstructorProfile';
 import StudentProfile from './pages/StudentProfile';
 import CreateStudent from './components/CreateStudent';
 import CreateInstructor from './components/CreateInstructor';
 import CreateUnit from './pages/CreateUnit';
+import CreateStake from './pages/CreateStake';
 import EditUnitInfo from './components/EditUnitInfo';
 import UnitInfo from './pages/UnitInfo';
 import Statistics from './pages/Statistics';
 import Groups from './pages/Groups';
 import GroupInfo from './pages/GroupInfo';
 import CreateGroup from './pages/CreateGroup';
-
+import { AuthProvider } from './context//authContext';
 
 
 const router = createBrowserRouter ([
@@ -46,6 +48,8 @@ const router = createBrowserRouter ([
       {path: "register", element: <Register/>},
       {path: "units", element: <Units/>},
       {path: "createUnit", element: <CreateUnit/>},
+      {path: "stakes", element: <Stakes/>},
+      {path: "createStake", element: <CreateStake/>},
       {path: "editUnitInfo", element: <EditUnitInfo/>},
       {path: "unitInfo/:id", element: <UnitInfo/>},
       {path: "statistics", element: <Statistics/>},
@@ -59,6 +63,8 @@ const router = createBrowserRouter ([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router}/>
+    </AuthProvider>
   </React.StrictMode>
 );
