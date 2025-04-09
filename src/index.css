@@ -1172,4 +1172,45 @@ select {
     padding: 1rem;
   }
 
+    /*======================================= GROUPS ================================*/
+.groups__container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: auto;
+}
+
+.groups {
+  height: auto;
+}
+
+
+/*======================================= GROUP INFO ================================*/
+.groupInfo {
+  text-align: left;
+  width: 100%;
+}
+
+.group-info__header {
+  text-align: center;
+  margin-bottom: 3rem;
+  margin-top: 8rem;
+}
+
+.group-info__details {
+  width: 100%;
+  background: var(--color-white);
+  box-shadow: 0 0 20px 10px #bbb;
+  border-radius: var(--radius-3);
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.group-info__details div {
+  margin-top: 1rem;
+  height: 80px;
+  padding: 1.5rem;
+  width: 100%;
+}
+
 }
