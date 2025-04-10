@@ -17,11 +17,12 @@ const Groups = () => {
         if (response.data.groups && Array.isArray(response.data.groups)) {
           setGroups(response.data.groups);
         } else {
-          setError('Failed to load groups: Invalid data format.');
+          setError('Failed to load groups.');
         }
       } catch (err) {
-        console.error('Error fetching groups:', err.response?.data?.error || err.message || err);
-        setError(err.response?.data?.error || 'Failed to load groups.');
+        //console.error('Error fetching groups:', err.response?.data?.error || err.message || err);
+        //setError(err.response?.data?.error || 'Failed to load groups.');
+        setError('User not authenticated. Please log in again.');
       }
     };
 
