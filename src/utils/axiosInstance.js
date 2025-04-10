@@ -40,7 +40,6 @@ api.interceptors.response.use(
             originalRequest.headers["Authorization"] = `Bearer ${token}`;
             return api(originalRequest);
           })
-          .catch((err) => Promise.reject(err));
       }
 
       isRefreshing = true;
@@ -64,10 +63,11 @@ api.interceptors.response.use(
 
         processQueue(null, newAccessToken);
         return api(originalRequest);
-      } catch (err) {
-        processQueue(err, null);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        console.error("Session expired. Please log in again.");
         // Handle logout or redirect
-        return Promise.reject(err);
+        return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }

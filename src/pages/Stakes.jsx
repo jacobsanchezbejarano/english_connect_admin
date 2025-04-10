@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import StakeInformation from '../components/StakeInformation';
 import { URL } from '../constants/url';
-import axios from 'axios';
 import { useAuth } from '../context/authContext'; // Assuming AuthContext is one level up
+import api from '../utils/axiosInstance'; // Import the axios instance
 
 const Stakes = () => {
   const [selectedStake, setSelectedStake] = useState('');
@@ -15,11 +15,7 @@ const Stakes = () => {
     const fetchStakes = async () => {
       setError('');
       try {
-        const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`${URL}/stakes`, {
-          headers: {
-            'Authorization': `Bearer ${token}`, // Include token for protected routes
-          },
+        const response = await api.get(`${URL}/stakes`, {
         });
         if (response.data && Array.isArray(response.data.data)) {
           // Extract stake names from the response data.data
