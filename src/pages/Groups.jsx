@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { URL } from '../constants/url';
-import axios from 'axios';
 import { useAuth } from '../context/authContext';
+import api from '../utils/axiosInstance'; // Import the axios instance
 
 const Groups = () => {
   const [groups, setGroups] = useState([]);
@@ -13,12 +13,7 @@ const Groups = () => {
     const fetchGroups = async () => {
       setError('');
       try {
-        const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`${URL}/groups`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const response = await api.get(`${URL}/groups`);
         if (response.data.groups && Array.isArray(response.data.groups)) {
           setGroups(response.data.groups);
         } else {

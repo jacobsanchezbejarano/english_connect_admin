@@ -9,25 +9,27 @@ const Login = () => {
     email: '',
     password: ''
   });
-  const [localError, setLocalError] = useState(''); // Local error for form handling
-  const { login, error: authError, loading } = useAuth(); // Get login function, error, and loading from context
+  const [localError, setLocalError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // New local loading
+  const { login, error: authError } = useAuth();
   const navigate = useNavigate();
 
   const cangeInputHandler = (e) => {
-    setUserData(prevState => {
-      return {...prevState, [e.target.name]: e.target.value};
-    });
+    setUserData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLocalError(''); // Clear local error
+    setLocalError('');
+    setIsSubmitting(true); // Start button loading
+
     try {
       await login({ username: userData.email, password: userData.password });
       navigate('/');
     } catch (err) {
-      console.error('Login failed:', err);
-      setLocalError(err.message || 'Login failed. Please try again.');
+      setLocalError(err.message || 'Login failed');
+    } finally {
+      setIsSubmitting(false); // Stop button loading
     }
   };
 
@@ -44,7 +46,7 @@ const Login = () => {
             value={userData.email}
             onChange={cangeInputHandler}
             autoFocus
-            disabled={loading}
+            disabled={isSubmitting}
           />
           <input
             type='password'
@@ -52,10 +54,10 @@ const Login = () => {
             name='password'
             value={userData.password}
             onChange={cangeInputHandler}
-            disabled={loading}
+            disabled={isSubmitting}
           />
-          <button type='submit' className='btn primary' disabled={loading}>
-            {loading ? 'Logging In...' : 'Login'}
+          <button type='submit' className='btn primary' disabled={isSubmitting}>
+            {isSubmitting ? 'Logging In...' : 'Login'}
           </button>
         </form>
         <small>
@@ -65,5 +67,6 @@ const Login = () => {
     </section>
   );
 };
+
 
 export default Login;
