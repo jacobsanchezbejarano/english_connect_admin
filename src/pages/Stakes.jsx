@@ -24,8 +24,7 @@ const Stakes = () => {
           setError('Failed to load stakes: Invalid data format.');
         }
       } catch (err) {
-        console.error('Error fetching stakes:', err.response?.data?.error || err.message || err);
-        setError(err.response?.data?.error || 'Failed to load stakes.');
+        setError(err.response?.data?.error || err.response?.data?.message || 'Failed to load stakes.');
       }
     };
 
