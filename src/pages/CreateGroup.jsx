@@ -125,7 +125,7 @@ const CreateGroup = () => {
         {
           name: name,
           stake: selectedStakeId,
-          ward: selectedWardId,
+          wardId: selectedWardId,
           start_date: startDate,
           end_date: endDate,
           schedule: schedule,
