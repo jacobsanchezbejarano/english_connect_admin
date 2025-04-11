@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { URL } from '../constants/url';
+import api from '../utils/axiosInstance';
 import Spinner from '../components/Spinner';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
@@ -72,13 +71,8 @@ function StudentAttendanceChartData() {
     const token = localStorage.getItem('accessToken'); // Assuming your token is stored in localStorage
   
     try {
-      const attendanceResponse = await axios.get(
-        URL + `/attendance/group/${groupId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the Authorization header
-          },
-        }
+      const attendanceResponse = await api.get(
+        `/attendance/group/${groupId}`
       );
       const attendanceData = attendanceResponse.data;
       setAllAttendances(attendanceData);
@@ -86,13 +80,8 @@ function StudentAttendanceChartData() {
       setMeetings(meetingsData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
   
-      const studentsResponse = await axios.get(
-        URL + `/registrations/group/${groupId}/students`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the Authorization header
-          },
-        }
+      const studentsResponse = await api.get(
+        `/registrations/group/${groupId}/students`
       );
       const studentsData = studentsResponse.data;
   

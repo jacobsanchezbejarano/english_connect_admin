@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { URL } from '../constants/url';
-import axios from 'axios';
+import api from '../utils/axiosInstance';
 import { useAuth } from '../context/authContext';
 
 const GroupInfo = () => {
@@ -16,11 +15,7 @@ const GroupInfo = () => {
       setGroupInfo(null);
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`${URL}/groups/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const response = await api.get(`/groups/${id}`);
         if (response.data.group) {
           setGroupInfo(response.data.group);
         } else {

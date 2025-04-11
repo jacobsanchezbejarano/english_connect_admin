@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { URL } from '../constants/url';
+import api from '../utils/axiosInstance';
 import { countries } from '../constants/countries';
-import axios from 'axios';
 
 const AttendanceForm = () => {
   const [stakes, setStakes] = useState([]);
@@ -72,11 +71,7 @@ const AttendanceForm = () => {
 
   async function fetchStakes(countryId) {
     try {
-      const response = await axios.get(URL + `/stakes/country/${countryId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/stakes/country/${countryId}`);
       setStakes(response.data.data);
     } catch (error) {
       console.error('Error fetching stakes:', error);
@@ -86,11 +81,7 @@ const AttendanceForm = () => {
 
   async function fetchWards(stakeId) {
     try {
-      const response = await axios.get(URL + `/stakes/wards/${stakeId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/stakes/wards/${stakeId}`);
       setWards(response.data.wards);
     } catch (error) {
       console.error('Error fetching wards:', error);
@@ -100,11 +91,7 @@ const AttendanceForm = () => {
 
   async function fetchGroups(wardId) {
     try {
-      const response = await axios.get(URL + `/groups/ward/${wardId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/groups/ward/${wardId}`);
       setGroups(response.data.groups);
     } catch (error) {
       console.error('Error fetching groups:', error);
@@ -166,25 +153,15 @@ const AttendanceForm = () => {
 
   async function fetchData() {
     try {
-      const attendanceResponse = await axios.get(
-        URL + `/attendance/group/${groupId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const attendanceResponse = await api.get(
+        `/attendance/group/${groupId}`
       );
       const attendanceData = attendanceResponse.data;
       setAllAttendances(attendanceData);
       const meetingsData = getUniqueAttendanceDates(attendanceData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
-      const studentsResponse = await axios.get(
-        URL + `/registrations/group/${groupId}/students`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const studentsResponse = await api.get(
+        `/registrations/group/${groupId}/students`
       );
       const studentsData = studentsResponse.data;
 
@@ -260,19 +237,14 @@ const AttendanceForm = () => {
 
       try {
         if (isChecked) {
-          await axios.post(
-            URL + '/attendance',
+          await api.post(
+            '/attendance',
             {
               studentId: studentId,
               groupId: groupId,
               date: dateISO,
               isPresent: true,
               notes: 'Attendance recorded',
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
             }
           );
           fetchData();
@@ -280,11 +252,7 @@ const AttendanceForm = () => {
           // Delete attendance using _id
           const attendanceId = student.attendance[day]?._id;
           if (attendanceId) {
-            await axios.delete(URL + `/attendance/${attendanceId}`, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
+            await api.delete(`/attendance/${attendanceId}`);
             fetchData();
           } else {
             console.error('Attendance record not found for deletion.');

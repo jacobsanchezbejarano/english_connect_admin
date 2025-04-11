@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { countries } from "../constants/countries";
-import { URL } from '../constants/url';
-import axios from 'axios';
+import api from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useAuth } from '../context/authContext'; // Assuming AuthContext is one level up
 
@@ -27,17 +26,11 @@ const CreateStake = () => {
     const token = localStorage.getItem('accessToken'); // Or however you access your token
 
     try {
-      const response = await axios.post(
-        `${URL}/stakes`,
+      const response = await api.post(
+        `/stakes`,
         {
           name: name,
           location: location,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Include the token from localStorage
-          },
         }
       );
 

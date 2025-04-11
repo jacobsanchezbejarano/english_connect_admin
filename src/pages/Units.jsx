@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import UnitInformation from '../components/UnitInformation';
-import { URL } from '../constants/url';
-import axios from 'axios';
+import api from '../utils/axiosInstance';
 import { useAuth } from '../context/authContext';
 
 const Units = () => {
@@ -16,11 +15,7 @@ const Units = () => {
       setError('');
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`${URL}/wards`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const response = await api.get(`/wards`);
         if (response.data && Array.isArray(response.data.wards)) {
           const unitNames = response.data.wards.map(ward => ward.name);
           setUnits(['Select a Ward or Branch', ...unitNames]);

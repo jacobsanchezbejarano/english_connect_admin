@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { countries } from "../constants/countries";
-import { URL } from '../constants/url';
-import axios from 'axios';
+import api from '../utils/axiosInstance';
 import { useAuth } from '../context/authContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
@@ -25,11 +24,7 @@ const CreateUnit = () => {
       setError('');
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`${URL}/stakes/country/${country}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const response = await api.get(`${URL}/stakes/country/${country}`);
         if (response.data && Array.isArray(response.data.data)) {
           setStakesInCountry(response.data.data);
         } else {
@@ -67,18 +62,12 @@ const CreateUnit = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.post(
-        `${URL}/wards`,
+      const response = await api.post(
+        `/wards`,
         {
           name: name,
           location: location,
           stakeId: selectedStakeId,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
         }
       );
 
