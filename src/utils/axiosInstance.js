@@ -56,16 +56,15 @@ api.interceptors.response.use(
         // Update your storage method here
         localStorage.setItem("accessToken", newAccessToken);
 
-        api.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${newAccessToken}`;
+        // Update the original request with the new token
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
         processQueue(null, newAccessToken);
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
-        console.error("Session expired. Please log in again.");
+        localStorage.removeItem('accessToken');
+        window.location.href = '/login'; 
         // Handle logout or redirect
         return Promise.reject(refreshError);
       } finally {
