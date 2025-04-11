@@ -23,8 +23,7 @@ const Units = () => {
           setError('Failed to load wards and branches: Invalid data format.');
         }
       } catch (err) {
-        console.error('Error fetching wards and branches:', err.response?.data?.error || err.message || err);
-        setError(err.response?.data?.error || 'Failed to load wards and branches.');
+        setError(err.response?.data?.error || err.response?.data?.message || 'Failed to load wards and branches.');
       }
     };
 

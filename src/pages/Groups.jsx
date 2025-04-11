@@ -19,9 +19,7 @@ const Groups = () => {
           setError('Failed to load groups.');
         }
       } catch (err) {
-        //console.error('Error fetching groups:', err.response?.data?.error || err.message || err);
-        //setError(err.response?.data?.error || 'Failed to load groups.');
-        setError('User not authenticated. Please log in again.');
+        setError(`${err.response?.data?.message || err.response?.data?.error || err.message || 'Failed to load groups.'}`);
       }
     };
 
