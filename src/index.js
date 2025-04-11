@@ -22,6 +22,7 @@ import CreateInstructor from './components/CreateInstructor';
 import CreateUnit from './pages/CreateUnit';
 import CreateStake from './pages/CreateStake';
 import EditUnitInfo from './components/EditUnitInfo';
+import EditUser from './components/EditUser';
 import UnitInfo from './pages/UnitInfo';
 import Statistics from './pages/Statistics';
 import Groups from './pages/Groups';
@@ -37,7 +38,8 @@ const router = createBrowserRouter ([
     errorElement: <ErrorPage/>,
     children: [
       {index: true, element: <Home/>},
-      {path: "users/:id", element: <Users/>},
+      {path: "users", element: <Users/>},
+      {path: "users/:id", element: <EditUser/>},
       {path: "students/:id", element: <Students/>},
       {path: "studentProfile/:id", element: <StudentProfile/>},
       {path: "createStudent/:id", element: <CreateStudent/>},

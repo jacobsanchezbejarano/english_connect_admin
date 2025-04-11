@@ -1,122 +1,205 @@
-import React, { useState } from 'react'
-import Avatar1 from '../images/Avatar1.jpg'
-import Avatar2 from '../images/Avatar2.jpg'
-import Avatar3 from '../images/Avatar3.jpg'
-import Avatar4 from '../images/Avatar4.jpg'
-import Avatar5 from '../images/Avatar5.jpg'
-import Avatar6 from '../images/Avatar6.jpg'
-import Avatar7 from '../images/Avatar7.jpg'
-import Avatar8 from '../images/Avatar8.jpg'
-import Avatar9 from '../images/Avatar9.jpg'
-import Avatar10 from '../images/Avatar10.jpg'
-import Avatar11 from '../images/Avatar11.jpg'
-import Avatar12 from '../images/Avatar12.jpg'
-import Avatar13 from '../images/Avatar13.jpg'
-import Avatar14 from '../images/Avatar14.jpg'
-import Avatar15 from '../images/Avatar15.jpg'
-import { Link } from 'react-router-dom'
-import GenericOptions from '../components/GenericOptions'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import api from '../utils/axiosInstance';
+import GenericOptions from '../components/GenericOptions';
+import { countries } from '../constants/countries';
 
-const studentsData = [
-  {id: 1, avatar: Avatar1, name: "Stacy Adams", course: "English Connect 1"},
-  {id: 2, avatar: Avatar2, name: "Anthony Wildock", course: "English Connect 1"},
-  {id: 3, avatar: Avatar3, name: "Jaden Erling", course: "English Connect 2"},
-  {id: 4, avatar: Avatar4, name: "Asher Palmer", course: "English Connect 1"},
-  {id: 5, avatar: Avatar5, name: "Browny Pla", course: "English Connect 1"},
-  {id: 6, avatar: Avatar6, name: "John Stones", course: "English Connect 2"},
-  {id: 7, avatar: Avatar7, name: "Shawn Pierre", course: "English Connect 1"},
-  {id: 8, avatar: Avatar8, name: "Kingsley Stephenson", course: "English Connect 2"},
-  {id: 9, avatar: Avatar9, name: "Janet Kingston", course: "English Connect 1"},
-  {id: 10, avatar: Avatar10, name: "Thomas Richard", course: "English Connect 1"},
-  {id: 11, avatar: Avatar11, name: "Christopher Donald", course: "English Connect 2"},
-  {id: 12, avatar: Avatar12, name: "Robert James", course: "English Connect 1"},
-  {id: 13, avatar: Avatar13, name: "Daniel William", course: "English Connect 2"},
-  {id: 14, avatar: Avatar14, name: "Ryan Edward", course: "English Connect 1"},
-  {id: 15, avatar: Avatar15, name: "Tyler Adam", course: "English Connect 2"},
-]
+const Users = () => {
+  const [users, setUsers] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [stakes, setStakes] = useState([]);
+  const [selectedStake, setSelectedStake] = useState('');
+  const [wards, setWards] = useState([]);
+  const [selectedWard, setSelectedWard] = useState('');
+  const [error, setError] = useState('');
 
-const options = [
-  {
-    label: 'Edit',
-    route: '/userProfile/:id',
-  },
-  {
-    label: 'Delete',
-    route: '/delete/:id',
-  },
-];
-
-const Students = () => {
-  const [students, setStudents] = useState(studentsData);
-  
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const studentsPerPage = 10;
+  const usersPerPage = 10;
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        let url = '/users';
+        if (selectedWard) {
+          url = `/users/wards/${selectedWard}`;
+        }
+        const response = await api.get(url);
+        setUsers(response.data.data);
+      } catch (err) {
+        console.error('Error fetching users:', err.response?.data?.error || err.message || err);
+        setError('Failed to load users. Please try again.');
+      }
+    };
+
+    fetchUsers();
+  }, [selectedWard]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      fetchStakes(selectedCountry);
+      setSelectedStake('');
+      setSelectedWard('');
+      setStakes([]);
+      setWards([]);
+    } else {
+      setStakes([]);
+      setWards([]);
+      setSelectedStake('');
+      setSelectedWard('');
+    }
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    if (selectedStake) {
+      fetchWards(selectedStake);
+      setSelectedWard('');
+      setWards([]);
+    } else {
+      setWards([]);
+      setSelectedWard('');
+    }
+  }, [selectedStake]);
+
+  const fetchStakes = async (countryName) => {
+    try {
+      const response = await api.get(`/stakes/country/${countryName}`);
+      setStakes(response.data.data);
+    } catch (error) {
+      console.error('Error fetching stakes:', error);
+      setError('Failed to load stakes. Please try again.');
+    }
+  };
+
+  const fetchWards = async (stakeId) => {
+    try {
+      const response = await api.get(`/stakes/wards/${stakeId}`);
+      setWards(response.data.wards);
+    } catch (error) {
+      console.error('Error fetching wards:', error);
+      setError('Failed to load wards. Please try again.');
+    }
+  };
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
+
+  const handleStakeChange = (e) => {
+    setSelectedStake(e.target.value);
+  };
+
+  const handleWardChange = (e) => {
+    setSelectedWard(e.target.value);
+  };
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(students.length / studentsPerPage);
+  const totalPages = Math.ceil(users.length / usersPerPage);
 
-  // Get students to display on the current page
-  const startIndex = (currentPage - 1) * studentsPerPage;
-  const currentStudents = students.slice(startIndex, startIndex + studentsPerPage);
+  // Get users to display on the current page
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const currentUsers = users.slice(startIndex, startIndex + usersPerPage);
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  const options = [
+    {
+      label: 'Edit',
+      route: '/users/:id',
+    },
+    {
+      label: 'Delete',
+      route: '/delete/:id',
+    },
+  ];
+
   return (
     <section className='students'>
       <h1 className='students__header'>Users</h1>
-      {students.length > 0 ? (
+      <div className='filter__controls'>
+        <label htmlFor='country'>Country:</label>
+        <select id='country' value={selectedCountry} onChange={handleCountryChange}>
+          <option value=''>All Countries</option>
+          {countries.map((country) => (
+            <option key={country.code} value={country.name}>
+              {country.name}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor='stake'>Stake:</label>
+        <select id='stake' value={selectedStake} onChange={handleStakeChange} disabled={!selectedCountry}>
+          <option value=''>All Stakes</option>
+          {stakes.map((stake) => (
+            <option key={stake._id} value={stake._id}>
+              {stake.name}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor='ward'>Ward:</label>
+        <select id='ward' value={selectedWard} onChange={handleWardChange} disabled={!selectedStake}>
+          <option value=''>All Wards</option>
+          {wards.map((ward) => (
+            <option key={ward._id} value={ward._id}>
+              {ward.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error && <p className='form__error-message'>{error}</p>}
+      {users.length > 0 ? (
         <div className='container students__container'>
-          {currentStudents.map(({ id, avatar, name, course }) => {
-            return (
-              <Link key={id} to={`/students/sdfsdf`} className='student'>
-                <GenericOptions options={options} itemId={id} />
-                <div className='student__avatar'>
-                  <img src={avatar} alt={`Dp of ${name}`} />
-                </div>
-                <div className='student__info'>
-                  <h4>{name}</h4>
-                  <p>{course}</p>
-                </div>
-              </Link>
-            );
-          })}
+          {currentUsers.map((user) => (
+            <Link key={user._id} className='student'>
+              <GenericOptions options={options} itemId={user._id} />
+              <div className='student__avatar'>
+                {user.avatar ? (
+                  <img src={user.avatar} alt={`Dp of ${user.firstName} ${user.lastName}`} />
+                ) : (
+                  <div className='avatar__placeholder'>{user.firstName ? user.firstName[0] : ''}{user.lastName ? user.lastName[0] : ''}</div>
+                )}
+              </div>
+              <div className='student__info'>
+                <h4>{user.firstName} {user.lastName}</h4>
+                <p>{user.email}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       ) : (
-        <h2>No users/instructors found</h2>
+        <h2>No users found for the selected criteria</h2>
       )}
 
       {/* Pagination Controls */}
-      <div className="pagination__control">
-        <button
-        className='btn primary'
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}
-        >
-          Previous
-        </button>
-        <span className='pagination'>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-        className='btn primary'
-          disabled={currentPage === totalPages}
-          onClick={() => handlePageChange(currentPage + 1)}
-        >
-          Next
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination__control">
+          <button
+            className='btn primary'
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </button>
+          <span className='pagination'>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className='btn primary'
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
 
-      <div className='add__student'>
-        <button className='add__student-btn'>
-          <Link to="/createStudent/sdfsdf">Add a student</Link>
-        </button>
-      </div>
+      
     </section>
   );
 };
 
-export default Students;
+export default Users;
