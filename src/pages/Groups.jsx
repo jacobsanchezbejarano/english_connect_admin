@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { URL } from '../constants/url';
 import { useAuth } from '../context/authContext';
 import api from '../utils/axiosInstance'; // Import the axios instance
 
@@ -13,7 +12,7 @@ const Groups = () => {
     const fetchGroups = async () => {
       setError('');
       try {
-        const response = await api.get(`${URL}/groups`);
+        const response = await api.get(`/groups`);
         if (response.data.groups && Array.isArray(response.data.groups)) {
           setGroups(response.data.groups);
         } else {

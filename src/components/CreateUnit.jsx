@@ -24,7 +24,7 @@ const CreateUnit = () => {
       setError('');
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await api.get(`${URL}/stakes/country/${country}`);
+        const response = await api.get(`/stakes/country/${country}`);
         if (response.data && Array.isArray(response.data.data)) {
           setStakesInCountry(response.data.data);
         } else {
