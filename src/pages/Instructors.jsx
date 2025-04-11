@@ -19,9 +19,9 @@ const Instructors = () => {
         let url = '/instructors';
         if (selectedWard) {
           url = `/users/instructor/ward/${selectedWard}`;
-        }else return;
+        }
         const response = await api.get(url);
-        setInstructors(response.data.instructors);
+        setInstructors(response.data.data);
       } catch (err) {
         console.error('Error fetching instructors:', err.response?.data?.error || err.message || err);
         setError('Failed to load instructors. Please try again.');
@@ -138,11 +138,11 @@ const Instructors = () => {
       {instructors.length > 0 ? (
         <div className='container instructors__container'>
           {instructors.map((instructor) => (
-            <Link key={instructor._id} to={`/instructors/${instructor._id}`} className='instructor'>
+            <Link key={instructor._id} className='instructor'>
               <GenericOptions options={options} itemId={instructor._id} />
               <div className='instructor__info'>
-                <h4>{instructor.user.firstName} {instructor.user.lastName}</h4>
-                <p>Ward ID: {instructor.wardId}</p>
+                <h4>{instructor.userId?.firstName} {instructor.userId?.lastName}</h4>
+                <p>Ward ID: {instructor.userId?.wardId ?? ' Unknown'}</p>
               </div>
             </Link>
           ))}
