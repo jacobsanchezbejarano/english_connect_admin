@@ -6,6 +6,7 @@ import './index.css';
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Users from './pages/Users';
 import Students from './pages/Students';
 import Attendance from './pages/Attendance';
 import Edit from './pages/InstructorProfile';
@@ -36,6 +37,7 @@ const router = createBrowserRouter ([
     errorElement: <ErrorPage/>,
     children: [
       {index: true, element: <Home/>},
+      {path: "users/:id", element: <Users/>},
       {path: "students/:id", element: <Students/>},
       {path: "studentProfile/:id", element: <StudentProfile/>},
       {path: "createStudent/:id", element: <CreateStudent/>},

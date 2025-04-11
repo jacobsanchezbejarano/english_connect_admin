@@ -1,64 +1,160 @@
-import React, {useState} from 'react'
-
-import Avatar1 from '../images/Avatar1.jpg'
-import Avatar2 from '../images/Avatar2.jpg'
-import Avatar3 from '../images/Avatar3.jpg'
-import Avatar4 from '../images/Avatar4.jpg'
-import Avatar5 from '../images/Avatar5.jpg'
-import Avatar6 from '../images/Avatar6.jpg'
-import Avatar7 from '../images/Avatar7.jpg'
-import Avatar8 from '../images/Avatar8.jpg'
-import { Link } from 'react-router-dom'
-import GenericOptions from '../components/GenericOptions'
-
-const instructorsData = [
-  {id: 1, avatar: Avatar1, name: "John Smith", course: "English Connect 1"},
-  {id: 2, avatar: Avatar2, name: "William Jones", course: "English Connect 1"},
-  {id: 3, avatar: Avatar3, name: "Emma Brown", course: "English Connect 2"},
-  {id: 4, avatar: Avatar4, name: "Kelly Snow", course: "English Connect 1"},
-  {id: 5, avatar: Avatar5, name: "Anthony Kilpack", course: "English Connect 1"},
-  {id: 6, avatar: Avatar6, name: "Paul Martin", course: "English Connect 2"},
-  {id: 7, avatar: Avatar7, name: "Harry Kim", course: "English Connect 1"},
-  {id: 8, avatar: Avatar8, name: "Samuel Jackson", course: "English Connect 2"}
-]
-
-const options = [
-  {
-    label: 'Edit',
-    route: '/instructorProfile/:id',
-  },
-  {
-    label: 'Delete',
-    route: '/delete/:id',
-  },
-];
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import api from '../utils/axiosInstance';
+import GenericOptions from '../components/GenericOptions';
+import { countries } from '../constants/countries';
 
 const Instructors = () => {
-  const [instructors, setInstructors] = useState(instructorsData)
+  const [instructors, setInstructors] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [stakes, setStakes] = useState([]);
+  const [selectedStake, setSelectedStake] = useState('');
+  const [wards, setWards] = useState([]);
+  const [selectedWard, setSelectedWard] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchInstructors = async () => {
+      try {
+        let url = '/instructors';
+        if (selectedWard) {
+          url = `/users/instructor/ward/${selectedWard}`;
+        }else return;
+        const response = await api.get(url);
+        setInstructors(response.data.instructors);
+      } catch (err) {
+        console.error('Error fetching instructors:', err.response?.data?.error || err.message || err);
+        setError('Failed to load instructors. Please try again.');
+      }
+    };
+
+    fetchInstructors();
+  }, [selectedWard]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      fetchStakes(selectedCountry);
+      setSelectedStake('');
+      setSelectedWard('');
+      setStakes([]);
+      setWards([]);
+    } else {
+      setStakes([]);
+      setWards([]);
+      setSelectedStake('');
+      setSelectedWard('');
+    }
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    if (selectedStake) {
+      fetchWards(selectedStake);
+      setSelectedWard('');
+      setWards([]);
+    } else {
+      setWards([]);
+      setSelectedWard('');
+    }
+  }, [selectedStake]);
+
+  const fetchStakes = async (countryName) => {
+    try {
+      const response = await api.get(`/stakes/country/${countryName}`);
+      setStakes(response.data.data);
+    } catch (error) {
+      console.error('Error fetching stakes:', error);
+      setError('Failed to load stakes. Please try again.');
+    }
+  };
+
+  const fetchWards = async (stakeId) => {
+    try {
+      const response = await api.get(`/stakes/wards/${stakeId}`);
+      setWards(response.data.wards);
+    } catch (error) {
+      console.error('Error fetching wards:', error);
+      setError('Failed to load wards. Please try again.');
+    }
+  };
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
+
+  const handleStakeChange = (e) => {
+    setSelectedStake(e.target.value);
+  };
+
+  const handleWardChange = (e) => {
+    setSelectedWard(e.target.value);
+  };
+
+  const options = [
+    {
+      label: 'Edit',
+      route: '/instructorProfile/:id',
+    },
+    {
+      label: 'Delete',
+      route: '/delete/:id',
+    },
+  ];
+
   return (
     <section className='instructors'>
       <h1 className='instructors__header'>Instructors</h1>
-      {instructors.length > 0 ? <div className='container instructors__container'>
-        {
-          instructors.map(({id, avatar, name, course}) => {
-            return <Link key={id} to={`/instructors/sdfsdf`} className='instructor'>
-              <GenericOptions options={options} itemId={id}/>
-               <div className='instructor__avatar'>
-                <img src={avatar} alt={`Dp of ${name}`}></img>
-               </div>
-               <div className='instructor__info'>
-                <h4>{name}</h4>
-                <p>{course}</p>
-               </div>
+      <div className='filter__controls'>
+        <label htmlFor='country'>Country:</label>
+        <select id='country' value={selectedCountry} onChange={handleCountryChange}>
+          <option value=''>All Countries</option>
+          {countries.map((country) => (
+            <option key={country.code} value={country.name}>
+              {country.name}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor='stake'>Stake:</label>
+        <select id='stake' value={selectedStake} onChange={handleStakeChange} disabled={!selectedCountry}>
+          <option value=''>All Stakes</option>
+          {stakes.map((stake) => (
+            <option key={stake._id} value={stake._id}>
+              {stake.name}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor='ward'>Ward:</label>
+        <select id='ward' value={selectedWard} onChange={handleWardChange} disabled={!selectedStake}>
+          <option value=''>All Wards</option>
+          {wards.map((ward) => (
+            <option key={ward._id} value={ward._id}>
+              {ward.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error && <p className='form__error-message'>{error}</p>}
+      {instructors.length > 0 ? (
+        <div className='container instructors__container'>
+          {instructors.map((instructor) => (
+            <Link key={instructor._id} to={`/instructors/${instructor._id}`} className='instructor'>
+              <GenericOptions options={options} itemId={instructor._id} />
+              <div className='instructor__info'>
+                <h4>{instructor.user.firstName} {instructor.user.lastName}</h4>
+                <p>Ward ID: {instructor.wardId}</p>
+              </div>
             </Link>
-          })
-        }
-      </div> : <h2>No users/instructors found</h2> }
+          ))}
+        </div>
+      ) : (
+        <h2>No instructors found for the selected criteria</h2>
+      )}
       <div className='add__instructor'>
-          <button className='add__instructor-btn'><Link to="/createInstructor">Add an instructor</Link></button>
+        <button className='add__instructor-btn'><Link to="/createInstructor">Add an instructor</Link></button>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Instructors
+export default Instructors;
