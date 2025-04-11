@@ -55,7 +55,7 @@ const Instructors = () => {
         }
       </div> : <h2>No users/instructors found</h2> }
       <div className='add__instructor'>
-          <button className='add__instructor-btn'><Link to="/createInstructor/sdfsdf">Add an instructor</Link></button>
+          <button className='add__instructor-btn'><Link to="/createInstructor">Add an instructor</Link></button>
       </div>
     </section>
   )

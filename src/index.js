@@ -44,7 +44,7 @@ const router = createBrowserRouter ([
       {path: "instructorProfile/:id", element: <InstructorProfile/>},
       {path: "editInstructor/:id", element: <Edit/>},
       {path: "instructors/:id", element: <Instructors/>},
-      {path: "createInstructor/:id", element: <CreateInstructor/>},
+      {path: "createInstructor", element: <CreateInstructor/>},
       {path: "register", element: <Register/>},
       {path: "units", element: <Units/>},
       {path: "createUnit", element: <CreateUnit/>},
