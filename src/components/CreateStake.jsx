@@ -23,8 +23,6 @@ const CreateStake = () => {
       return;
     }
 
-    const token = localStorage.getItem('accessToken'); // Or however you access your token
-
     try {
       const response = await api.post(
         `/stakes`,
