@@ -21,8 +21,8 @@ function StatisticsPage() {
         <option value="">Select</option>
         <option value="countries">Countries</option>
         <option value="cities">Cities</option>
-        <option value="stakes">Stakes</option>
-        <option value="wards">Student's count by group (stake level)</option>
+        <option value="stakes">Average Attendance by Group (Stake Level)</option>
+        <option value="wards">Student's count by group (Stake Level)</option>
         <option value="groups">Group's number of sessions by Stake</option>
         <option value="students">Student's Attendance by Group</option>
       </select>
