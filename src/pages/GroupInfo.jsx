@@ -14,7 +14,6 @@ const GroupInfo = () => {
       setError('');
       setGroupInfo(null);
       try {
-        const token = localStorage.getItem('accessToken');
         const response = await api.get(`/groups/${id}`);
         if (response.data.group) {
           setGroupInfo(response.data.group);

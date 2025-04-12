@@ -1,45 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/axiosInstance';
-import { useAuth } from '../context/authContext';
 import { countries } from '../constants/countries';
+import { FaUserPlus } from 'react-icons/fa'; // Or a similar icon
 
 const CreateInstructor = () => {
+  const [avatar, setAvatar] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState('../images/Avatar2.jpg'); // Default avatar
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState('');
   const [stakes, setStakes] = useState([]);
   const [selectedStake, setSelectedStake] = useState('');
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState('');
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const [userType, setUserType] = useState(11); // Default to instructor
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const usersResponse = await api.get('/users/ward/'+selectedWard);
-        setUsers(usersResponse.data.users);
-      } catch (err) {
-        console.error('Error fetching users:', err.response?.data?.error || err.message || err);
-        setError('Failed to load users. Please try again.');
-      }
-    };
-
-    if (selectedWard) {
-      fetchUsers();
-    }
-  }, [selectedWard]);
+    // Fetch initial data like countries if needed on component mount
+  }, []);
 
   useEffect(() => {
     if (selectedCountry) {
       fetchStakes(selectedCountry);
       setSelectedStake('');
-      setSelectedWard('');
-      setStakes([]);
       setWards([]);
+      setSelectedWard('');
     }
   }, [selectedCountry]);
 
@@ -47,7 +39,6 @@ const CreateInstructor = () => {
     if (selectedStake) {
       fetchWards(selectedStake);
       setSelectedWard('');
-      setWards([]);
     }
   }, [selectedStake]);
 
@@ -83,63 +74,119 @@ const CreateInstructor = () => {
     setSelectedWard(e.target.value);
   };
 
-  const handleUserChange = (e) => {
-    setSelectedUser(e.target.value);
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatar(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
   };
+
+  // You might have a separate function to handle avatar upload during instructor creation
+  // or include it in the main handleSubmit.
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccessMessage('');
 
-    if (!isAuthenticated) {
-      setError('You must be logged in to create an instructor.');
+    if (password !== confirmPassword) {
+      setError('Password and confirm password do not match.');
       return;
     }
 
-    if (!selectedUser || !selectedWard) {
-      setError('Please select a user and a ward.');
-      return;
+    const formData = new FormData();
+    formData.append('user[firstName]', firstName);
+    formData.append('user[lastName]', lastName);
+    formData.append('user[email]', email);
+    formData.append('user[password]', password);
+    formData.append('wardId', selectedWard);
+    formData.append('user[type]', userType);
+    if (avatar) {
+      formData.append('avatar', avatar);
     }
 
     try {
-      const response = await api.post(
-        `/instructors`,
-        {
-          userId: selectedUser,
-          wardId: selectedWard,
-        }
-      );
-
+      const response = await api.post('/instructors', formData, { // Adjust the API endpoint
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       console.log('Instructor created successfully:', response.data);
       setSuccessMessage('Instructor created successfully!');
       setTimeout(() => {
-        navigate('/instructors');
+        navigate('/instructors'); // Adjust the navigation path
       }, 1500);
-
-      setSelectedUser('');
-      setSelectedWard('');
-      setSelectedStake('');
-      setSelectedCountry('');
-      setStakes([]);
-      setWards([]);
     } catch (err) {
-      console.error('Error creating instructor:', err.response?.data?.error || err.message || err);
-      setError(err.response?.data?.error || 'Failed to create instructor. Please try again.');
+      console.error('Error creating instructor:', err.response?.data?.message || err.message || err);
+      setError(err.response?.data?.message || 'Failed to create instructor.');
     }
   };
 
   return (
-    <section className='profile'>
-      <br />
-      <br />
-      <br />
-      <div className='container profile__container'>
-        <div className='profile__details'>
-          <h1>Create Instructor</h1>
-          {error && <p className='form__error-message'>{error}</p>}
-          {successMessage && <p className='form__success-message'>{successMessage}</p>}
-          <form className='form profile__form' onSubmit={handleSubmit}>
+    <section className='profile'> {/* You might want a different class name */}
+      <h1 className='student__profile-header'>Create Instructor</h1> {/* Adjust the header */}
+      <div className='container profile__container'> {/* Reuse container style */}
+        <div className='profile__details'> {/* Reuse details style */}
+          <div className='avatar__wrapper'>
+            <div className='profile__avatar'>
+              <img src={avatarPreview} alt='Profile DP' />
+            </div>
+            <form className='avatar__form'>
+              <input
+                type='file'
+                name='avatar'
+                id='avatar'
+                onChange={handleAvatarChange}
+                accept='png, jpg, jpeg'
+              />
+              <label htmlFor='avatar'><FaUserPlus /></label> {/* Different icon */}
+            </form>
+            {error && <p className='form__error-message'>{error}</p>}
+            {successMessage && <p className='form__success-message'>{successMessage}</p>}
+          </div>
+
+          <h1>Add New Instructor</h1> {/* Adjust the heading */}
+
+          <form className='form profile__form' onSubmit={handleSubmit}> {/* Reuse form styles */}
+            {error && <p className='form__error-message'>{error}</p>}
+            {successMessage && <p className='form__success-message'>{successMessage}</p>}
+            <input
+              type='text'
+              placeholder='First Name'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+            <input
+              type='text'
+              placeholder='Last Name'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <input
+              type='email'
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type='password'
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <input
+              type='password'
+              placeholder='Confirm Password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+
             <div className='filter__controls'>
               <label htmlFor='country'>Country:</label>
               <select id='country' value={selectedCountry} onChange={handleCountryChange} required>
@@ -170,19 +217,11 @@ const CreateInstructor = () => {
                   </option>
                 ))}
               </select>
-
-              <label htmlFor='user'>User:</label>
-              <select id='user' value={selectedUser} onChange={handleUserChange} required>
-                <option value=''>Select User</option>
-                {users.map((user) => (
-                  <option key={user._id} value={user._id}>
-                    {user.firstName} {user.lastName} ({user.email})
-                  </option>
-                ))}
-              </select>
             </div>
 
-            <button type='submit' className='btn primary'>Create Instructor</button>
+            <button type='submit' className='btn primary'>
+              Create Instructor
+            </button>
           </form>
         </div>
       </div>

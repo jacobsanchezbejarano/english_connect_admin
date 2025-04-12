@@ -18,6 +18,8 @@ const CreateGroup = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [wardInstructors, setWardInstructors] = useState([]);
+  const [instructorFetchError, setInstructorFetchError] = useState('');
 
   // Fetch stakes by country
   useEffect(() => {
@@ -26,6 +28,7 @@ const CreateGroup = () => {
         setStakesInCountry([]);
         setSelectedStakeId('');
         setWardsInStake([]);
+        setWardInstructors([]); // Clear instructors
         return;
       }
       setError('');
@@ -39,6 +42,7 @@ const CreateGroup = () => {
           setStakesInCountry([]);
           setSelectedStakeId('');
           setWardsInStake([]);
+          setWardInstructors([]); // Clear instructors
         }
       } catch (err) {
         console.error('Error fetching stakes by country:', err.response?.data?.error || err.message || err);
@@ -46,6 +50,7 @@ const CreateGroup = () => {
         setStakesInCountry([]);
         setSelectedStakeId('');
         setWardsInStake([]);
+        setWardInstructors([]); // Clear instructors
       }
     };
 
@@ -55,6 +60,7 @@ const CreateGroup = () => {
       setStakesInCountry([]);
       setSelectedStakeId('');
       setWardsInStake([]);
+      setWardInstructors([]); // Clear instructors
     }
   }, [selectedCountry, isAuthenticated]);
 
@@ -64,6 +70,7 @@ const CreateGroup = () => {
       if (!stakeId) {
         setWardsInStake([]);
         setSelectedWardId('');
+        setWardInstructors([]); // Clear instructors
         return;
       }
       setError('');
@@ -76,12 +83,14 @@ const CreateGroup = () => {
           setError('Failed to load wards for the selected stake.');
           setWardsInStake([]);
           setSelectedWardId('');
+          setWardInstructors([]); // Clear instructors
         }
       } catch (err) {
         console.error('Error fetching wards by stake:', err.response?.data?.error || err.message || err);
         setError(err.response?.data?.error || 'Failed to load wards for the selected stake.');
         setWardsInStake([]);
         setSelectedWardId('');
+        setWardInstructors([]); // Clear instructors
       }
     };
 
@@ -90,8 +99,41 @@ const CreateGroup = () => {
     } else {
       setWardsInStake([]);
       setSelectedWardId('');
+      setWardInstructors([]); // Clear instructors
     }
   }, [selectedStakeId, isAuthenticated]);
+
+  // Fetch instructors by ward
+  useEffect(() => {
+    const fetchInstructorsByWard = async (wardId) => {
+      if (!wardId) {
+        setWardInstructors([]);
+        setInstructorFetchError('');
+        return;
+      }
+      setInstructorFetchError('');
+      try {
+        const response = await api.get(`/instructors/wards/${wardId}`);
+        if (response.data && Array.isArray(response.data.data)) {
+          setWardInstructors(response.data.data);
+        } else {
+          setWardInstructors([]);
+          setInstructorFetchError('No instructors found for this ward.');
+        }
+      } catch (err) {
+        console.error('Error fetching instructors by ward:', err.response?.data?.error || err.message || err);
+        setInstructorFetchError(err.response?.data?.error || 'Failed to load instructors for this ward.');
+        setWardInstructors([]);
+      }
+    };
+
+    if (isAuthenticated && selectedWardId) {
+      fetchInstructorsByWard(selectedWardId);
+    } else {
+      setWardInstructors([]);
+      setInstructorFetchError('');
+    }
+  }, [selectedWardId, isAuthenticated]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,12 +197,12 @@ const CreateGroup = () => {
   };
 
   return (
-    <section className='create-instructor'>
+    <section className='create-group'>
       <div className='container'>
         <h2>Create a Group</h2>
         {error && <p className='form__error-message'>{error}</p>}
         {successMessage && <p className='form__success-message'>{successMessage}</p>}
-        <form className='form create-instructor__form' onSubmit={handleSubmit}>
+        <form className='form create-group__form' onSubmit={handleSubmit}>
           <input type='text' placeholder='Name' value={name} onChange={e => setName(e.target.value)} required autoFocus />
 
           <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)} required>
@@ -200,6 +242,24 @@ const CreateGroup = () => {
 
           <button type='submit' className='btn primary'>Create</button>
         </form>
+
+        {selectedWardId && (
+          <div className='ward-instructors'>
+            <h3>Instructors in {wardsInStake.find(ward => ward._id === selectedWardId)?.name || 'Selected Ward'}</h3>
+            {instructorFetchError && <p className='form__error-message'>{instructorFetchError}</p>}
+            {wardInstructors.length > 0 ? (
+              <ul>
+                {wardInstructors.map(instructor => (
+                  <li key={instructor._id}>
+                    {instructor.userId?.firstName} {instructor.userId?.lastName} ({instructor.userId?.email})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{instructorFetchError ? '' : 'No instructors found in this ward.'}</p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
