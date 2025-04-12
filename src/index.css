@@ -1052,6 +1052,9 @@ select {
   .nav__menu li:nth-child(8) {
     animation-delay: 2100ms;
   }
+  .nav__menu li:nth-child(9) {
+    animation-delay: 2400ms;
+  }
 
   .nav__menu li a {
     display: block;
