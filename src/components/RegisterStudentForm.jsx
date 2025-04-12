@@ -4,12 +4,24 @@ import api from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 
+// Helper function to get today's date in YYYY-MM-DD format
+const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
+
+
 const RegisterStudentForm = () => {
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedStake, setSelectedStake] = useState('');
     const [selectedWard, setSelectedWard] = useState('');
     const [selectedGroup, setSelectedGroup] = useState('');
     const [selectedStudent, setSelectedStudent] = useState('');
+    const [registrationDate, setRegistrationDate] = useState(getTodayDate()); // Default to today
+    const [notes, setNotes] = useState('');
 
     const [stakes, setStakes] = useState([]);
     const [wards, setWards] = useState([]);
@@ -103,7 +115,7 @@ const RegisterStudentForm = () => {
                 setError('');
                 try {
                     const response = await api.get(`/students/wards/${selectedWard}`);
-                    setStudents(response.data.data || []);
+                    setStudents(response.data?.data || []);
                 } catch (err) {
                     console.error('Error fetching students:', err);
                     studentError = true;
@@ -132,22 +144,28 @@ const RegisterStudentForm = () => {
             return;
         }
 
-        if (!selectedGroup || !selectedStudent) {
-            setError('Please select a group and a student.');
+        if (!selectedGroup || !selectedStudent || !registrationDate) {
+            setError('Please select a group, a student, and specify the registration date.');
             return;
         }
 
         try {
-            const response = await api.post('/registrations', {
+            const payload = {
                 groupId: selectedGroup,
-                studentId: selectedStudent
-            });
+                studentId: selectedStudent,
+                date: registrationDate,
+                notes: notes
+            };
+
+            const response = await api.post('/registrations', payload);
 
             console.log('Registration successful:', response.data);
             setSuccessMessage('Student registered successfully!');
 
             setTimeout(() => {
-                setSelectedCountry('');
+                setSelectedCountry(''); // Resetting country will cascade other resets
+                setRegistrationDate(getTodayDate()); // Reset date to today
+                setNotes(''); // Reset notes
                 setSuccessMessage('');
                 // navigate('/some-success-page');
             }, 2000);
@@ -235,9 +253,9 @@ const RegisterStudentForm = () => {
                                 {loadingStudents ? 'Loading Students...' : (selectedWard ? (students.length > 0 ? 'Select Student' : 'No Students Found') : 'Select Ward First')}
                             </option>
                             {students.map((student) => {
-                                const firstName = student.firstName || student.user?.firstName || 'Unknown';
-                                const lastName = student.lastName || student.user?.lastName || 'Name';
-                                const studentId = student._id || student.id;
+                                const firstName = student.user?.firstName || 'Unknown';
+                                const lastName = student.user?.lastName || 'Name';
+                                const studentId = student._id;
                                 return (
                                     <option key={studentId} value={studentId}>
                                         {firstName} {lastName}
@@ -246,10 +264,26 @@ const RegisterStudentForm = () => {
                             })}
                         </select>
 
+                         <input
+                             type="date"
+                             placeholder="Registration Date"
+                             value={registrationDate}
+                             onChange={e => setRegistrationDate(e.target.value)}
+                             required
+                         />
+
+                         <textarea
+                             placeholder="Notes (Optional)"
+                             value={notes}
+                             onChange={e => setNotes(e.target.value)}
+                             rows={3}
+                         />
+
+
                         <button
                             type='submit'
                             className='btn primary'
-                            disabled={!selectedGroup || !selectedStudent || !isAuthenticated}
+                            disabled={!selectedGroup || !selectedStudent || !registrationDate || !isAuthenticated}
                         >
                             Register Student
                         </button>
