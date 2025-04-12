@@ -201,6 +201,11 @@ const Students = () => {
         <button className='add__student-btn'>
           <Link to="/createStudent">Add a student</Link> {/* Adjust the link */}
         </button>
+        <button className='add__student-btn'>
+          <Link to="/registerStudentCourse">Register a student into a course</Link>
+        </button>
+
+
       </div>
     </section>
   );
