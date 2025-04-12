@@ -22,9 +22,9 @@ function StatisticsPage() {
         <option value="countries">Countries</option>
         <option value="cities">Cities</option>
         <option value="stakes">Stakes</option>
-        <option value="wards">Wards</option>
-        <option value="groups">Groups</option>
-        <option value="students">Students</option>
+        <option value="wards">Student's count by group (stake level)</option>
+        <option value="groups">Group's number of sessions by Stake</option>
+        <option value="students">Student's Attendance by Group</option>
       </select>
       {level === 'students' && <StudentAttendanceChartData />}
       {level === 'countries' && <CountriesChartData />}
