@@ -18,7 +18,6 @@ const AttendanceForm = () => {
     new Date().toISOString().split('T')[0]
   );
   const [allAttendances, setAllAttendances] = useState([]);
-  const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (selectedCountry) {
@@ -156,14 +155,14 @@ const AttendanceForm = () => {
       const attendanceResponse = await api.get(
         `/attendance/group/${groupId}`
       );
-      const attendanceData = attendanceResponse.data;
+      const attendanceData = attendanceResponse.data.data;
       setAllAttendances(attendanceData);
       const meetingsData = getUniqueAttendanceDates(attendanceData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
       const studentsResponse = await api.get(
         `/registrations/group/${groupId}/students`
       );
-      const studentsData = studentsResponse.data;
+      const studentsData = studentsResponse.data.students;
 
       const data = buildInitialStudents(
         studentsData,
