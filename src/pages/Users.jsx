@@ -27,7 +27,7 @@ const Users = () => {
         const response = await api.get(url);
         setUsers(response.data.data);
       } catch (err) {
-        console.error('Error fetching users:', err.response?.data?.error || err.message || err);
+        //console.error('Error fetching users:', err.response?.data?.error || err.message || err);
         setError('Failed to load users. Please try again.');
       }
     };
@@ -66,7 +66,7 @@ const Users = () => {
       const response = await api.get(`/stakes/country/${countryName}`);
       setStakes(response.data.data);
     } catch (error) {
-      console.error('Error fetching stakes:', error);
+      //console.error('Error fetching stakes:', error);
       setError('Failed to load stakes. Please try again.');
     }
   };
@@ -76,7 +76,7 @@ const Users = () => {
       const response = await api.get(`/stakes/wards/${stakeId}`);
       setWards(response.data.wards);
     } catch (error) {
-      console.error('Error fetching wards:', error);
+      //console.error('Error fetching wards:', error);
       setError('Failed to load wards. Please try again.');
     }
   };

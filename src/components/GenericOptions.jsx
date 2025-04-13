@@ -29,7 +29,6 @@ function GenericOptions({ options, itemId }) {
             {options.map((option) => (
               <Link
                 key={option.label}
-                href={option.route}
                 className="dropdownItem"
                 onClick={() => handleOptionClick(option)}
               >

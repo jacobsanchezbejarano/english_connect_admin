@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../utils/axiosInstance';
-import { FaEdit, FaCheck } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 import { countries } from '../constants/countries';
 
 const EditUser = () => {
   const { id } = useParams();
   const [avatar, setAvatar] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,21 +24,25 @@ const EditUser = () => {
   const [selectedWard, setSelectedWard] = useState('');
   const [userWard, setUserWard] = useState(null);
   const [isWardSelectEnabled, setIsWardSelectEnabled] = useState(false);
-  const [userType, setUserType] = useState(1); // Default to student
-  const [initialUserType, setInitialUserType] = useState(1);
+  const [userType, setUserType] = useState();
+  const [initialUserType, setInitialUserType] = useState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [initialData, setInitialData] = useState(null);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await api.get(`/users/${id}`);
         const userData = response.data.data;
+        setInitialData(userData);
         setFirstName(userData.firstName || '');
         setLastName(userData.lastName || '');
         setEmail(userData.email || '');
         setUserWard(userData.ward);
         setSelectedWard(userData.ward?._id || '');
-        setInitialUserType(userData.type || 1);
-        setUserType(userData.type || 1);
+        setInitialUserType(userData.type);
+        setUserType(userData.type);
         if (userData.avatar) {
           setAvatarPreview(userData.avatar);
         } else {
@@ -53,7 +57,7 @@ const EditUser = () => {
           fetchWards(userData.ward.stake._id, userData.ward._id);
         }
       } catch (err) {
-        console.error('Error fetching user data:', err.response?.data?.error || err.message || err);
+        //console.error('Error fetching user data:', err.response?.data?.error || err.message || err);
         setError('Failed to load user data.');
       }
     };
@@ -89,6 +93,16 @@ const EditUser = () => {
     }
   }, [selectedStake, userWard, selectedCountry]);
 
+  useEffect(() => {
+    if (successMessage || error) {
+      const timer = setTimeout(() => {
+        setSuccessMessage('');
+        setError('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, error]);
+
   const fetchStakes = async (countryName, initialStakeId = null) => {
     try {
       const response = await api.get(`/stakes/country/${countryName}`);
@@ -97,7 +111,7 @@ const EditUser = () => {
         setSelectedStake(initialStakeId);
       }
     } catch (error) {
-      console.error('Error fetching stakes:', error);
+      //console.error('Error fetching stakes:', error);
       setError('Failed to load stakes. Please try again.');
     }
   };
@@ -110,7 +124,7 @@ const EditUser = () => {
         setSelectedWard(initialWardId);
       }
     } catch (error) {
-      console.error('Error fetching wards:', error);
+      //console.error('Error fetching wards:', error);
       setError('Failed to load wards. Please try again.');
     }
   };
@@ -139,35 +153,6 @@ const EditUser = () => {
     }
   };
 
-  const handleUpdateAvatar = async () => {
-    if (!avatar) {
-      setError('Please select an avatar to update.');
-      return;
-    }
-
-    setError('');
-    setSuccessMessage('');
-
-    try {
-      const formData = new FormData();
-      formData.append('avatar', avatar);
-
-      const response = await api.put(`/users/${id}/avatar`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Avatar updated successfully:', response.data);
-      setSuccessMessage('Avatar updated successfully!');
-      const userDataResponse = await api.get(`/users/${id}`);
-      setAvatarPreview(userDataResponse.data.data.avatar);
-      setAvatar(null);
-    } catch (err) {
-      console.error('Error updating avatar:', err.response?.data?.error || err.message || err);
-      setError(err.response?.data?.error || 'Failed to update avatar.');
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -178,27 +163,40 @@ const EditUser = () => {
       return;
     }
 
-    const userData = {
-      firstName,
-      lastName,
-      email,
-      currentPassword,
-      newPassword,
-      wardId: selectedWard,
-      type: userType,
-    };
+    const formData = new FormData();
+    if (avatar) formData.append('avatar', avatar);
+    if (initialData) {
+      if (firstName) formData.append('firstName', firstName);
+      if (lastName) formData.append('lastName', lastName);
+      if (selectedWard && selectedWard !== initialData?.ward?._id) {
+        formData.append('wardId', selectedWard);
+      }
+    }
 
+    if (userType !== initialUserType) formData.append('type', userType);
+
+    if (currentPassword) formData.append('currentPassword', currentPassword);
+    if (newPassword) formData.append('newPassword', newPassword);
+
+    setIsSubmitting(true);
     try {
-      const response = await api.put(`/users/${id}`, userData);
-      console.log('User details updated successfully:', response.data);
+      await api.put(`/users/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      //console.log('User details updated successfully:', response.data);
       setSuccessMessage('User details updated successfully!');
       setTimeout(() => {
         navigate('/users');
       }, 1500);
     } catch (err) {
-      console.error('Error updating user details:', err.response?.data?.error || err.message || err);
+      //console.error('Error updating user details:', err.response?.data?.error || err.message || err);
       setError(err.response?.data?.error || 'Failed to update user details.');
+    } finally {
+      setIsSubmitting(false);
     }
+    
   };
 
   return (
@@ -217,12 +215,11 @@ const EditUser = () => {
                 id='avatar'
                 onChange={handleAvatarChange}
                 accept='png, jpg, jpeg'
+                style={{ display: 'none' }}
               />
               <label htmlFor='avatar'><FaEdit /></label>
             </form>
-            <button className='profile__avatar-btn' onClick={handleUpdateAvatar}>
-              <FaCheck />
-            </button>
+            
             {error && <p className='form__error-message'>{error}</p>}
             {successMessage && <p className='form__success-message'>{successMessage}</p>}
           </div>
@@ -313,8 +310,16 @@ const EditUser = () => {
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
             />
-            <button type='submit' className='btn primary'>
-              Update details
+            <button type='submit' className='btn primary' disabled={isSubmitting}>
+              {isSubmitting ? 'Updating...' : 'Update details'}
+            </button>
+            <button
+              type='button'
+              className='btn danger'
+              onClick={() => navigate('/users')}
+              disabled={isSubmitting}
+            >
+              Cancel
             </button>
           </form>
         </div>
