@@ -122,7 +122,6 @@ const Users = () => {
       <div className="centered">
         <div className="filter__controls-vertical">
           <div className="form-group">
-            <label htmlFor="country">Country</label>
             <select
               id="country"
               value={selectedCountry}
@@ -138,7 +137,6 @@ const Users = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="stake">Stake</label>
             <select
               id="stake"
               value={selectedStake}
@@ -155,7 +153,6 @@ const Users = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="ward">Ward</label>
             <select
               id="ward"
               value={selectedWard}

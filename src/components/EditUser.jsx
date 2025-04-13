@@ -248,50 +248,56 @@ const EditUser = () => {
               onChange={(e) => setEmail(e.target.value)}
               readOnly
             />
-
-            <div className='filter__controls'>
-              <label htmlFor='country'>Country:</label>
-              <select id='country' value={selectedCountry} onChange={handleCountryChange}>
-                <option value=''>Select Country</option>
-                {countries.map((country) => (
-                  <option key={country.code} value={country.name}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-
-              <label htmlFor='stake'>Stake:</label>
-              <select id='stake' value={selectedStake} onChange={handleStakeChange} disabled={!selectedCountry}>
-                <option value=''>Select Stake</option>
-                {stakes.map((stake) => (
-                  <option key={stake._id} value={stake._id}>
-                    {stake.name}
-                  </option>
-                ))}
-              </select>
-
-              <label htmlFor='ward'>Ward:</label>
-              {userWard && !isWardSelectEnabled ? (
-                <input type="text" value={userWard.name} readOnly />
-              ) : (
-                <select id='ward' value={selectedWard} onChange={handleWardChange} disabled={!selectedStake}>
-                  <option value=''>Select Ward</option>
-                  {wards.map((ward) => (
-                    <option key={ward._id} value={ward._id}>
-                      {ward.name}
+            <div className='filter__controls-vertical'>
+              <div className='filter__controls'>
+                <select id='country' value={selectedCountry} onChange={handleCountryChange}>
+                  <option value=''>Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.name}>
+                      {country.name}
                     </option>
                   ))}
                 </select>
-              )}
+
+                <select id='stake' value={selectedStake} onChange={handleStakeChange} disabled={!selectedCountry}>
+                  <option value=''>Select Stake</option>
+                  {stakes.map((stake) => (
+                    <option key={stake._id} value={stake._id}>
+                      {stake.name}
+                    </option>
+                  ))}
+                </select>
+
+                {userWard && !isWardSelectEnabled ? (
+                  <input type="text" value={userWard.name} readOnly />
+                ) : (
+                  <select id='ward' value={selectedWard} onChange={handleWardChange} disabled={!selectedStake}>
+                    <option value=''>Select Ward</option>
+                    {wards.map((ward) => (
+                      <option key={ward._id} value={ward._id}>
+                        {ward.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
             </div>
-
+            <div className="user-type-row">
             <label htmlFor='type'>User Type:</label>
-            <select id='type' value={userType} onChange={handleUserTypeChange}>
-              <option value={1}>Student</option>
-              <option value={10}>Admin</option>
-              <option value={11}>Instructor</option>
-            </select>
-
+            <div className="button-group">
+              {[{ label: 'Student', value: 1 }, { label: 'Admin', value: 10 }, { label: 'Instructor', value: 11 }].map(option => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`type-button ${userType === option.value ? 'active' : ''}`}
+                  onClick={() => setUserType(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            </div>
+            
             <input
               type='password'
               placeholder='Current password'
