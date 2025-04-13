@@ -23,6 +23,12 @@ const Login = () => {
     setLocalError('');
     setIsSubmitting(true); // Start button loading
 
+    if (!userData.email || !userData.password) {
+      setLocalError('Email and password are required.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await login({ username: userData.email, password: userData.password });
       navigate('/');
