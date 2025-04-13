@@ -1214,3 +1214,44 @@ select {
 }
 
 }
+
+/*======================================= Disply filters ================================*/
+.filter__controls-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  max-width: 400px; /* <-- this limits how wide it gets */
+  width: 100%;
+}
+
+.filter__controls-vertical select {
+  height: 35px; /* or try 50px, 56px, etc. */
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.form-group select {
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+}
