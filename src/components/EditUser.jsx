@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import api from '../utils/axiosInstance';
-import { FaEdit } from 'react-icons/fa';
-import { countries } from '../constants/countries';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../utils/axiosInstance";
+import { FaEdit } from "react-icons/fa";
+import { countries } from "../constants/countries";
 
 const EditUser = () => {
   const { id } = useParams();
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [stakes, setStakes] = useState([]);
-  const [selectedStake, setSelectedStake] = useState('');
+  const [selectedStake, setSelectedStake] = useState("");
   const [wards, setWards] = useState([]);
-  const [selectedWard, setSelectedWard] = useState('');
+  const [selectedWard, setSelectedWard] = useState("");
   const [userWard, setUserWard] = useState(null);
   const [isWardSelectEnabled, setIsWardSelectEnabled] = useState(false);
   const [userType, setUserType] = useState();
@@ -29,28 +29,30 @@ const EditUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [initialData, setInitialData] = useState(null);
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await api.get(`/users/${id}`);
         const userData = response.data.data;
         setInitialData(userData);
-        setFirstName(userData.firstName || '');
-        setLastName(userData.lastName || '');
-        setEmail(userData.email || '');
+        setFirstName(userData.firstName || "");
+        setLastName(userData.lastName || "");
+        setEmail(userData.email || "");
         setUserWard(userData.ward);
-        setSelectedWard(userData.ward?._id || '');
+        setSelectedWard(userData.ward?._id || "");
         setInitialUserType(userData.type);
         setUserType(userData.type);
         if (userData.avatar) {
           setAvatarPreview(userData.avatar);
         } else {
-          setAvatarPreview('../images/Avatar2.jpg');
+          setAvatarPreview("../images/Avatar2.jpg");
         }
         if (userData.ward?.stake?.country?.name) {
           setSelectedCountry(userData.ward.stake.country.name);
-          fetchStakes(userData.ward.stake.country.name, userData.ward.stake._id);
+          fetchStakes(
+            userData.ward.stake.country.name,
+            userData.ward.stake._id
+          );
         }
         if (userData.ward?.stake?._id) {
           setSelectedStake(userData.ward.stake._id);
@@ -58,7 +60,7 @@ const EditUser = () => {
         }
       } catch (err) {
         //console.error('Error fetching user data:', err.response?.data?.error || err.message || err);
-        setError('Failed to load user data.');
+        setError("Failed to load user data.");
       }
     };
 
@@ -66,38 +68,41 @@ const EditUser = () => {
   }, [id]);
 
   useEffect(() => {
-    if (selectedCountry && selectedCountry !== (userWard?.stake?.country?.name || '')) {
+    if (
+      selectedCountry &&
+      selectedCountry !== (userWard?.stake?.country?.name || "")
+    ) {
       fetchStakes(selectedCountry);
-      setSelectedStake('');
-      setSelectedWard('');
+      setSelectedStake("");
+      setSelectedWard("");
       setIsWardSelectEnabled(true);
     } else if (!userWard) {
       setIsWardSelectEnabled(true);
     } else {
-      setSelectedStake(userWard?.stake?._id || '');
-      setSelectedWard(userWard?._id || '');
+      setSelectedStake(userWard?.stake?._id || "");
+      setSelectedWard(userWard?._id || "");
       setIsWardSelectEnabled(false);
     }
   }, [selectedCountry, userWard]);
 
   useEffect(() => {
-    if (selectedStake && selectedStake !== (userWard?.stake?._id || '')) {
+    if (selectedStake && selectedStake !== (userWard?.stake?._id || "")) {
       fetchWards(selectedStake);
-      setSelectedWard('');
+      setSelectedWard("");
       setIsWardSelectEnabled(true);
     } else if (!userWard) {
       setIsWardSelectEnabled(true);
     } else if (selectedCountry === userWard?.stake?.country?.name) {
       setIsWardSelectEnabled(false);
-      setSelectedWard(userWard?._id || '');
+      setSelectedWard(userWard?._id || "");
     }
   }, [selectedStake, userWard, selectedCountry]);
 
   useEffect(() => {
     if (successMessage || error) {
       const timer = setTimeout(() => {
-        setSuccessMessage('');
-        setError('');
+        setSuccessMessage("");
+        setError("");
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -112,7 +117,7 @@ const EditUser = () => {
       }
     } catch (error) {
       //console.error('Error fetching stakes:', error);
-      setError('Failed to load stakes. Please try again.');
+      setError("Failed to load stakes. Please try again.");
     }
   };
 
@@ -125,7 +130,7 @@ const EditUser = () => {
       }
     } catch (error) {
       //console.error('Error fetching wards:', error);
-      setError('Failed to load wards. Please try again.');
+      setError("Failed to load wards. Please try again.");
     }
   };
 
@@ -141,10 +146,6 @@ const EditUser = () => {
     setSelectedWard(e.target.value);
   };
 
-  const handleUserTypeChange = (e) => {
-    setUserType(parseInt(e.target.value));
-  };
-
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -155,168 +156,205 @@ const EditUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccessMessage('');
+    setError("");
+    setSuccessMessage("");
 
     if (newPassword && newPassword !== confirmNewPassword) {
-      setError('New password and confirm new password do not match.');
+      setError("New password and confirm new password do not match.");
       return;
     }
 
     const formData = new FormData();
-    if (avatar) formData.append('avatar', avatar);
+    if (avatar) formData.append("avatar", avatar);
     if (initialData) {
-      if (firstName) formData.append('firstName', firstName);
-      if (lastName) formData.append('lastName', lastName);
+      if (firstName) formData.append("firstName", firstName);
+      if (lastName) formData.append("lastName", lastName);
       if (selectedWard && selectedWard !== initialData?.ward?._id) {
-        formData.append('wardId', selectedWard);
+        formData.append("wardId", selectedWard);
       }
     }
 
-    if (userType !== initialUserType) formData.append('type', userType);
+    if (userType !== initialUserType) formData.append("type", userType);
 
-    if (currentPassword) formData.append('currentPassword', currentPassword);
-    if (newPassword) formData.append('newPassword', newPassword);
+    if (currentPassword) formData.append("currentPassword", currentPassword);
+    if (newPassword) formData.append("newPassword", newPassword);
 
     setIsSubmitting(true);
     try {
       await api.put(`/users/${id}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       //console.log('User details updated successfully:', response.data);
-      setSuccessMessage('User details updated successfully!');
+      setSuccessMessage("User details updated successfully!");
       setTimeout(() => {
-        navigate('/users');
+        navigate("/users");
       }, 1500);
     } catch (err) {
       //console.error('Error updating user details:', err.response?.data?.error || err.message || err);
-      setError(err.response?.data?.error || 'Failed to update user details.');
+      setError(err.response?.data?.error || "Failed to update user details.");
     } finally {
       setIsSubmitting(false);
     }
-    
   };
 
   return (
-    <section className='profile'>
-      <h1 className='student__profile-header'>Edit User</h1>
-      <div className='container profile__container'>
-        <div className='profile__details'>
-          <div className='avatar__wrapper'>
-            <div className='profile__avatar'>
-              <img src={avatarPreview} alt='Profile DP' />
+    <section className="profile">
+      <h1 className="student__profile-header">Edit User</h1>
+      <div className="container profile__container">
+        <div className="profile__details">
+          <div className="avatar__wrapper">
+            <div className="profile__avatar">
+              <img src={avatarPreview} alt="Profile DP" />
             </div>
-            <form className='avatar__form'>
+            <form className="avatar__form">
               <input
-                type='file'
-                name='avatar'
-                id='avatar'
+                type="file"
+                name="avatar"
+                id="avatar"
                 onChange={handleAvatarChange}
-                accept='png, jpg, jpeg'
-                style={{ display: 'none' }}
+                accept="png, jpg, jpeg"
+                style={{ display: "none" }}
               />
-              <label htmlFor='avatar'><FaEdit /></label>
+              <label htmlFor="avatar">
+                <FaEdit />
+              </label>
             </form>
-            
-            {error && <p className='form__error-message'>{error}</p>}
-            {successMessage && <p className='form__success-message'>{successMessage}</p>}
+
+            {error && <p className="form__error-message">{error}</p>}
+            {successMessage && (
+              <p className="form__success-message">{successMessage}</p>
+            )}
           </div>
 
-          <h1>{firstName} {lastName}</h1>
+          <h1>
+            {firstName} {lastName}
+          </h1>
 
-          <form className='form profile__form' onSubmit={handleSubmit}>
-            {error && <p className='form__error-message'>{error}</p>}
-            {successMessage && <p className='form__success-message'>{successMessage}</p>}
+          <form className="form profile__form" onSubmit={handleSubmit}>
+            {error && <p className="form__error-message">{error}</p>}
+            {successMessage && (
+              <p className="form__success-message">{successMessage}</p>
+            )}
             <input
-              type='text'
-              placeholder='First Name'
+              type="text"
+              placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
             <input
-              type='text'
-              placeholder='Last Name'
+              type="text"
+              placeholder="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
             <input
-              type='email'
-              placeholder='Email'
+              type="email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               readOnly
             />
-
-            <div className='filter__controls'>
-              <label htmlFor='country'>Country:</label>
-              <select id='country' value={selectedCountry} onChange={handleCountryChange}>
-                <option value=''>Select Country</option>
-                {countries.map((country) => (
-                  <option key={country.code} value={country.name}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-
-              <label htmlFor='stake'>Stake:</label>
-              <select id='stake' value={selectedStake} onChange={handleStakeChange} disabled={!selectedCountry}>
-                <option value=''>Select Stake</option>
-                {stakes.map((stake) => (
-                  <option key={stake._id} value={stake._id}>
-                    {stake.name}
-                  </option>
-                ))}
-              </select>
-
-              <label htmlFor='ward'>Ward:</label>
-              {userWard && !isWardSelectEnabled ? (
-                <input type="text" value={userWard.name} readOnly />
-              ) : (
-                <select id='ward' value={selectedWard} onChange={handleWardChange} disabled={!selectedStake}>
-                  <option value=''>Select Ward</option>
-                  {wards.map((ward) => (
-                    <option key={ward._id} value={ward._id}>
-                      {ward.name}
+            <div className="filter__controls-vertical">
+              <div className="filter__controls">
+                <select
+                  id="country"
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                >
+                  <option value="">Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.name}>
+                      {country.name}
                     </option>
                   ))}
                 </select>
-              )}
+
+                <select
+                  id="stake"
+                  value={selectedStake}
+                  onChange={handleStakeChange}
+                  disabled={!selectedCountry}
+                >
+                  <option value="">Select Stake</option>
+                  {stakes.map((stake) => (
+                    <option key={stake._id} value={stake._id}>
+                      {stake.name}
+                    </option>
+                  ))}
+                </select>
+
+                {userWard && !isWardSelectEnabled ? (
+                  <input type="text" value={userWard.name} readOnly />
+                ) : (
+                  <select
+                    id="ward"
+                    value={selectedWard}
+                    onChange={handleWardChange}
+                    disabled={!selectedStake}
+                  >
+                    <option value="">Select Ward</option>
+                    {wards.map((ward) => (
+                      <option key={ward._id} value={ward._id}>
+                        {ward.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            </div>
+            <div className="user-type-row">
+              <label htmlFor="type">User Type:</label>
+              <div className="button-group">
+                {[
+                  { label: "Student", value: 1 },
+                  { label: "Admin", value: 10 },
+                  { label: "Instructor", value: 11 },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`type-button ${
+                      userType === option.value ? "active" : ""
+                    }`}
+                    onClick={() => setUserType(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <label htmlFor='type'>User Type:</label>
-            <select id='type' value={userType} onChange={handleUserTypeChange}>
-              <option value={1}>Student</option>
-              <option value={10}>Admin</option>
-              <option value={11}>Instructor</option>
-            </select>
-
             <input
-              type='password'
-              placeholder='Current password'
+              type="password"
+              placeholder="Current password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
             />
             <input
-              type='password'
-              placeholder='New password'
+              type="password"
+              placeholder="New password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
             <input
-              type='password'
-              placeholder='Confirm new password'
+              type="password"
+              placeholder="Confirm new password"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
             />
-            <button type='submit' className='btn primary' disabled={isSubmitting}>
-              {isSubmitting ? 'Updating...' : 'Update details'}
+            <button
+              type="submit"
+              className="btn primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Updating..." : "Update details"}
             </button>
             <button
-              type='button'
-              className='btn danger'
-              onClick={() => navigate('/users')}
+              type="button"
+              className="btn danger"
+              onClick={() => navigate("/users")}
               disabled={isSubmitting}
             >
               Cancel

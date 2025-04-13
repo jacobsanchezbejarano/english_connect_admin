@@ -1255,3 +1255,61 @@ select {
   display: flex;
   justify-content: center;
 }
+
+.filter__controls-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  max-width: 620px; /* ⬅️ Increase this if needed */
+  width: 100%;
+}
+
+.filter__controls-vertical label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.filter__controls-vertical select,
+.filter__controls-vertical input[type="text"] {
+  height: 32px; /* adjust as needed */
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.user-type-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.type-button {
+  padding: 0; /* No padding */
+  background-color: #f0f0f0;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  cursor: pointer;
+  min-width: 80px;
+  height: 32px;
+}
+
+.type-button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
