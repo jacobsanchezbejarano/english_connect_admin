@@ -2,8 +2,11 @@ import React from 'react'
 import Hero1 from '../images/HeroImage.png'
 import Hero2 from '../images/HeroImage2.png'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/authContext'
 
 const Welcome = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <section className='hero_image'>
         <div className='hero__image-grid'>
@@ -11,7 +14,11 @@ const Welcome = () => {
             <div className='hero__image-two'><img src={Hero2} alt='Hero-two' /></div>
         </div>
         <div className='call__to-action'>
-            <button className='call__to-action-btn'><Link to="/register">Click here to Register</Link></button>
+            {!isAuthenticated && (
+              <button className='call__to-action-btn'>
+                <Link to="/register">Click here to Register</Link>
+              </button>
+            )}
         </div>
     </section>
   )
