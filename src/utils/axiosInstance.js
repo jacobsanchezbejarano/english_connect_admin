@@ -63,9 +63,10 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
+        if (error.response?.data?.error === "Invalid credentials") {
+          return Promise.reject(refreshError);  
+        }
         localStorage.removeItem('accessToken');
-        window.location.href = '/login'; 
-        // Handle logout or redirect
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
