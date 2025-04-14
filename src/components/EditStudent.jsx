@@ -20,6 +20,11 @@ const EditStudent = () => {
     const fetchData = async () => {
       if (!user?.id) return;
       try {
+        if (user.type !== 1) { // The user is admin and need the student id from the url from request
+          const studentId = window.location.pathname.split('/').pop();
+          const response = await api.get(`/students/${studentId}`);
+          user.id = response.data.data.userId._id;
+        }
         const { data } = await api.get(`/students/user/${user.id}`);
         const studentData = data.data;
         setStudent(studentData);
