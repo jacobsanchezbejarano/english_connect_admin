@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUserProfile = async () => {
       try {
-        const response = await api.get('/api/auth/profile'); // uses interceptor
+        const response = await api.get('/auth/profile'); // uses interceptor
         setUser(response.data.user);
       } catch (error) {
         console.error('Error validating token:', error);
