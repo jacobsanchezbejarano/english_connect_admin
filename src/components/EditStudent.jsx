@@ -17,9 +17,9 @@ const EditStudent = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    let userId = user.id;
+    let userId = user._id;
     const fetchData = async () => {
-      if (!user?.id) return;
+      if (!user?._id) return;
       try {
         // If the user is not a student, get the student ID from the URL
         if (user.type !== 1) { 
