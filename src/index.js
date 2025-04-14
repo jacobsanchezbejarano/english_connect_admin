@@ -28,6 +28,7 @@ import Statistics from './pages/Statistics';
 import Groups from './pages/Groups';
 import GroupInfo from './pages/GroupInfo';
 import CreateGroup from './pages/CreateGroup';
+import MyProfile from './pages/MyProfile';
 import { AuthProvider } from './context//authContext';
 
 
@@ -60,6 +61,7 @@ const router = createBrowserRouter ([
       {path: "groups", element: <Groups/>},
       {path: "groupInfo/:id", element: <GroupInfo/>},
       {path: "createGroup", element: <CreateGroup/>},
+      {path: "my-profile", element: <MyProfile /> },
     ]
   }
 ])
