@@ -17,15 +17,23 @@ const EditStudent = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    let userId = user.id;
     const fetchData = async () => {
       if (!user?.id) return;
       try {
-        if (user.type !== 1) { // The user is admin and need the student id from the url from request
-          const studentId = window.location.pathname.split('/').pop();
+        // If the user is not a student, get the student ID from the URL
+        if (user.type !== 1) { 
+          const pathSegments = window.location.pathname.split('/');
+          const studentId = pathSegments[pathSegments.length - 1];
+
+          if (!studentId) {
+            throw new Error("Student ID not found.");
+          }
+
           const response = await api.get(`/students/${studentId}`);
-          user.id = response.data.data.userId._id;
+          userId = response.data.data.userId._id;     
         }
-        const { data } = await api.get(`/students/user/${user.id}`);
+        const { data } = await api.get(`/students/user/${userId}`);
         const studentData = data.data;
         setStudent(studentData);
         setUserInfo({
