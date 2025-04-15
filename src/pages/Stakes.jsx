@@ -18,8 +18,8 @@ const Stakes = () => {
         });
         if (response.data && Array.isArray(response.data.data)) {
           // Extract stake names from the response data.data
-          const stakeNames = response.data.data.map(stake => stake.name);
-          setStakes(['Select a Stake', ...stakeNames]);
+          const stakes = response.data.data;
+          setStakes([{_id:"", name:'Select a Stake'}, ...stakes]);
         } else {
           setError('Failed to load stakes: Invalid data format.');
         }
@@ -42,9 +42,9 @@ const Stakes = () => {
         {error && <p className='form__error-message'>{error}</p>}
         <form className='form create-unit__form'>
           <select name='stake' value={selectedStake} onChange={e => setSelectedStake(e.target.value)}>
-            {stakes.map(stakeName => (
-              <option key={stakeName} value={stakeName}>
-                {stakeName}
+            {stakes.map(stake => (
+              <option key={stake._id} value={stake._id}>
+                {stake.name}
               </option>
             ))}
           </select>
