@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import api from '../utils/axiosInstance';
-import GenericOptions from '../components/GenericOptions';
-import { countries } from '../constants/countries';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import api from "../utils/axiosInstance";
+import GenericOptions from "../components/GenericOptions";
+import { countries } from "../constants/countries";
 
 const Instructors = () => {
   const [instructors, setInstructors] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [stakes, setStakes] = useState([]);
-  const [selectedStake, setSelectedStake] = useState('');
+  const [selectedStake, setSelectedStake] = useState("");
   const [wards, setWards] = useState([]);
-  const [selectedWard, setSelectedWard] = useState('');
-  const [error, setError] = useState('');
+  const [selectedWard, setSelectedWard] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchInstructors = async () => {
       try {
-        let url = '/instructors';
+        let url = "/instructors";
         if (selectedWard) {
           url = `/users/instructor/ward/${selectedWard}`;
         }
         const response = await api.get(url);
         setInstructors(response.data.data);
       } catch (err) {
-        console.error('Error fetching instructors:', err.response?.data?.error || err.message || err);
-        setError('Failed to load instructors. Please try again.');
+        console.error(
+          "Error fetching instructors:",
+          err.response?.data?.error || err.message || err
+        );
+        setError("Failed to load instructors. Please try again.");
       }
     };
 
@@ -34,26 +37,26 @@ const Instructors = () => {
   useEffect(() => {
     if (selectedCountry) {
       fetchStakes(selectedCountry);
-      setSelectedStake('');
-      setSelectedWard('');
+      setSelectedStake("");
+      setSelectedWard("");
       setStakes([]);
       setWards([]);
     } else {
       setStakes([]);
       setWards([]);
-      setSelectedStake('');
-      setSelectedWard('');
+      setSelectedStake("");
+      setSelectedWard("");
     }
   }, [selectedCountry]);
 
   useEffect(() => {
     if (selectedStake) {
       fetchWards(selectedStake);
-      setSelectedWard('');
+      setSelectedWard("");
       setWards([]);
     } else {
       setWards([]);
-      setSelectedWard('');
+      setSelectedWard("");
     }
   }, [selectedStake]);
 
@@ -62,8 +65,8 @@ const Instructors = () => {
       const response = await api.get(`/stakes/country/${countryName}`);
       setStakes(response.data.data);
     } catch (error) {
-      console.error('Error fetching stakes:', error);
-      setError('Failed to load stakes. Please try again.');
+      console.error("Error fetching stakes:", error);
+      setError("Failed to load stakes. Please try again.");
     }
   };
 
@@ -72,8 +75,8 @@ const Instructors = () => {
       const response = await api.get(`/stakes/wards/${stakeId}`);
       setWards(response.data.wards);
     } catch (error) {
-      console.error('Error fetching wards:', error);
-      setError('Failed to load wards. Please try again.');
+      console.error("Error fetching wards:", error);
+      setError("Failed to load wards. Please try again.");
     }
   };
 
@@ -91,58 +94,79 @@ const Instructors = () => {
 
   const options = [
     {
-      label: 'Edit',
-      route: '/instructorProfile/:id',
+      label: "Edit",
+      route: "/instructorProfile/:id",
     },
     {
-      label: 'Delete',
-      route: '/delete/:id',
+      label: "Delete",
+      route: "/delete/:id",
     },
   ];
 
   return (
-    <section className='instructors'>
-      <h1 className='instructors__header'>Instructors</h1>
-      <div className='filter__controls'>
-        <label htmlFor='country'>Country:</label>
-        <select id='country' value={selectedCountry} onChange={handleCountryChange}>
-          <option value=''>All Countries</option>
-          {countries.map((country) => (
-            <option key={country.code} value={country.name}>
-              {country.name}
-            </option>
-          ))}
-        </select>
+    <section className="instructors">
+      <h1 className="instructors__header">Instructors</h1>
+      <div className="centered">
+        <div className="filter__controls-vertical">
+          <div className="form-group">
+            <label htmlFor="country">Country:</label>
+            <select
+              id="country"
+              value={selectedCountry}
+              onChange={handleCountryChange}
+            >
+              <option value="">All Countries</option>
+              {countries.map((country) => (
+                <option key={country.code} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
 
-        <label htmlFor='stake'>Stake:</label>
-        <select id='stake' value={selectedStake} onChange={handleStakeChange} disabled={!selectedCountry}>
-          <option value=''>All Stakes</option>
-          {stakes.map((stake) => (
-            <option key={stake._id} value={stake._id}>
-              {stake.name}
-            </option>
-          ))}
-        </select>
+            <label htmlFor="stake">Stake:</label>
+            <select
+              id="stake"
+              value={selectedStake}
+              onChange={handleStakeChange}
+              disabled={!selectedCountry}
+            >
+              <option value="">All Stakes</option>
+              {stakes.map((stake) => (
+                <option key={stake._id} value={stake._id}>
+                  {stake.name}
+                </option>
+              ))}
+            </select>
 
-        <label htmlFor='ward'>Ward:</label>
-        <select id='ward' value={selectedWard} onChange={handleWardChange} disabled={!selectedStake}>
-          <option value=''>All Wards</option>
-          {wards.map((ward) => (
-            <option key={ward._id} value={ward._id}>
-              {ward.name}
-            </option>
-          ))}
-        </select>
+            <label htmlFor="ward">Ward:</label>
+            <select
+              id="ward"
+              value={selectedWard}
+              onChange={handleWardChange}
+              disabled={!selectedStake}
+            >
+              <option value="">All Wards</option>
+              {wards.map((ward) => (
+                <option key={ward._id} value={ward._id}>
+                  {ward.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
-      {error && <p className='form__error-message'>{error}</p>}
+
+      {error && <p className="form__error-message">{error}</p>}
       {instructors.length > 0 ? (
-        <div className='container instructors__container'>
+        <div className="container instructors__container">
           {instructors.map((instructor) => (
-            <Link key={instructor._id} className='instructor'>
+            <Link key={instructor._id} className="instructor">
               <GenericOptions options={options} itemId={instructor._id} />
-              <div className='instructor__info'>
-                <h4>{instructor.userId?.firstName} {instructor.userId?.lastName}</h4>
-                <p>Ward ID: {instructor.userId?.wardId ?? ' Unknown'}</p>
+              <div className="instructor__info">
+                <h4>
+                  {instructor.userId?.firstName} {instructor.userId?.lastName}
+                </h4>
+                <p>Ward ID: {instructor.userId?.wardId ?? " Unknown"}</p>
               </div>
             </Link>
           ))}
@@ -150,8 +174,10 @@ const Instructors = () => {
       ) : (
         <h2>No instructors found for the selected criteria</h2>
       )}
-      <div className='add__instructor'>
-        <button className='add__instructor-btn'><Link to="/createInstructor">Add an instructor</Link></button>
+      <div className="add__instructor">
+        <button className="add__instructor-btn">
+          <Link to="/createInstructor">Add an instructor</Link>
+        </button>
       </div>
     </section>
   );

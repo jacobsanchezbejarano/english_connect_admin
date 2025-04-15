@@ -14,6 +14,7 @@ const CreateGroup = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [schedule, setSchedule] = useState('');
+  const [room, setRoom] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const { isAuthenticated } = useAuth();
@@ -21,6 +22,7 @@ const CreateGroup = () => {
   const [wardInstructors, setWardInstructors] = useState([]);
   const [instructorFetchError, setInstructorFetchError] = useState('');
   const [assignedInstructorId, setAssignedInstructorId] = useState(''); // To store selected instructor ID
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch stakes by country
   useEffect(() => {
@@ -143,6 +145,7 @@ const CreateGroup = () => {
     e.preventDefault();
     setError('');
     setSuccessMessage('');
+    setIsSubmitting(true);
 
     if (!isAuthenticated) {
       setError('You must be logged in to create a group.');
@@ -174,11 +177,12 @@ const CreateGroup = () => {
           start_date: startDate,
           end_date: endDate,
           schedule: schedule,
+          room: room,
           instructorId: assignedInstructorId,
         }
       );
 
-      console.log('Group created successfully:', response.data);
+      //console.log('Group created successfully:', response.data);
       setSuccessMessage('Group created successfully!');
       setTimeout(() => {
         navigate('/groups');
@@ -198,12 +202,15 @@ const CreateGroup = () => {
       console.error('Error creating group:', err.response?.data?.error || err.message || err);
       setError(err.response?.data?.error || 'Failed to create group. Please try again.');
     }
+    finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section className='create-group'>
       <div className='container'>
-        <h2>Create a Group</h2>
+        <h2 className='groups__header'>Create a Group</h2>
         {error && <p className='form__error-message'>{error}</p>}
         {successMessage && <p className='form__success-message'>{successMessage}</p>}
         <form className='form create-group__form' onSubmit={handleSubmit}>
@@ -243,6 +250,7 @@ const CreateGroup = () => {
           <input type='date' placeholder='Start Date' value={startDate} onChange={e => setStartDate(e.target.value)} required />
           <input type='date' placeholder='End Date' value={endDate} onChange={e => setEndDate(e.target.value)} />
           <input type='text' placeholder='Schedule' value={schedule} onChange={e => setSchedule(e.target.value)} />
+          <input type='text' placeholder='Room' value={room} onChange={e => setRoom(e.target.value)} />
 
           {selectedWardId && (
             <div className='assign-instructors'>
@@ -266,8 +274,24 @@ const CreateGroup = () => {
               )}
             </div>
           )}
-
-          <button type='submit' className='btn primary'>Create</button>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button
+                type="submit"
+                className="btn primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Creating..." : "Create"}
+            </button>
+            
+            <button
+                type="button"
+                className="btn secondary"
+                onClick={() => navigate(-1)} // Go back to the previous page
+              >
+                Cancel
+            </button>
+          </div>
+          
         </form>
       </div>
     </section>
