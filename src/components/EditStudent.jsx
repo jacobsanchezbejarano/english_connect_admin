@@ -133,22 +133,37 @@ const EditStudent = () => {
 
         // Set the selected country if it exists
         if (stakeCountry) {
-          setSelectedCountry(stakeCountry.name); // only store the country *name* for the select
+          const countryName = stakeCountry.name;
+          setSelectedCountry(countryName);
+          console.log('Stake country:', stakeCountry);
+        
+          // Fetch stakes directly
+          try {
+            const stakeRes = await api.get(`/stakes/country/${countryName}`);
+            const stakes = stakeRes.data?.data || [];
+            setStakesInCountry(stakes);
+        
+            const stakeId = studentData.userId.wardId?.stakeId?._id;
+            if (stakeId) {
+              setSelectedStakeId(stakeId);
+              console.log('Stake ID:', stakeId);
+        
+              const wardRes = await api.get(`/stakes/wards/${stakeId}`);
+              const wards = wardRes.data?.wards || [];
+              setWardsInStake(wards);
+        
+              const wardId = studentData.userId.wardId?._id;
+              if (wardId) {
+                setSelectedWardId(wardId);
+                console.log('Ward ID:', wardId);
+              }
+            }
+          } catch (err) {
+            console.error('Manual stake/ward load error:', err);
+            setError('Failed to load stake/ward information');
+          }
         }
-        console.log('Stake country:', stakeCountry);
-
-
-        // Select the stakeId if it exists
-        if (studentData.userId.wardId?.stakeId?._id) {
-          setSelectedStakeId(studentData.userId.wardId?.stakeId?._id); // only store the stake *ID* for the select
-        }
-        console.log('Stake ID:', studentData.userId.wardId?.stakeId?._id);
-
-        // Select the wardId if it exists
-        if (studentData.userId.wardId?._id) {
-          setSelectedWardId(studentData.userId.wardId?._id); // only store the ward *ID* for the select
-        }
-        console.log('Ward ID:', studentData.userId.wardId?._id);
+        
 
         setStudent(studentData);
         setUserInfo({
