@@ -95,7 +95,7 @@ const Instructors = () => {
   const options = [
     {
       label: "Edit",
-      route: "/instructorProfile/:id",
+      route: "/users/:id",
     },
     {
       label: "Delete",
@@ -161,7 +161,7 @@ const Instructors = () => {
         <div className="container instructors__container">
           {instructors.map((instructor) => (
             <Link key={instructor._id} className="instructor">
-              <GenericOptions options={options} itemId={instructor._id} />
+              <GenericOptions options={options} itemId={instructor.userId._id} />
               <div className="instructor__info">
                 <h4>
                   {instructor.userId?.firstName} {instructor.userId?.lastName}
