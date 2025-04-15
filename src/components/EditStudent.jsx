@@ -215,14 +215,12 @@ const EditStudent = () => {
         language: userInfo.language,
         level: userInfo.level,
         churchMembership: userInfo.churchMembership,
-      });
-
-      // Update User info
-      await api.put(`/users/${user._id}`, {
-        firstName: userInfo.firstName,
-        lastName: userInfo.lastName,
-        phone: userInfo.phone,
-        wardId: selectedWardId,
+        user: {
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          phone: userInfo.phone,
+          wardId: selectedWardId,
+        }
       });
 
       // Update or create address
