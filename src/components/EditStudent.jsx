@@ -135,7 +135,6 @@ const EditStudent = () => {
         if (stakeCountry) {
           const countryName = stakeCountry.name;
           setSelectedCountry(countryName);
-          console.log('Stake country:', stakeCountry);
         
           // Fetch stakes directly
           try {
@@ -146,7 +145,6 @@ const EditStudent = () => {
             const stakeId = studentData.userId.wardId?.stakeId?._id;
             if (stakeId) {
               setSelectedStakeId(stakeId);
-              console.log('Stake ID:', stakeId);
         
               const wardRes = await api.get(`/stakes/wards/${stakeId}`);
               const wards = wardRes.data?.wards || [];
@@ -155,7 +153,6 @@ const EditStudent = () => {
               const wardId = studentData.userId.wardId?._id;
               if (wardId) {
                 setSelectedWardId(wardId);
-                console.log('Ward ID:', wardId);
               }
             }
           } catch (err) {
