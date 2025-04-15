@@ -14,11 +14,10 @@ const Units = () => {
     const fetchUnits = async () => {
       setError('');
       try {
-        const token = localStorage.getItem('accessToken');
         const response = await api.get(`/wards`);
-        if (response.data && Array.isArray(response.data.wards)) {
-          const unitNames = response.data.wards.map(ward => ward.name);
-          setUnits(['Select a Ward or Branch', ...unitNames]);
+        if (response.data.data && Array.isArray(response.data.data)) {
+          const units = response.data.data;
+          setUnits([{_id:"",name:'Select a Ward or Branch'}, ...units]);
         } else {
           setError('Failed to load wards and branches: Invalid data format.');
         }
@@ -41,9 +40,9 @@ const Units = () => {
         {error && <p className='form__error-message'>{error}</p>}
         <form className='form create-unit__form'>
           <select name='unit' value={selectedUnit} onChange={e => setSelectedUnit(e.target.value)}>
-            {units.map(unitName => (
-              <option key={unitName} value={unitName}>
-                {unitName}
+            {units.map(unit => (
+              <option key={unit._id} value={unit._id}>
+                {unit.name}
               </option>
             ))}
           </select>
