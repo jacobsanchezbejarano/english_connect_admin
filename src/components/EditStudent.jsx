@@ -135,16 +135,20 @@ const EditStudent = () => {
         if (stakeCountry) {
           setSelectedCountry(stakeCountry.name); // only store the country *name* for the select
         }
+        console.log('Stake country:', stakeCountry);
+
 
         // Select the stakeId if it exists
         if (studentData.userId.wardId?.stakeId?._id) {
           setSelectedStakeId(studentData.userId.wardId?.stakeId?._id); // only store the stake *ID* for the select
         }
+        console.log('Stake ID:', studentData.userId.wardId?.stakeId?._id);
 
         // Select the wardId if it exists
         if (studentData.userId.wardId?._id) {
           setSelectedWardId(studentData.userId.wardId?._id); // only store the ward *ID* for the select
         }
+        console.log('Ward ID:', studentData.userId.wardId?._id);
 
         setStudent(studentData);
         setUserInfo({
