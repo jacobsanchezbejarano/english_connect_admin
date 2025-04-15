@@ -20,7 +20,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        let url = "/users";
+        let url = "/users/admin";
         if (selectedWard) {
           url = `/users/wards/${selectedWard}`;
         }
@@ -118,10 +118,11 @@ const Users = () => {
 
   return (
     <section className="students">
-      <h1 className="students__header">Users</h1>
+      <h1 className="students__header">Admin Users</h1>
       <div className="centered">
         <div className="filter__controls-vertical">
           <div className="form-group">
+            <label htmlFor="country">Country:</label>
             <select
               id="country"
               value={selectedCountry}
@@ -134,9 +135,7 @@ const Users = () => {
                 </option>
               ))}
             </select>
-          </div>
-
-          <div className="form-group">
+            <label htmlFor="stake">Stake:</label>
             <select
               id="stake"
               value={selectedStake}
@@ -150,9 +149,7 @@ const Users = () => {
                 </option>
               ))}
             </select>
-          </div>
-
-          <div className="form-group">
+            <label htmlFor="ward">Ward:</label>
             <select
               id="ward"
               value={selectedWard}

@@ -3,6 +3,7 @@ import { countries } from "../constants/countries";
 import api from '../utils/axiosInstance';
 import { useAuth } from '../context/authContext';
 import { getCountryFromLocation } from '../utils/locationHelpers';
+import { useNavigate } from 'react-router-dom';
 
 const EditStudent = () => {
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -19,6 +20,7 @@ const EditStudent = () => {
   const [success, setSuccess] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   // Fetch stakes by country
   useEffect(() => {
@@ -334,13 +336,23 @@ const EditStudent = () => {
             <input type='text' placeholder='Country' value={addressInfo.country} onChange={(e) => setAddressInfo({ ...addressInfo, country: e.target.value })} />
             <input type='text' placeholder='Postal Code' value={addressInfo.postalCode} onChange={(e) => setAddressInfo({ ...addressInfo, postalCode: e.target.value })} />
 
-            <button
-              type="submit"
-              className="btn primary"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Updating..." : "Update Student"}
-            </button>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button
+                  type="submit"
+                  className="btn primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Updating..." : "Update"}
+              </button>
+              
+              <button
+                  type="button"
+                  className="btn secondary"
+                  onClick={() => navigate(-1)} // Go back to the previous page
+                >
+                  Cancel
+              </button>
+          </div>
           </form>
         </div>
       </div>

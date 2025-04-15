@@ -110,6 +110,16 @@ section {
   color: var(--color-white);
 }
 
+.btn.secondary {
+  background: var(--color-light-gray, #f0f0f0);
+  color: var(--color-dark, #333);
+  border: 1px solid var(--color-gray, #ccc);
+}
+
+.btn.secondary:hover {
+  background: var(--color-gray, #e0e0e0);
+}
+
 .btn.category {
   background-color: var(--color-bg);
   color: var(--color-primary);
@@ -1286,7 +1296,7 @@ select {
 .filter__controls-vertical input[type="text"] {
   height: 32px; /* adjust as needed */
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+  font-size: .9rem;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
