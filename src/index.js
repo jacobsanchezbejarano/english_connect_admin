@@ -15,6 +15,7 @@ import Layout from './components/Layout';
 import Register from './pages/Register';
 import Units from './pages/Units';
 import Stakes from './pages/Stakes';
+import EditStakes from './components/EditStakes';
 import InstructorProfile from './pages/InstructorProfile';
 import StudentProfile from './pages/StudentProfile';
 import CreateStudent from './components/CreateStudent';
@@ -30,7 +31,7 @@ import Groups from './pages/Groups';
 import GroupInfo from './pages/GroupInfo';
 import CreateGroup from './pages/CreateGroup';
 import MyProfile from './pages/MyProfile';
-import { AuthProvider } from './context//authContext';
+import { AuthProvider } from './context/authContext';
 
 
 const router = createBrowserRouter ([
@@ -56,6 +57,7 @@ const router = createBrowserRouter ([
       {path: "units", element: <Units/>},
       {path: "createUnit", element: <CreateUnit/>},
       {path: "stakes", element: <Stakes/>},
+      {path: "stakes/:id", element: <EditStakes/>},
       {path: "createStake", element: <CreateStake/>},
       {path: "editUnitInfo", element: <EditUnitInfo/>},
       {path: "unitInfo/:id", element: <UnitInfo/>},

@@ -5,7 +5,7 @@ import api from '../utils/axiosInstance';
 const options = [
   {
     label: 'Edit',
-    route: '/stakeInfo/:id',
+    route: '/stakes/:id',
   },
   {
     label: 'Delete',
@@ -17,8 +17,6 @@ const StakeInformation = ({ stake }) => {
   const [selectedStake, setSelectedStake] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log(stake)
 
   useEffect(() => {
     if (!stake) {
