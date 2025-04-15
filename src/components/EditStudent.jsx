@@ -104,7 +104,7 @@ const EditStudent = () => {
   
 
   useEffect(() => {
-    let userId = user._id;
+    let userId = user?._id;
     const fetchData = async () => {
       if (!user?._id) return;
       try {
