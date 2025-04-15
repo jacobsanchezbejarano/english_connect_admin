@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-//import { useNavigate } from 'react-router-dom';
+import { countries } from "../constants/countries";
 import api from '../utils/axiosInstance';
-//import { FaCheck } from 'react-icons/fa';
 import { useAuth } from '../context/authContext';
+import { getCountryFromLocation } from '../utils/locationHelpers';
 
 const EditStudent = () => {
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [stakesInCountry, setStakesInCountry] = useState([]);
+  const [selectedStakeId, setSelectedStakeId] = useState('');
+  const [wardsInStake, setWardsInStake] = useState([]);
+  const [selectedWardId, setSelectedWardId] = useState('');
   const [student, setStudent] = useState(null);
   const [userInfo, setUserInfo] = useState({});
   const [addressInfo, setAddressInfo] = useState({});
@@ -13,8 +18,90 @@ const EditStudent = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  //const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+
+  // Fetch stakes by country
+  useEffect(() => {
+    const fetchStakesByCountry = async (country) => {
+      if (!country) {
+        setSelectedStakeId('');
+        setStakesInCountry([]);
+        setWardsInStake([]);
+        setSelectedWardId('');
+        return;
+      }
+      try {
+        setError('');
+        setSelectedStakeId('');
+        setStakesInCountry([]);
+        setWardsInStake([]);
+        setSelectedWardId('');
+        const response = await api.get(`/stakes/country/${country}`);
+        if (response.data && Array.isArray(response.data.data)) {
+          const stakes = response.data.data;
+          setStakesInCountry(stakes);
+
+          if (stakes.length === 1) {
+            setSelectedStakeId(stakes[0]._id); // auto-select if only one
+          }
+        } else {
+          setError('Failed to load stakes for the selected country.');
+          setStakesInCountry([]);
+          setSelectedStakeId('');
+          setWardsInStake([]);
+        }
+      } catch (err) {
+        console.error('Error fetching stakes by country:', err.response?.data?.error || err.message || err);
+        setError(err.response?.data?.error || 'Failed to load stakes for the selected country.');
+        setStakesInCountry([]);
+        setSelectedStakeId('');
+        setWardsInStake([]);
+      }
+    };
+
+    if (isAuthenticated && selectedCountry) {
+      fetchStakesByCountry(selectedCountry);
+    } else {
+      setStakesInCountry([]);
+      setSelectedStakeId('');
+      setWardsInStake([]);
+    }
+  }, [selectedCountry, isAuthenticated]);
+
+  // Fetch wards by stake
+  useEffect(() => {
+    const fetchWardsByStake = async (stakeId) => {
+      if (!stakeId) {
+        setWardsInStake([]);
+        setSelectedWardId('');
+        return;
+      }
+      setError('');
+      try {
+        const response = await api.get(`/stakes/wards/${stakeId}`);
+        if (response.data && Array.isArray(response.data.wards)) {
+          setWardsInStake(response.data.wards);
+        } else {
+          setError('Failed to load wards for the selected stake.');
+          setWardsInStake([]);
+          setSelectedWardId('');
+        }
+      } catch (err) {
+        console.error('Error fetching wards by stake:', err.response?.data?.error || err.message || err);
+        setError(err.response?.data?.error || 'Failed to load wards for the selected stake.');
+        setWardsInStake([]);
+        setSelectedWardId('');
+      }
+    };
+
+    if (isAuthenticated && selectedStakeId) {
+      fetchWardsByStake(selectedStakeId);
+    } else {
+      setWardsInStake([]);
+      setSelectedWardId('');
+    }
+  }, [selectedStakeId, isAuthenticated]);
+  
 
   useEffect(() => {
     let userId = user._id;
@@ -35,6 +122,28 @@ const EditStudent = () => {
         }
         const { data } = await api.get(`/students/user/${userId}`);
         const studentData = data.data;
+        
+        // Get the country (name and code) from the location
+        let stakeCountry = null;
+        if (studentData.userId?.wardId?.stakeId?.location) {
+          stakeCountry = getCountryFromLocation(studentData.userId?.wardId?.stakeId?.location);
+        }
+
+        // Set the selected country if it exists
+        if (stakeCountry) {
+          setSelectedCountry(stakeCountry.name); // only store the country *name* for the select
+        }
+
+        // Select the stakeId if it exists
+        if (studentData.userId.wardId?.stakeId?._id) {
+          setSelectedStakeId(studentData.userId.wardId?.stakeId?._id); // only store the stake *ID* for the select
+        }
+
+        // Select the wardId if it exists
+        if (studentData.userId.wardId?._id) {
+          setSelectedWardId(studentData.userId.wardId?._id); // only store the ward *ID* for the select
+        }
+
         setStudent(studentData);
         setUserInfo({
           firstName: studentData.userId.firstName || '',
@@ -44,6 +153,7 @@ const EditStudent = () => {
           language: studentData.language || 'Spanish',
           level: studentData.level || 'EC1',
           churchMembership: studentData.churchMembership || 'Member',
+          wardId: studentData.userId.wardId?._id || '',
         });
         setAddressInfo({
           street: studentData.addressId?.street || '',
@@ -71,6 +181,8 @@ const EditStudent = () => {
   };
 
   const handleUpdateAvatar = async () => {
+    setError('');
+    setSuccess('');
     if (!avatar || !student._id) return;
     const formData = new FormData();
     formData.append('avatar', avatar);
@@ -90,6 +202,8 @@ const EditStudent = () => {
   };
 
   const handleSubmit = async (e) => {
+    setError('');
+    setSuccess('');
     e.preventDefault();
     setIsSubmitting(true);
     try {
@@ -102,10 +216,11 @@ const EditStudent = () => {
       });
 
       // Update User info
-      await api.put(`/users/${user.id}`, {
+      await api.put(`/users/${user._id}`, {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         phone: userInfo.phone,
+        wardId: selectedWardId,
       });
 
       // Update or create address
@@ -158,6 +273,38 @@ const EditStudent = () => {
             <input type='text' placeholder='Last Name' value={userInfo.lastName} onChange={(e) => setUserInfo({ ...userInfo, lastName: e.target.value })} />
             <input type='date' value={userInfo.birthDate} onChange={(e) => setUserInfo({ ...userInfo, birthDate: e.target.value })} />
             <input type='text' placeholder='Phone' value={userInfo.phone} onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })} />
+            
+            <label>Ward Adscription</label>
+            <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)} required>
+              <option value="" disabled>Select Country</option>
+              {countries.map((country) => (
+                <option key={country.code} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+
+            {selectedCountry && stakesInCountry.length > 0 && (
+              <select value={selectedStakeId} onChange={e => setSelectedStakeId(e.target.value)} required>
+                <option value="" disabled>Select Stake</option>
+                {stakesInCountry.map(stake => (
+                  <option key={stake._id} value={stake._id}>
+                    {stake.name}
+                  </option>
+                ))}
+              </select>
+            )}
+
+            {selectedStakeId && wardsInStake.length > 0 && (
+              <select value={selectedWardId} onChange={e => setSelectedWardId(e.target.value)} required>
+                <option value="" disabled>Select Ward</option>
+                {wardsInStake.map(wardItem => (
+                  <option key={wardItem._id} value={wardItem._id}>
+                    {wardItem.name}
+                  </option>
+                ))}
+              </select>
+            )}
 
             <label>Language</label>
             <select value={userInfo.language} onChange={(e) => setUserInfo({ ...userInfo, language: e.target.value })}>

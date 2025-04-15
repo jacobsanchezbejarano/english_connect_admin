@@ -4,6 +4,7 @@
   --color-primary: #6f6af8;
   --color-white: #fff;
   --color-red: rgb(255, 63, 63);
+  --color-green: #28a745;
   --color-gray-100: hsl(220, 20%, 10%, 5%);
   --color-gray-200: hsl(220, 20%, 10%, 10%);
   --color-gray-300: hsl(220, 20%, 10%, 25%);
@@ -283,12 +284,23 @@ input, select, textarea {
 .form__error-message {
   background: var(--color-red);
   color: var(--color-white);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   padding: 0.6rem 1rem;
   border-radius: var(--radius-1);
   display: block;
   margin-bottom: 1rem;
 }
+
+.form__success-message {
+  background: var(--color-green);
+  color: var(--color-white);
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-1);
+  display: block;
+  margin-bottom: 1rem;
+}
+
 
 .register, .login, .create-instructor {
   width: var(--form-width);
@@ -1261,7 +1273,7 @@ select {
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  max-width: 620px; /* ⬅️ Increase this if needed */
+  max-width: 620px; 
   width: 100%;
 }
 
