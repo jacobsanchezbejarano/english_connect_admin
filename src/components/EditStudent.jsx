@@ -210,7 +210,7 @@ const EditStudent = () => {
     setIsSubmitting(true);
     try {
       // Update Student info
-      await api.put(`/students/${student._id}`, {
+      const res = await api.put(`/students/${student._id}`, {
         birthDate: userInfo.birthDate,
         language: userInfo.language,
         level: userInfo.level,
@@ -231,6 +231,12 @@ const EditStudent = () => {
       } else {
         const { data } = await api.post('/address', addressInfo);
         await api.put(`/students/${student._id}/address`, { addressId: data.data._id });
+      }
+
+      // Update access token if needed
+      const { accessToken } = res.data;
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken); // or update your auth context
       }
 
       setSuccess('Student updated successfully!');
