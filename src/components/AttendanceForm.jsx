@@ -103,8 +103,14 @@ const AttendanceForm = () => {
       const response = await api.get(`/groups/ward/${wardId}`);
       setGroups(response.data.groups);
     } catch (error) {
-      console.error('Error fetching groups:', error);
-      setError(error);
+      if (error.response && error.response.status === 404) {
+        console.warn('No groups found for this ward.');
+        setGroups([]); 
+        console.log(groups.length)
+      } else {
+        console.error('Error fetching groups:', error);
+        setError(error);
+      }
     }
   }
 
@@ -169,10 +175,20 @@ const AttendanceForm = () => {
       setAllAttendances(attendanceData);
       const meetingsData = getUniqueAttendanceDates(attendanceData);
       setMeetings(meetingsData.sort((a, b) => new Date(a) - new Date(b)));
-      const studentsResponse = await api.get(
-        `/registrations/group/${groupId}/students`
-      );
-      const studentsData = studentsResponse.data.students;
+
+      let studentsData = [];
+
+      try {
+        const studentsResponse = await api.get(`/registrations/group/${groupId}/students`);
+        studentsData = studentsResponse.data.students;
+      } catch (studentError) {
+        if (studentError.response && studentError.response.status === 404) {
+          console.warn('No students registered for this group.');
+          studentsData = []; // fallback to empty array
+        } else {
+          throw studentError; // rethrow if it's a different error
+        }
+      }
 
       const data = buildInitialStudents(
         studentsData,
@@ -366,7 +382,7 @@ const AttendanceForm = () => {
                     <td className='name'>{student.name}</td>
                     <td>{student.gender}</td>
                     {meetings.map((day) => (
-                      <td key={day}>
+                      <td key={`${student.id}-${day}`}>
                         <label className='attendance__input-container'>
                           <input
                             type='checkbox'
@@ -422,6 +438,10 @@ const AttendanceForm = () => {
 
       {!groupId && !selectedWard && !selectedStake && !selectedCountry && (
         <div>Please select a country, stake, and ward to view groups.</div>
+      )}
+
+      {selectedWard && groups.length === 0 && !groupId && (
+        <div>This ward doesn’t have any groups.</div>
       )}
 
       {students.length === 0 && groupId && !error && meetings.length > 0 && (
