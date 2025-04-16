@@ -14,11 +14,14 @@ const Users = () => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState("");
   const [error, setError] = useState("");
-  useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStake(user.wardId.stakeId._id??"");
-    setSelectedWard(user.wardId._id??"");
-  });
+
+  useEffect(() => {
+    if (user?.type === 1 && user.wardId) {
+      setSelectedCountry(user.wardId.location ?? "");
+      setSelectedStake(user.wardId.stakeId?._id ?? "");
+      setSelectedWard(user.wardId._id ?? "");
+    }
+  }, [user]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);

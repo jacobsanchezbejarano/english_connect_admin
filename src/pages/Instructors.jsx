@@ -17,11 +17,13 @@ const Instructors = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStake(user.wardId.stakeId._id??"");
-    setSelectedWard(user.wardId._id??"");
-  });
+  useEffect(() => {
+    if (user?.type === 1 && user.wardId) {
+      setSelectedCountry(user.wardId.location ?? "");
+      setSelectedStake(user.wardId.stakeId?._id ?? "");
+      setSelectedWard(user.wardId._id ?? "");
+    }
+  }, [user]);
 
   const confirmToDelete = (id) => {
     if (window.confirm(`Are you sure you want to delete instructor with ID: ${id}?`)) {
