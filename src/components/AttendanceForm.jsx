@@ -179,7 +179,6 @@ const AttendanceForm = () => {
   useEffect(() => {
     const meetingsData = getUniqueAttendanceDates(allAttendances);
     setMeetings(meetingsData);
-    console.log(allAttendances);
   }, [allAttendances]);
 
   const handleCountryChange = (event) => {

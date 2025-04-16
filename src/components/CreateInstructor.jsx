@@ -112,7 +112,6 @@ const CreateInstructor = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Instructor created successfully:', response.data);
       setSuccessMessage('Instructor created successfully!');
       setTimeout(() => {
         navigate('/instructors'); // Adjust the navigation path

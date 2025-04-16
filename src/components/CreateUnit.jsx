@@ -71,7 +71,6 @@ const CreateUnit = () => {
         }
       );
 
-      console.log('Ward created successfully:', response.data);
       setSuccessMessage('Ward created successfully!');
       setTimeout(() => {
         navigate('/units'); // Redirect to the units page or wherever appropriate

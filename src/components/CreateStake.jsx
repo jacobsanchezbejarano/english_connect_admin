@@ -32,7 +32,6 @@ const CreateStake = () => {
         }
       );
 
-      console.log('Stake created successfully:', response.data);
       setSuccessMessage('Stake created successfully!');
       setTimeout(() => {
         navigate('/stakes');

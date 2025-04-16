@@ -109,11 +109,7 @@ const Users = () => {
     {
       label: "Edit",
       route: "/users/:id",
-    },
-    {
-      label: "Delete",
-      route: "/delete/:id",
-    },
+    }
   ];
 
   return (

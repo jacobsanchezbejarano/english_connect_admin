@@ -159,7 +159,6 @@ const RegisterStudentForm = () => {
 
             const response = await api.post('/registrations', payload);
 
-            console.log('Registration successful:', response.data);
             setSuccessMessage('Student registered successfully!');
 
             setTimeout(() => {
