@@ -24,18 +24,6 @@ const CreateInstructor = () => {
   const [selectedWard, setSelectedWard] = useState('');
   const [userType, setUserType] = useState(11); // Default to instructor
 
-  useEffect(()=>{
-    if(selectedCountry == "") {
-      setSelectedCountry(user.wardId?.location ?? "");
-      setTimeout(()=>{
-        setSelectedStake(user.wardId?.stakeId?._id ?? "");
-      },50)
-      setTimeout(()=>{
-        setSelectedWard(user.wardId?._id ?? "");
-      },100)
-    }
-  });
-
   useEffect(() => {
     if (selectedCountry) {
       fetchStakes(selectedCountry);

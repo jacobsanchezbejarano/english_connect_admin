@@ -24,17 +24,6 @@ const CreateGroup = () => {
   const [assignedInstructorId, setAssignedInstructorId] = useState(''); // To store selected instructor ID
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(()=>{
-    if(selectedCountry == "") {
-      setSelectedCountry(user.wardId?.location ?? "");
-      setTimeout(()=>{
-        setSelectedStakeId(user.wardId?.stakeId?._id ?? "");
-      },50)
-      setTimeout(()=>{
-        setSelectedWardId(user.wardId?._id ?? "");
-      },100)
-    }
-  });
 
   // Fetch stakes by country
   useEffect(() => {
