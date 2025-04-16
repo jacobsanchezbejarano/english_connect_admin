@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import api from '../utils/axiosInstance';
 import { countries } from '../constants/countries';
 import { FaUserPlus } from 'react-icons/fa'; // Or a similar icon
+import { useAuth } from '../context/authContext';
 
 const CreateInstructor = () => {
+  const { user } = useAuth();
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState('../images/Avatar2.jpg'); // Default avatar
   const [firstName, setFirstName] = useState('');
@@ -22,9 +24,11 @@ const CreateInstructor = () => {
   const [selectedWard, setSelectedWard] = useState('');
   const [userType, setUserType] = useState(11); // Default to instructor
 
-  useEffect(() => {
-    // Fetch initial data like countries if needed on component mount
-  }, []);
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStake(user.wardId.stakeId._id??"");
+    setSelectedWard(user.wardId._id??"");
+  });
 
   useEffect(() => {
     if (selectedCountry) {

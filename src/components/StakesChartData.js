@@ -4,10 +4,12 @@ import Spinner from '../components/Spinner';
 import { countries } from "../constants/countries";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { useAuth } from '../context/authContext';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function StakesChartData() {
+    const { user } = useAuth();
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedStake, setSelectedStake] = useState('');
     const [selectedStakeName, setSelectedStakeName] = useState('');
@@ -22,8 +24,13 @@ function StakesChartData() {
     const [loadingStakes, setLoadingStakes] = useState(false);
     const [error, setError] = useState('');
 
+    useEffect(()=>{
+        setSelectedCountry(user.wardId.location??"");
+        setSelectedStake(user.wardId.stakeId._id??"");
+    });
+
     useEffect(() => {
-        setSelectedStake(''); setStakes([]); setSelectedStakeName('');
+        setStakes([]);
         setGroupAttendanceStats([]); setChartData(null);
 
         if (selectedCountry) {

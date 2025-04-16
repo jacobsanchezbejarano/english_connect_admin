@@ -4,17 +4,19 @@ import Spinner from '../components/Spinner';
 import { countries } from "../constants/countries";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { useAuth } from '../context/authContext';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function GroupsChartData() {
+    const { user } = useAuth();
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedStake, setSelectedStake] = useState('');
     const [selectedStakeName, setSelectedStakeName] = useState('');
 
     const [stakes, setStakes] = useState([]);
 
-    const [groupSessionStats, setGroupSessionStats] = useState([]);
+    const [attendanceByGroup, setAttendanceByGroup] = useState([]);
 
     const [chartData, setChartData] = useState(null);
     const [chartOptions, setChartOptions] = useState({});
@@ -24,8 +26,13 @@ function GroupsChartData() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        setSelectedStake(''); setStakes([]); setSelectedStakeName('');
-        setGroupSessionStats([]); setChartData(null);
+        setSelectedCountry(user.wardId?.location ?? "");
+        setSelectedStake(user.wardId?.stakeId?._id ?? "");
+    }, [user]);
+
+    useEffect(() => {
+        setStakes([]); setSelectedStakeName('');
+        setAttendanceByGroup([]); setChartData(null);
 
         if (selectedCountry) {
             const fetchStakes = async () => {
@@ -46,49 +53,50 @@ function GroupsChartData() {
     }, [selectedCountry]);
 
     useEffect(() => {
-        setGroupSessionStats([]);
+        setAttendanceByGroup([]);
         setChartData(null);
         setError('');
 
         if (selectedStake) {
             const stakeDetails = stakes.find(s => (s._id || s.id) === selectedStake);
-            setSelectedStakeName(stakeDetails?.name || `Stake (ID: ${selectedStake.substring(0,6)}...)`);
+            setSelectedStakeName(stakeDetails?.name || `Stake (ID: ${selectedStake.substring(0, 6)}...)`);
 
-            const fetchGroupSessions = async () => {
+            const fetchAttendanceData = async () => {
                 setLoading(true);
                 try {
-                    const response = await api.get(`/stats/stake/${selectedStake}/groups-sessions`);
-                    setGroupSessionStats(response.data?.sessionStats || []);
-                    if (!response.data?.sessionStats || response.data.sessionStats.length === 0) {
-                         setError('No group session data found for this stake.');
+                    const response = await api.get(`/attendance/stake/${selectedStake}`);
+                    setAttendanceByGroup(response.data?.data || []);
+                    console.log(response.data)
+                    if (!response.data?.data || response.data.data.length === 0) {
+                        setError(response.data?.message ?? 'No attendance data found for any group in this stake.');
                     }
                 } catch (err) {
-                    console.error('Error fetching group sessions:', err);
-                    setError('Failed to fetch group session data.');
-                    setGroupSessionStats([]);
+                    console.error('Error fetching attendance data:', err);
+                    setError('Failed to fetch attendance data.');
+                    setAttendanceByGroup([]);
                 } finally {
                     setLoading(false);
                 }
             };
-            fetchGroupSessions();
+            fetchAttendanceData();
         } else {
             setSelectedStakeName('');
         }
     }, [selectedStake, stakes]);
 
     useEffect(() => {
-        if (groupSessionStats && groupSessionStats.length > 0) {
+        if (attendanceByGroup && attendanceByGroup.length > 0) {
             try {
-                const labels = groupSessionStats.map(stat => stat.groupName || `Group (ID: ${stat.groupId.substring(0,6)}...)`);
-                const data = groupSessionStats.map(stat => stat.sessionCount);
+                const labels = attendanceByGroup.map(item => item.groupName || `Group (ID: ${item.groupId.substring(0, 6)}...)`);
+                const data = attendanceByGroup.map(item => item.numberOfClassesTaken);
 
                 setChartData({
                     labels: labels,
                     datasets: [{
-                        label: `Number of Sessions by Group - ${selectedStakeName}`,
+                        label: `Number of Attendance Records by Group - ${selectedStakeName}`,
                         data: data,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1,
                     }],
                 });
@@ -101,33 +109,33 @@ function GroupsChartData() {
                         },
                         title: {
                             display: true,
-                            text: `Total Sessions Held per Group in ${selectedStakeName}`,
+                            text: `Total Attendance Records per Group in ${selectedStakeName}`,
                         },
-                         tooltip: {
-                             callbacks: {
-                                 label: function(context) {
-                                     let label = context.dataset.label || '';
-                                     if (label) {
-                                         label = 'Sessions: ';
-                                     }
-                                     if (context.parsed.y !== null) {
-                                         label += context.parsed.y;
-                                     }
-                                     return label;
-                                 }
-                             }
-                         }
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
                     },
                     scales: {
                         y: {
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Sessions Held'
+                                text: 'Number of Attendance Records'
                             }
                         },
                         x: {
-                             title: {
+                            title: {
                                 display: true,
                                 text: 'Groups'
                             }
@@ -135,20 +143,19 @@ function GroupsChartData() {
                     }
                 });
                 setError('');
-            } catch(e) {
-                 console.error("Error processing chart data:", e);
-                 setError("Failed to process chart data.");
-                 setChartData(null);
+            } catch (e) {
+                console.error("Error processing chart data:", e);
+                setError("Failed to process chart data.");
+                setChartData(null);
             }
         } else {
             setChartData(null);
         }
-    }, [groupSessionStats, selectedStakeName]);
-
+    }, [attendanceByGroup, selectedStakeName]);
 
     return (
         <div className="groups-chart-container">
-            <h1>Group Session Counts per Stake</h1>
+            <h1>Attendance Records per Group in Stake</h1>
 
             <div className='form filters-form' style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)} required>
@@ -173,13 +180,12 @@ function GroupsChartData() {
                 </select>
             </div>
 
-            {error && <p className='form__error-message' style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+            {error && <p className='form__error-message' >{error}</p>}
 
             <div className="chart-area" style={{ position: 'relative', minHeight: '300px', marginTop: '20px' }}>
                 {loading && <Spinner status="loading" />}
 
-                {!loading && !selectedStake && <p>Please select a stake to view data.</p>}
-
+                {!loading && !selectedStake && <p>Please select a stake to view attendance data by group.</p>}
 
                 {!loading && chartData && Object.keys(chartData).length > 0 && (
                     <Bar data={chartData} options={chartOptions} />

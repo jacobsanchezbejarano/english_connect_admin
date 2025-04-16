@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/axiosInstance';
 import { countries } from '../constants/countries';
+import { useAuth } from '../context/authContext';
 
 const AttendanceForm = () => {
+  const { user } = useAuth();
   const [stakes, setStakes] = useState([]);
   const [wards, setWards] = useState([]);
   const [groups, setGroups] = useState([]);
@@ -18,6 +20,12 @@ const AttendanceForm = () => {
     new Date().toISOString().split('T')[0]
   );
   const [allAttendances, setAllAttendances] = useState([]);
+
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStake(user.wardId.stakeId._id??"");
+    setSelectedWard(user.wardId._id??"");
+  });
 
   useEffect(() => {
     if (selectedCountry) {

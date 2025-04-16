@@ -12,8 +12,13 @@ const CreateUnit = () => {
   const [selectedStakeId, setSelectedStakeId] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    setLocation(user.wardId.location??"");
+    setSelectedStakeId(user.wardId.stakeId._id??"");
+  });
 
   useEffect(() => {
     const fetchStakesByCountry = async (country) => {

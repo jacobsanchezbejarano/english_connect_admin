@@ -22,6 +22,12 @@ const EditStudent = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStakeId(user.wardId.stakeId._id??"");
+    setSelectedWardId(user.wardId._id??"");
+  });
+
   // Fetch stakes by country
   useEffect(() => {
     const fetchStakesByCountry = async (country) => {

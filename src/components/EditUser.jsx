@@ -3,8 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import { FaEdit } from "react-icons/fa";
 import { countries } from "../constants/countries";
+import { useAuth } from '../context/authContext';
 
 const EditUser = () => {
+  const { user } = useAuth();
   const { id } = useParams();
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -28,6 +30,12 @@ const EditUser = () => {
   const [initialUserType, setInitialUserType] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [initialData, setInitialData] = useState(null);
+
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStake(user.wardId.stakeId._id??"");
+    setSelectedWard(user.wardId._id??"");
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {

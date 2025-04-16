@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import GenericOptions from "../components/GenericOptions";
 import { countries } from "../constants/countries";
+import { useAuth } from '../context/authContext';
 
 const Users = () => {
+  const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [stakes, setStakes] = useState([]);
@@ -12,6 +14,11 @@ const Users = () => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState("");
   const [error, setError] = useState("");
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStake(user.wardId.stakeId._id??"");
+    setSelectedWard(user.wardId._id??"");
+  });
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,9 +30,13 @@ const Users = () => {
         let url = "/users/admin";
         if (selectedWard) {
           url = `/users/wards/${selectedWard}`;
+          const response = await api.get(url);
+          setUsers(response.data.users);
+          return;
         }
         const response = await api.get(url);
         setUsers(response.data.data);
+        return;
       } catch (err) {
         //console.error('Error fetching users:', err.response?.data?.error || err.message || err);
         setError("Failed to load users. Please try again.");
