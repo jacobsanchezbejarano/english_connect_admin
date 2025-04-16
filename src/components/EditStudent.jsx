@@ -271,9 +271,12 @@ const EditStudent = () => {
       }
 
       // Update access token if needed
-      const { accessToken } = res.data;
-      if (accessToken) {
-        localStorage.setItem("accessToken", accessToken); // or update your auth context
+      console.log("User type:", user.type);
+      if (user.type === 1) {
+        const { accessToken } = res.data;
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken); 
+        }
       }
 
       setSuccess("Student updated successfully!");
