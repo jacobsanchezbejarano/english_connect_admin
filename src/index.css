@@ -94,6 +94,7 @@ section {
 }
 
 
+
 .btn {
   display: inline-block;
   width: fit-content;
@@ -356,6 +357,7 @@ input, select, textarea {
   box-shadow: 0 0 20px 10px #bbb;
 }
 
+
 fieldset { 
   border: 1px solid black;
   height: 300px;
@@ -366,7 +368,7 @@ fieldset {
   flex-direction: column;
   gap: 0.8rem;
   margin-bottom: 5rem;
-}
+
 
 .instructor:hover {
   box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0, 0.7);
@@ -535,6 +537,10 @@ fieldset {
   grid-gap: 1rem;
   transition: var(--transition);
   box-shadow: 0 0 20px 10px #bbb;
+}
+
+.students h2 {
+  text-align: center;
 }
 
 .student:hover {
