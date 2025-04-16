@@ -58,9 +58,11 @@ const Instructors = () => {
       let url = "/instructors";
       if (selectedWard) {
         url = `/users/instructor/ward/${selectedWard}`;
+        const response = await api.get(url);
+        setInstructors(response.data.instructors);
+        return;
       }
       const response = await api.get(url);
-      console.log(response.data.data.ward);
       setInstructors(response.data.data);
     } catch (err) {
       console.error(
