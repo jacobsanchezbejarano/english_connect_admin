@@ -341,7 +341,7 @@ input, select, textarea {
 /*======================================= INSTRUCTORS ================================*/
 .instructors__container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
 }
 
@@ -354,6 +354,18 @@ input, select, textarea {
   grid-gap: 1rem;
   transition: var(--transition);
   box-shadow: 0 0 20px 10px #bbb;
+}
+
+fieldset { 
+  border: 1px solid black;
+  height: 300px;
+}
+
+.instructor__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 5rem;
 }
 
 .instructor:hover {
@@ -370,6 +382,10 @@ input, select, textarea {
 
 .instructor__info p {
   margin-top: 1rem;
+}
+
+.instructor__info {
+  height: 150px;
 }
 
 .instructors__header {
