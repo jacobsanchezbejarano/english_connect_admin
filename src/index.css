@@ -368,7 +368,7 @@ fieldset {
   flex-direction: column;
   gap: 0.8rem;
   margin-bottom: 5rem;
-
+}
 
 .instructor:hover {
   box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0, 0.7);
