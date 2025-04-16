@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import GenericOptions from "../components/GenericOptions";
 import { countries } from "../constants/countries";
@@ -12,25 +12,51 @@ const Instructors = () => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const confirmToDelete = (id) => {
+    if (window.confirm(`Are you sure you want to delete instructor with ID: ${id}?`)) {
+      handleDelete(id);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.delete(`/instructors/${id}`);
+      if (response.status === 200) {
+        fetchInstructors();
+      } else {
+        setError(response.data?.error || `Failed to delete instructor: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error deleting instructor:", error);
+      setError(error.response?.data?.error || "An error occurred while deleting the instructor.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const fetchInstructors = async () => {
+    try {
+      let url = "/instructors";
+      if (selectedWard) {
+        url = `/users/instructor/ward/${selectedWard}`;
+      }
+      const response = await api.get(url);
+      setInstructors(response.data.data);
+    } catch (err) {
+      console.error(
+        "Error fetching instructors:",
+        err.response?.data?.error || err.message || err
+      );
+      setError("Failed to load instructors. Please try again.");
+    }
+  };
 
   useEffect(() => {
-    const fetchInstructors = async () => {
-      try {
-        let url = "/instructors";
-        if (selectedWard) {
-          url = `/users/instructor/ward/${selectedWard}`;
-        }
-        const response = await api.get(url);
-        setInstructors(response.data.data);
-      } catch (err) {
-        console.error(
-          "Error fetching instructors:",
-          err.response?.data?.error || err.message || err
-        );
-        setError("Failed to load instructors. Please try again.");
-      }
-    };
-
     fetchInstructors();
   }, [selectedWard]);
 
@@ -95,7 +121,7 @@ const Instructors = () => {
   const options = [
     {
       label: "Edit",
-      route: "/users/:id",
+      route: "/editInstructor/:id",
     },
     {
       label: "Delete",
@@ -156,19 +182,20 @@ const Instructors = () => {
         </div>
       </div>
 
+      {loading && <p>Loading instructors...</p>}
       {error && <p className="form__error-message">{error}</p>}
       {instructors.length > 0 ? (
         <div className="container instructors__container">
           {instructors.map((instructor) => (
-            <Link key={instructor._id} className="instructor">
-              <GenericOptions options={options} itemId={instructor.userId._id} />
+            <div key={instructor._id} className="instructor">
+              <GenericOptions options={options} itemId={instructor._id} confirmToDelete={confirmToDelete} />
               <div className="instructor__info">
                 <h4>
                   {instructor.userId?.firstName} {instructor.userId?.lastName}
                 </h4>
                 <p>Ward ID: {instructor.userId?.wardId ?? " Unknown"}</p>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       ) : (
