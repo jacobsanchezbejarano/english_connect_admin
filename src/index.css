@@ -387,7 +387,7 @@ fieldset {
 }
 
 .instructor__info {
-  height: 150px;
+  height: auto;
 }
 
 .instructors__header {
