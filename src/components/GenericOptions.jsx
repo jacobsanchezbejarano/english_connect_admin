@@ -3,9 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
-function GenericOptions({ options, itemId }) {
+function GenericOptions({ options, itemId, confirmToDelete }) {
   const [showOptions, setShowOptions] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
   const navigate = useNavigate();
 
   const toggleOptions = () => {
@@ -13,16 +12,19 @@ function GenericOptions({ options, itemId }) {
   };
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    navigate(option.route.replace(':id', itemId));
     setShowOptions(false);
+    if (option.label === 'Delete' && confirmToDelete) {
+      confirmToDelete(itemId);
+    } else if (option.route) {
+      navigate(option.route.replace(':id', itemId));
+    }
   };
 
   return (
     <>
       <div className={"dropdown"}>
         <button onClick={toggleOptions} className={"dropdownButton"}>
-        <FontAwesomeIcon icon={faEllipsisV} />
+          <FontAwesomeIcon icon={faEllipsisV} />
         </button>
         {showOptions && (
           <div className={"dropdownContent"}>
