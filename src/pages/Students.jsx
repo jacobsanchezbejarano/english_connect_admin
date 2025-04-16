@@ -21,11 +21,13 @@ const Students = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 10;
 
-  useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStake(user.wardId.stakeId._id??"");
-    setSelectedWard(user.wardId._id??"");
-  });
+  useEffect(() => {
+    if (user?.type === 1 && user.wardId) {
+      setSelectedCountry(user.wardId.location ?? "");
+      setSelectedStake(user.wardId.stakeId?._id ?? "");
+      setSelectedWard(user.wardId._id ?? "");
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchStudents = async () => {

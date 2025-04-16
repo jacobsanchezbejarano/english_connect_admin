@@ -21,11 +21,13 @@ const AttendanceForm = () => {
   );
   const [allAttendances, setAllAttendances] = useState([]);
 
-  useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStake(user.wardId.stakeId._id??"");
-    setSelectedWard(user.wardId._id??"");
-  });
+  useEffect(() => {
+    if (user?.type === 1 && user.wardId) {
+      setSelectedCountry(user.wardId.location ?? "");
+      setSelectedStake(user.wardId.stakeId?._id ?? "");
+      setSelectedWard(user.wardId._id ?? "");
+    }
+  }, [user]);
 
   useEffect(() => {
     if (selectedCountry) {

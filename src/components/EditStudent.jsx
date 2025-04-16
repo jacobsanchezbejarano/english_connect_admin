@@ -22,11 +22,13 @@ const EditStudent = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStakeId(user.wardId.stakeId._id??"");
-    setSelectedWardId(user.wardId._id??"");
-  });
+  useEffect(() => {
+    if (user?.wardId && user.wardId.stakeId) {
+      setSelectedCountry(user.wardId.location ?? "");
+      setSelectedStakeId(user.wardId.stakeId._id ?? "");
+      setSelectedWardId(user.wardId._id ?? "");
+    }
+  }, [user]);
 
   // Fetch stakes by country
   useEffect(() => {
@@ -314,7 +316,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="First Name"
-              value={userInfo.firstName}
+              value={userInfo.firstName ?? ""}
               onChange={(e) =>
                 setUserInfo({ ...userInfo, firstName: e.target.value })
               }
@@ -322,14 +324,14 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="Last Name"
-              value={userInfo.lastName}
+              value={userInfo.lastName ?? ""}
               onChange={(e) =>
                 setUserInfo({ ...userInfo, lastName: e.target.value })
               }
             />
             <input
               type="date"
-              value={userInfo.birthDate}
+              value={userInfo.birthDate ?? ""}
               onChange={(e) =>
                 setUserInfo({ ...userInfo, birthDate: e.target.value })
               }
@@ -337,7 +339,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="Phone"
-              value={userInfo.phone}
+              value={userInfo.phone ?? ""}
               onChange={(e) =>
                 setUserInfo({ ...userInfo, phone: e.target.value })
               }
@@ -361,7 +363,7 @@ const EditStudent = () => {
 
             {selectedCountry && stakesInCountry.length > 0 && (
               <select
-                value={selectedStakeId}
+                value={selectedStakeId || ""}
                 onChange={(e) => setSelectedStakeId(e.target.value)}
                 required
               >
@@ -378,7 +380,7 @@ const EditStudent = () => {
 
             {selectedStakeId && wardsInStake.length > 0 && (
               <select
-                value={selectedWardId}
+                value={selectedWardId || ""}
                 onChange={(e) => setSelectedWardId(e.target.value)}
                 required
               >
@@ -419,7 +421,7 @@ const EditStudent = () => {
 
             <label>Church Membership</label>
             <select
-              value={userInfo.churchMembership}
+              value={userInfo.churchMembership || ""}
               onChange={(e) =>
                 setUserInfo({ ...userInfo, churchMembership: e.target.value })
               }
@@ -432,7 +434,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="Street"
-              value={addressInfo.street}
+              value={addressInfo.street || ""}
               onChange={(e) =>
                 setAddressInfo({ ...addressInfo, street: e.target.value })
               }
@@ -440,7 +442,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="Neighborhood"
-              value={addressInfo.neighborhood}
+              value={addressInfo.neighborhood || ""}
               onChange={(e) =>
                 setAddressInfo({ ...addressInfo, neighborhood: e.target.value })
               }
@@ -448,7 +450,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="City"
-              value={addressInfo.city}
+              value={addressInfo.city || ""}
               onChange={(e) =>
                 setAddressInfo({ ...addressInfo, city: e.target.value })
               }
@@ -464,7 +466,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="Country"
-              value={addressInfo.country}
+              value={addressInfo.country || ""}
               onChange={(e) =>
                 setAddressInfo({ ...addressInfo, country: e.target.value })
               }
@@ -472,7 +474,7 @@ const EditStudent = () => {
             <input
               type="text"
               placeholder="Postal Code"
-              value={addressInfo.postalCode}
+              value={addressInfo.postalCode || ""}
               onChange={(e) =>
                 setAddressInfo({ ...addressInfo, postalCode: e.target.value })
               }
