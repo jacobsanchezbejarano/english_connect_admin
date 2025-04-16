@@ -144,7 +144,7 @@ const Instructors = () => {
       <h1 className="instructors__header">Instructors</h1>
       <div className="centered">
         <div className="filter__controls-vertical">
-          <div className="form-group">
+          <div className="instructor__form">
             <label htmlFor="country">Country:</label>
             <select
               id="country"
