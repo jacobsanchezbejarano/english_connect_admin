@@ -25,13 +25,15 @@ const CreateGroup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(()=>{
-      if (selectedCountry == "") {
-        setSelectedCountry(user.wardId?.location??"");
-        setTimeout(()=>{
-          setSelectedStakeId(user.wardId?.stakeId?._id??"");
-          setSelectedWardId(user.wardId?._id??"");
-        },100)
-      }
+    if(selectedCountry == "") {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setTimeout(()=>{
+        setSelectedStakeId(user.wardId?.stakeId?._id ?? "");
+      },50)
+      setTimeout(()=>{
+        setSelectedWardId(user.wardId?._id ?? "");
+      },100)
+    }
   });
 
   // Fetch stakes by country

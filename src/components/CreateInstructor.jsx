@@ -25,12 +25,14 @@ const CreateInstructor = () => {
   const [userType, setUserType] = useState(11); // Default to instructor
 
   useEffect(()=>{
-    if(selectedCountry == ""){
-      setSelectedCountry(user.wardId?.location??"");
+    if(selectedCountry == "") {
+      setSelectedCountry(user.wardId?.location ?? "");
       setTimeout(()=>{
-        setSelectedStake(user.wardId?.stakeId?._id??"");
-        setSelectedWard(user.wardId?._id??"");
-      },500)
+        setSelectedStake(user.wardId?.stakeId?._id ?? "");
+      },50)
+      setTimeout(()=>{
+        setSelectedWard(user.wardId?._id ?? "");
+      },100)
     }
   });
 
