@@ -196,6 +196,11 @@ nav {
   display: none;
 }
 
+.nav__menu li a.active,
+.nav__logo.active {
+  color: var(--color-primary);
+  font-weight: bold;
+}
 
 /*======================================= FOOTER ================================*/
 footer {
