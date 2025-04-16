@@ -56,6 +56,7 @@ const Instructors = () => {
         url = `/users/instructor/ward/${selectedWard}`;
       }
       const response = await api.get(url);
+      console.log(response.data.data.ward);
       setInstructors(response.data.data);
     } catch (err) {
       console.error(
@@ -200,10 +201,16 @@ const Instructors = () => {
             <div key={instructor._id} className="instructor">
               <GenericOptions options={options} itemId={instructor._id} confirmToDelete={confirmToDelete} />
               <div className="instructor__info">
+              <img
+                  src={instructor.userId?.avatar}
+                  alt={`${instructor.userId?.firstName} ${instructor.userId?.lastName}`}
+                  className="instructor__avatar"
+              />
                 <h4>
                   {instructor.userId?.firstName} {instructor.userId?.lastName}
                 </h4>
-                <p>Ward ID: {instructor.userId?.wardId ?? " Unknown"}</p>
+                <p>Ward: {instructor.wardId?.name ?? " Unknown"}</p>
+                <p>Location: {instructor.wardId?.location ?? "Unknown"}</p>
               </div>
             </div>
           ))}
