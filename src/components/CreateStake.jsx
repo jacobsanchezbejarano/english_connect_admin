@@ -5,13 +5,13 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useAuth } from '../context/authContext'; // Assuming AuthContext is one level up
 
 const CreateStake = () => {
+  const { user, isAuthenticated } = useAuth(); // Correctly destructure user and isAuthenticated
   const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(user.wardId.location);
   const [stakeNumber, setStakeNumber] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth(); // Correctly destructure user and isAuthenticated
 
   const handleSubmit = async (e) => {
     e.preventDefault();

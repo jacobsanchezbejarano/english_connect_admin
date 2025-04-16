@@ -36,11 +36,17 @@ const RegisterStudentForm = () => {
     const [successMessage, setSuccessMessage] = useState('');
 
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { user, isAuthenticated } = useAuth();
+
+    useEffect(()=>{
+        setSelectedCountry(user.wardId.location??"");
+        setSelectedStake(user.wardId.stakeId._id??"");
+        setSelectedWard(user.wardId._id??"");
+    });
 
     useEffect(() => {
-        setSelectedStake(''); setStakes([]);
-        setSelectedWard(''); setWards([]);
+        setStakes([]);
+        setWards([]);
         setSelectedGroup(''); setGroups([]);
         setSelectedStudent(''); setStudents([]);
 

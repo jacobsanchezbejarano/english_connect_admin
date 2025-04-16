@@ -6,6 +6,7 @@ import { getCountryFromLocation } from '../utils/locationHelpers';
 import { useNavigate } from 'react-router-dom';
 
 const EditStudent = () => {
+  const { user, isAuthenticated } = useAuth();
   const [selectedCountry, setSelectedCountry] = useState('');
   const [stakesInCountry, setStakesInCountry] = useState([]);
   const [selectedStakeId, setSelectedStakeId] = useState('');
@@ -19,8 +20,13 @@ const EditStudent = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStakeId(user.wardId.stakeId._id??"");
+    setSelectedWardId(user.wardId._id??"");
+  });
 
   // Fetch stakes by country
   useEffect(() => {

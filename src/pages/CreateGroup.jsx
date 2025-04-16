@@ -5,6 +5,7 @@ import { useAuth } from '../context/authContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreateGroup = () => {
+  const { user, isAuthenticated } = useAuth();
   const [name, setName] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [stakesInCountry, setStakesInCountry] = useState([]);
@@ -17,12 +18,17 @@ const CreateGroup = () => {
   const [room, setRoom] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [wardInstructors, setWardInstructors] = useState([]);
   const [instructorFetchError, setInstructorFetchError] = useState('');
   const [assignedInstructorId, setAssignedInstructorId] = useState(''); // To store selected instructor ID
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(()=>{
+      setSelectedCountry(user.wardId.location??"");
+      setSelectedStakeId(user.wardId.stakeId._id??"");
+      setSelectedWardId(user.wardId._id??"");
+  });
 
   // Fetch stakes by country
   useEffect(() => {

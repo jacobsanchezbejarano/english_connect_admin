@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import GenericOptions from "../components/GenericOptions";
 import { countries } from "../constants/countries";
+import { useAuth } from '../context/authContext';
 
 const Instructors = () => {
+  const { user } = useAuth();
   const [instructors, setInstructors] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [stakes, setStakes] = useState([]);
@@ -14,6 +16,12 @@ const Instructors = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStake(user.wardId.stakeId._id??"");
+    setSelectedWard(user.wardId._id??"");
+  });
 
   const confirmToDelete = (id) => {
     if (window.confirm(`Are you sure you want to delete instructor with ID: ${id}?`)) {
@@ -184,7 +192,7 @@ const Instructors = () => {
 
       {loading && <p>Loading instructors...</p>}
       {error && <p className="form__error-message">{error}</p>}
-      {instructors.length > 0 ? (
+      {instructors?.length > 0 ? (
         <div className="container instructors__container">
           {instructors.map((instructor) => (
             <div key={instructor._id} className="instructor">

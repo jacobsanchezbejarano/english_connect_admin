@@ -4,8 +4,10 @@ import api from "../utils/axiosInstance";
 import GenericOptions from "../components/GenericOptions";
 import { countries } from "../constants/countries";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authContext';
 
 const Students = () => {
+  const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [stakes, setStakes] = useState([]);
@@ -19,12 +21,18 @@ const Students = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 10;
 
+  useEffect(()=>{
+    setSelectedCountry(user.wardId.location??"");
+    setSelectedStake(user.wardId.stakeId._id??"");
+    setSelectedWard(user.wardId._id??"");
+  });
+
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         let url = "/students";
         if (selectedWard) {
-          url = `/students/ward/${selectedWard}`;
+          url = `/students/wards/${selectedWard}`;
         }
         const response = await api.get(url);
         setStudents(response.data.data);
