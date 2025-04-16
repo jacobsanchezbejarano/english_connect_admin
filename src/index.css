@@ -1335,3 +1335,109 @@ select {
   border-color: #007bff;
 }
 
+
+/* === Attendance Section === */
+.attendance-section {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+.attendance-title {
+  font-size: 2rem; /* Adjust if needed */
+  font-weight: 700;
+  text-align: center;
+  margin-top: 6rem; /* Push it below the fixed header */
+  margin-bottom: 2rem;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* Summary */
+.summary-boxes {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.summary-box {
+  text-align: center;
+  flex: 1;
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.summary-value {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.text-green {
+  color: #2ecc71;
+}
+
+.text-red {
+  color: #e74c3c;
+}
+
+.text-dark {
+  color: #333;
+}
+
+/* Sessions */
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.session-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.session-date {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.session-name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.session-notes {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.session-status {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+/* Loading and fallback */
+.loading,
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+  color: #888;
+}
+
