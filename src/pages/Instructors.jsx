@@ -18,9 +18,15 @@ const Instructors = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedCountry(user.wardId?.location ?? "");
-    setSelectedStake(user.wardId?.stakeId?._id ?? "");
-    setSelectedWard(user.wardId?._id ?? "");
+    if(selectedCountry == "") {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setTimeout(()=>{
+        setSelectedStake(user.wardId?.stakeId?._id ?? "");
+      },50)
+      setTimeout(()=>{
+        setSelectedWard(user.wardId?._id ?? "");
+      },100)
+    }
   }, []);
 
   const confirmToDelete = (id) => {
@@ -109,6 +115,7 @@ const Instructors = () => {
     try {
       const response = await api.get(`/stakes/wards/${stakeId}`);
       setWards(response.data.wards);
+      setError("");
     } catch (error) {
       console.error("Error fetching wards:", error);
       setError("Failed to load wards. Please try again.");

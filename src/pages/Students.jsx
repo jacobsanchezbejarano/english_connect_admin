@@ -22,9 +22,15 @@ const Students = () => {
   const studentsPerPage = 10;
 
   useEffect(() => {
-    setSelectedCountry(user.wardId?.location ?? "");
-    setSelectedStake(user.wardId?.stakeId?._id ?? "");
-    setSelectedWard(user.wardId?._id ?? "");
+    if(selectedCountry == "") {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setTimeout(()=>{
+        setSelectedStake(user.wardId?.stakeId?._id ?? "");
+      },50)
+      setTimeout(()=>{
+        setSelectedWard(user.wardId?._id ?? "");
+      },100)
+    }
   }, []);
 
   useEffect(() => {
