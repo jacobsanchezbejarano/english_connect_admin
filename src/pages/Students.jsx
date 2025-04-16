@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import GenericOptions from "../components/GenericOptions";
 import { countries } from "../constants/countries";
+import { useNavigate } from 'react-router-dom';
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -12,7 +13,8 @@ const Students = () => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState("");
   const [error, setError] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 10;
@@ -122,6 +124,30 @@ const Students = () => {
     },
   ];
 
+  const confirmToDelete = (id) => {
+    if (window.confirm(`Are you sure you want to delete student with ID: ${id}?`)) {
+      handleDelete(id);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.delete(`/students/${id}`);
+      if (response.status === 204) {
+        navigate('/students');
+      } else {
+        setError(response.data?.error || `Failed to delete student: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      setError(error.response?.data?.error || "An error occurred while deleting the student.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="students">
       <h1 className="students__header">Students</h1>
@@ -180,7 +206,7 @@ const Students = () => {
         <div className="container students__container">
           {currentStudents.map((student) => (
             <Link key={student._id} className="student">
-              <GenericOptions options={options} itemId={student._id} />
+              <GenericOptions options={options} itemId={student._id} confirmToDelete={confirmToDelete}/>
               <div className="student__avatar">
                 {student.userId?.avatar ? (
                   <img
