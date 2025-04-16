@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import GenericOptions from '../components/GenericOptions';
 import api from '../utils/axiosInstance';
 
@@ -18,6 +18,31 @@ const UnitInformation = ({ unit }) => {
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const confirmToDelete = (id) => {
+    if (window.confirm(`Are you sure you want to delete unit with ID: ${id}?`)) {
+      handleDelete(id);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.delete(`/wards/${id}`);
+      if (response.status === 204) {
+        navigate('/units');
+      } else {
+        setError(response.data?.error || `Failed to delete unit: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error deleting unit:", error);
+      setError(error.response?.data?.error || "An error occurred while deleting the unit.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!unit) {
@@ -76,7 +101,7 @@ const UnitInformation = ({ unit }) => {
       <section className='unit__information'>
         <h2 className='unit-information__header'>Unit Information</h2>
         <div className='unit-information__container'>
-          <p style={{ color: 'red' }}>Error: {error}</p>
+          <p className="form__error-message">{error}</p>
         </div>
       </section>
     );
@@ -88,7 +113,7 @@ const UnitInformation = ({ unit }) => {
       <div className='unit-information__container'>
         {selectedUnit ? (
           <div className='unit__info'>
-            <GenericOptions options={options} itemId={selectedUnit._id} />
+            <GenericOptions options={options} itemId={selectedUnit._id} confirmToDelete={confirmToDelete} />
             <div className='unit-information__details'>
               <p><strong>Unit Name:</strong> {selectedUnit.name}</p>
               <p><strong>Location:</strong> {selectedUnit.location}</p>
