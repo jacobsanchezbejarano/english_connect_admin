@@ -39,9 +39,9 @@ const RegisterStudentForm = () => {
     const { user, isAuthenticated } = useAuth();
 
     useEffect(()=>{
-        setSelectedCountry(user.wardId.location??"");
-        setSelectedStake(user.wardId.stakeId._id??"");
-        setSelectedWard(user.wardId._id??"");
+        setSelectedCountry(user.wardId?.location??"");
+        setSelectedStake(user.wardId?.stakeId?._id??"");
+        setSelectedWard(user.wardId?._id??"");
     });
 
     useEffect(() => {

@@ -7,7 +7,7 @@ import { useAuth } from '../context/authContext'; // Assuming AuthContext is one
 const CreateStake = () => {
   const { user, isAuthenticated } = useAuth(); // Correctly destructure user and isAuthenticated
   const [name, setName] = useState('');
-  const [location, setLocation] = useState(user.wardId.location);
+  const [location, setLocation] = useState(user.wardId?.location);
   const [stakeNumber, setStakeNumber] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');

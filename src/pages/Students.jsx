@@ -23,9 +23,9 @@ const Students = () => {
 
   useEffect(() => {
     if (user?.type === 1 && user.wardId) {
-      setSelectedCountry(user.wardId.location ?? "");
-      setSelectedStake(user.wardId.stakeId?._id ?? "");
-      setSelectedWard(user.wardId._id ?? "");
+      setSelectedCountry(user.wardId?.location ?? "");
+      setSelectedStake(user.wardId?.stakeId?._id ?? "");
+      setSelectedWard(user.wardId?._id ?? "");
     }
   }, [user]);
 

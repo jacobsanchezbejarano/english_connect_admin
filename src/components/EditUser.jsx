@@ -32,9 +32,9 @@ const EditUser = () => {
   const [initialData, setInitialData] = useState(null);
 
   useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStake(user.wardId.stakeId._id??"");
-    setSelectedWard(user.wardId._id??"");
+    setSelectedCountry(user.wardId?.location??"");
+    setSelectedStake(user.wardId?.stakeId?._id??"");
+    setSelectedWard(user.wardId?._id??"");
   });
 
   useEffect(() => {

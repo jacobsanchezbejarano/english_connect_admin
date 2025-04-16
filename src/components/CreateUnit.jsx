@@ -16,8 +16,8 @@ const CreateUnit = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    setLocation(user.wardId.location??"");
-    setSelectedStakeId(user.wardId.stakeId._id??"");
+    setLocation(user.wardId?.location??"");
+    setSelectedStakeId(user.wardId?.stakeId?._id??"");
   });
 
   useEffect(() => {

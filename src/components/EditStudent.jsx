@@ -23,10 +23,10 @@ const EditStudent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.wardId && user.wardId.stakeId) {
-      setSelectedCountry(user.wardId.location ?? "");
-      setSelectedStakeId(user.wardId.stakeId._id ?? "");
-      setSelectedWardId(user.wardId._id ?? "");
+    if (user?.wardId && user.wardId?.stakeId) {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setSelectedStakeId(user.wardId?.stakeId?._id ?? "");
+      setSelectedWardId(user.wardId?._id ?? "");
     }
   }, [user]);
 

@@ -25,8 +25,8 @@ function StakesChartData() {
     const [error, setError] = useState('');
 
     useEffect(()=>{
-        setSelectedCountry(user.wardId.location??"");
-        setSelectedStake(user.wardId.stakeId._id??"");
+        setSelectedCountry(user.wardId?.location??"");
+        setSelectedStake(user.wardId?.stakeId?._id??"");
     });
 
     useEffect(() => {
