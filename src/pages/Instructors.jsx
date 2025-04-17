@@ -18,12 +18,16 @@ const Instructors = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.type === 1 && user.wardId) {
-      setSelectedCountry(user.wardId.location ?? "");
-      setSelectedStake(user.wardId.stakeId?._id ?? "");
-      setSelectedWard(user.wardId._id ?? "");
+    if(selectedCountry == "") {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setTimeout(()=>{
+        setSelectedStake(user.wardId?.stakeId?._id ?? "");
+      },50)
+      setTimeout(()=>{
+        setSelectedWard(user.wardId?._id ?? "");
+      },100)
     }
-  }, [user]);
+  }, []);
 
   const confirmToDelete = (id) => {
     if (window.confirm(`Are you sure you want to delete instructor with ID: ${id}?`)) {
@@ -54,9 +58,11 @@ const Instructors = () => {
       let url = "/instructors";
       if (selectedWard) {
         url = `/users/instructor/ward/${selectedWard}`;
+        const response = await api.get(url);
+        setInstructors(response.data.instructors);
+        return;
       }
       const response = await api.get(url);
-      console.log(response.data.data.ward);
       setInstructors(response.data.data);
     } catch (err) {
       console.error(
@@ -111,6 +117,7 @@ const Instructors = () => {
     try {
       const response = await api.get(`/stakes/wards/${stakeId}`);
       setWards(response.data.wards);
+      setError("");
     } catch (error) {
       console.error("Error fetching wards:", error);
       setError("Failed to load wards. Please try again.");
@@ -145,7 +152,7 @@ const Instructors = () => {
       <h1 className="instructors__header">Instructors</h1>
       <div className="centered">
         <div className="filter__controls-vertical">
-          <div className="form-group">
+          <div className="instructor__form">
             <label htmlFor="country">Country:</label>
             <select
               id="country"

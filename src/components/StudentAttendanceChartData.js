@@ -34,11 +34,6 @@ function StudentAttendanceChartData() {
     });
     const [error, setError] = useState('');
 
-    useEffect(()=>{
-        setSelectedCountry(user.wardId.location??"");
-        setSelectedStake(user.wardId.stakeId._id??"");
-        setSelectedWard(user.wardId._id??"");
-    });
 
     function buildInitialStudents(students, attendances, meetings) {
         if (!students || students.length === 0) return [];

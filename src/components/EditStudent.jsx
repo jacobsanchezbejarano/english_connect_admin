@@ -23,10 +23,10 @@ const EditStudent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.wardId && user.wardId.stakeId) {
-      setSelectedCountry(user.wardId.location ?? "");
-      setSelectedStakeId(user.wardId.stakeId._id ?? "");
-      setSelectedWardId(user.wardId._id ?? "");
+    if (user?.wardId && user.wardId?.stakeId) {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setSelectedStakeId(user.wardId?.stakeId?._id ?? "");
+      setSelectedWardId(user.wardId?._id ?? "");
     }
   }, [user]);
 
@@ -283,7 +283,7 @@ const EditStudent = () => {
       //setTimeout(() => navigate('/'), 1500);
     } catch (err) {
       console.error(err);
-      setError("Failed to update student info");
+      setError("Failed to update student info. "+ (err.response.data.message));
     } finally {
       setIsSubmitting(false);
     }
@@ -482,6 +482,9 @@ const EditStudent = () => {
                 setAddressInfo({ ...addressInfo, postalCode: e.target.value })
               }
             />
+
+            {error && <p className="form__error-message">{error}</p>}
+            {success && <p className="form__success-message">{success}</p>}
 
             <div style={{ display: "flex", gap: "1rem" }}>
               <button
