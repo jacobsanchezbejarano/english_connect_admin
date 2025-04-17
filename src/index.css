@@ -340,8 +340,8 @@ input, select, textarea {
 
 /*======================================= INSTRUCTORS ================================*/
 .instructors__container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 3rem;
 }
 
@@ -369,7 +369,7 @@ fieldset {
 }
 
 .instructor:hover {
-  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0, 0.7);
+  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.2);
 }
 
 .instructor__avatar {
@@ -380,8 +380,19 @@ fieldset {
   overflow: hidden;
 }
 
+.instructor__info {
+  display: flex;
+  flex-direction: column;
+}
+
 .instructor__info p {
-  margin-top: 1rem;
+  all: unset;
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.2;
+  color: inherit;
+  font: inherit; 
 }
 
 .instructor__info {
@@ -417,6 +428,11 @@ fieldset {
 }
 
 .add__instructor-btn a {
+  color: var(--color-white);
+}
+
+.add__instructor-btn:hover {
+  background: var(--color-gray-900);
   color: var(--color-white);
 }
 
@@ -1200,15 +1216,15 @@ select {
 
 
 /*======================================= INSTRUCTOR ================================*/
-  .instructors__container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+/* .instructors__container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+} */
 
-  .add__instructor-btn {
+  /* .add__instructor-btn {
     width: 100%;
-  }
+  } */
 
 /*======================================= HOME ================================*/
   .hero__image-one, .hero__image-two {
