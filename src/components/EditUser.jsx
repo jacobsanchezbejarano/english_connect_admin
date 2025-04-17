@@ -31,11 +31,6 @@ const EditUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [initialData, setInitialData] = useState(null);
 
-  useEffect(()=>{
-    setSelectedCountry(user.wardId.location??"");
-    setSelectedStake(user.wardId.stakeId._id??"");
-    setSelectedWard(user.wardId._id??"");
-  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -62,10 +57,7 @@ const EditUser = () => {
             userData.ward.stake._id
           );
         }
-        if (userData.ward?.stake?._id) {
-          setSelectedStake(userData.ward.stake._id);
-          fetchWards(userData.ward.stake._id, userData.ward._id);
-        }
+        
       } catch (err) {
         //console.error('Error fetching user data:', err.response?.data?.error || err.message || err);
         setError("Failed to load user data.");
@@ -76,35 +68,14 @@ const EditUser = () => {
   }, [id]);
 
   useEffect(() => {
-    if (
-      selectedCountry &&
-      selectedCountry !== (userWard?.stake?.country?.name || "")
-    ) {
+   
       fetchStakes(selectedCountry);
-      setSelectedStake("");
-      setSelectedWard("");
-      setIsWardSelectEnabled(true);
-    } else if (!userWard) {
-      setIsWardSelectEnabled(true);
-    } else {
-      setSelectedStake(userWard?.stake?._id || "");
-      setSelectedWard(userWard?._id || "");
-      setIsWardSelectEnabled(false);
-    }
-  }, [selectedCountry, userWard]);
+   
+  }, [selectedCountry]);
 
   useEffect(() => {
-    if (selectedStake && selectedStake !== (userWard?.stake?._id || "")) {
       fetchWards(selectedStake);
-      setSelectedWard("");
-      setIsWardSelectEnabled(true);
-    } else if (!userWard) {
-      setIsWardSelectEnabled(true);
-    } else if (selectedCountry === userWard?.stake?.country?.name) {
-      setIsWardSelectEnabled(false);
-      setSelectedWard(userWard?._id || "");
-    }
-  }, [selectedStake, userWard, selectedCountry]);
+  }, [selectedStake]);
 
   useEffect(() => {
     if (successMessage || error) {

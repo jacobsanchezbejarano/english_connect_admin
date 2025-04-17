@@ -15,10 +15,6 @@ const CreateUnit = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    setLocation(user.wardId.location??"");
-    setSelectedStakeId(user.wardId.stakeId._id??"");
-  });
 
   useEffect(() => {
     const fetchStakesByCountry = async (country) => {

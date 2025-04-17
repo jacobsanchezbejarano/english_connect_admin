@@ -22,12 +22,16 @@ const Students = () => {
   const studentsPerPage = 10;
 
   useEffect(() => {
-    if (user?.type === 1 && user.wardId) {
-      setSelectedCountry(user.wardId.location ?? "");
-      setSelectedStake(user.wardId.stakeId?._id ?? "");
-      setSelectedWard(user.wardId._id ?? "");
+    if(selectedCountry == "") {
+      setSelectedCountry(user.wardId?.location ?? "");
+      setTimeout(()=>{
+        setSelectedStake(user.wardId?.stakeId?._id ?? "");
+      },50)
+      setTimeout(()=>{
+        setSelectedWard(user.wardId?._id ?? "");
+      },100)
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     const fetchStudents = async () => {
