@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# 🌐 The English Connect Admin (Frontend)
+
+English Connect Admin is a frontend application built with **React** and hosted in the cloud. It provides a user-friendly interface for managing authentication, user accounts, and administrative tools related to the English Connect courses.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Live Links
+- Frontend (Production): https://english-connect-admin.onrender.com
+- Backend API Docs: https://pwconnect-back.onrender.com/api-docs
+- Frontend GitHub: https://github.com/jacobsanchezbejarano/english_connect_admin
+- Backend GitHub: https://github.com/cou23001/pwconnect-back
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ✨ Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Secure login and authentication
+- Admin dashboard with user management
+- Dynamic forms for editing and managing students, instructors, and admins
+- Integration with backend APIs for real-time data updates
+- Responsive design for mobile and desktop use
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Technologies Used (Frontend)
 
-### `npm run build`
+- **React**
+- **React Router**
+- **Axios**
+- **dotenv**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ✨ Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Secure login and authentication
+- Admin dashboard to manage users and groups
+- Dynamic form management for students, instructors, and admins
+- Integration with backend APIs for CRUD operations
 
-### `npm run eject`
+--
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ⚙️ Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jacobsanchezbejarano/english_connect_admin
+2. Navigate to the project folder:
+   ```bash
+    cd english_connect_admin
+3. Install dependencies:
+    ```bash
+    npm install
+4. Create a .env file in the root directory and add the following:
+    ```bash
+    REACT_APP_BACKEND_URL=http://localhost:3300
+6. Start the development server
+    ```bash
+    npm start
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🧰 Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Ensure the backend server is running at the URL set in your `.env`.
+- Run `npm start` to launch the development server.
+- Visit `http://localhost:3000` in your browser.
+- Log in with admin credentials to access user management and admin features.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 👨‍💻 Contributing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Fork the repository.
+2. Clone your forked repository to your local machine:
+    ```bash
+    git clone https://github.com/jacobsanchezbejarano/english_connect_admin
+3. Create a new branch for your feature or bugfix:
+    ```bash
+    git checkout -b feature/your-feature-name
+4. Make your changes and commit them with a descriptive message:
+    ```bash
+    git commit -m "Add your commit message here"
+5. Push your changes to your forked repository:
+    ```bash
+    git push origin feature/your-feature-name
+6. Open a Pull Request on the original repository and describe your changes.
+    
+---
 
-### Code Splitting
+## 🛎️ Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+If you encounter any issues or have questions, feel free to open an issue on the GitHub repository.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📄 License
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.
