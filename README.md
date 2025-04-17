@@ -1,4 +1,4 @@
-# 🌐 The English Connect Admin (Frontend)
+# 🌐 English Connect Admin (Frontend)
 
 English Connect Admin is a frontend application built with **React** and hosted in the cloud. It provides a user-friendly interface for managing authentication, user accounts, and administrative tools related to the English Connect courses.
 
