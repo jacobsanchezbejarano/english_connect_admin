@@ -33,15 +33,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ---
 
-## ✨ Features
-
-- Secure login and authentication
-- Admin dashboard to manage users and groups
-- Dynamic form management for students, instructors, and admins
-- Integration with backend APIs for CRUD operations
-
---
-
 ## ⚙️ Installation
 
 1. Clone the repository:
