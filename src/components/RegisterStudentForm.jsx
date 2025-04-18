@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { countries } from "../constants/countries";
 import api from '../utils/axiosInstance';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 
 // Helper function to get today's date in YYYY-MM-DD format
@@ -35,8 +35,8 @@ const RegisterStudentForm = () => {
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
-    const navigate = useNavigate();
-    const { user, isAuthenticated } = useAuth();
+    //const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
 
 
     useEffect(() => {
@@ -158,7 +158,7 @@ const RegisterStudentForm = () => {
                 notes: notes
             };
 
-            const response = await api.post('/registrations', payload);
+            await api.post('/registrations', payload);
 
             setSuccessMessage('Student registered successfully!');
 

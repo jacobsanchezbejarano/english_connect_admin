@@ -4,15 +4,15 @@ import Spinner from '../components/Spinner';
 import { countries } from "../constants/countries";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { useAuth } from '../context/authContext';
+//import { useAuth } from '../context/authContext';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function StudentAttendanceChartData() {
-    const { user } = useAuth();
+    //const { user } = useAuth();
     const [students, setStudents] = useState([]);
     const [meetings, setMeetings] = useState([]);
-    const [allAttendances, setAllAttendances] = useState([]);
+    const [setAllAttendances] = useState([]);
 
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedStake, setSelectedStake] = useState('');

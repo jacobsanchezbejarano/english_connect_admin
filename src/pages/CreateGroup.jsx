@@ -5,7 +5,7 @@ import { useAuth } from '../context/authContext';
 import { useNavigate } from 'react-router-dom';
 
 const CreateGroup = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [name, setName] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [stakesInCountry, setStakesInCountry] = useState([]);
@@ -174,7 +174,7 @@ const CreateGroup = () => {
     }
 
     try {
-      const response = await api.post(
+      await api.post(
         `/groups`,
         {
           name: name,

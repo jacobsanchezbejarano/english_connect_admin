@@ -15,14 +15,14 @@ const Students = () => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [setLoading] = useState(false);
   const navigate = useNavigate();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 10;
 
   useEffect(() => {
-    if(selectedCountry == "") {
+    if(selectedCountry === "") {
       setSelectedCountry(user.wardId?.location ?? "");
       setTimeout(()=>{
         setSelectedStake(user.wardId?.stakeId?._id ?? "");
