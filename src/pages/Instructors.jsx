@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import GenericOptions from "../components/GenericOptions";
 import { countries } from "../constants/countries";
-import { useAuth } from '../context/authContext';
+//import { useAuth } from '../context/authContext';
 
 const Instructors = () => {
-  const { user } = useAuth();
+  //const { user } = useAuth();
   const [instructors, setInstructors] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [stakes, setStakes] = useState([]);
@@ -15,7 +15,7 @@ const Instructors = () => {
   const [selectedWard, setSelectedWard] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const confirmToDelete = (id) => {
     if (window.confirm(`Are you sure you want to delete instructor with ID: ${id}?`)) {

@@ -22,7 +22,7 @@ const AttendanceForm = () => {
   const [allAttendances, setAllAttendances] = useState([]);
 
   useEffect(() => {
-    if(selectedCountry == "") {
+    if(selectedCountry === "") {
       setSelectedCountry(user.wardId?.location ?? "");
       setTimeout(()=>{
         setSelectedStake(user.wardId?.stakeId?._id ?? "");

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import api from '../utils/axiosInstance';
 import { countries } from '../constants/countries';
 import { FaUserPlus } from 'react-icons/fa'; // Or a similar icon
-import { useAuth } from '../context/authContext';
+//import { useAuth } from '../context/authContext';
 
 const CreateInstructor = () => {
-  const { user } = useAuth();
+  //const { user } = useAuth();
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState('../images/Avatar2.jpg'); // Default avatar
   const [firstName, setFirstName] = useState('');
@@ -22,7 +22,7 @@ const CreateInstructor = () => {
   const [selectedStake, setSelectedStake] = useState('');
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState('');
-  const [userType, setUserType] = useState(11); // Default to instructor
+  const [userType] = useState(11); // Default to instructor
 
   useEffect(() => {
     if (selectedCountry) {
@@ -105,7 +105,7 @@ const CreateInstructor = () => {
     }
 
     try {
-      const response = await api.post('/instructors', formData, { // Adjust the API endpoint
+      await api.post('/instructors', formData, { // Adjust the API endpoint
         headers: {
           'Content-Type': 'multipart/form-data',
         },

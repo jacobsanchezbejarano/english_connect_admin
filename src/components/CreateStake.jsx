@@ -8,7 +8,7 @@ const CreateStake = () => {
   const { user, isAuthenticated } = useAuth(); // Correctly destructure user and isAuthenticated
   const [name, setName] = useState('');
   const [location, setLocation] = useState(user.wardId?.location);
-  const [stakeNumber, setStakeNumber] = useState('');
+  const [setStakeNumber] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const CreateStake = () => {
     }
 
     try {
-      const response = await api.post(
+      await api.post(
         `/stakes`,
         {
           name: name,

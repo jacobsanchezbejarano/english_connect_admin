@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../utils/axiosInstance";
 import { FaEdit } from "react-icons/fa";
 import { countries } from "../constants/countries";
-import { useAuth } from '../context/authContext';
+//import { useAuth } from '../context/authContext';
 
 const EditUser = () => {
-  const { user } = useAuth();
+  //const { user } = useAuth();
   const { id } = useParams();
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -25,7 +25,7 @@ const EditUser = () => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState("");
   const [userWard, setUserWard] = useState(null);
-  const [isWardSelectEnabled, setIsWardSelectEnabled] = useState(false);
+  const [isWardSelectEnabled] = useState(false);
   const [userType, setUserType] = useState();
   const [initialUserType, setInitialUserType] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
