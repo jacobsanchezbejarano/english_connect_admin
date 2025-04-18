@@ -31,6 +31,7 @@ const CreateGroup = () => {
       if (!country) {
         setStakesInCountry([]);
         setSelectedStakeId('');
+        setSelectedWardId('');
         setWardsInStake([]);
         setWardInstructors([]); // Clear instructors
         return;
@@ -44,6 +45,7 @@ const CreateGroup = () => {
           setError('Failed to load stakes for the selected country.');
           setStakesInCountry([]);
           setSelectedStakeId('');
+          setSelectedWardId('');
           setWardsInStake([]);
           setWardInstructors([]); // Clear instructors
         }
@@ -59,6 +61,8 @@ const CreateGroup = () => {
 
     if (isAuthenticated && selectedCountry) {
       fetchStakesByCountry(selectedCountry);
+      setSelectedStakeId('');
+      setSelectedWardId('');
     } else {
       setStakesInCountry([]);
       setSelectedStakeId('');
@@ -76,6 +80,7 @@ const CreateGroup = () => {
         setWardInstructors([]); // Clear instructors
         return;
       }
+      setSelectedWardId('');
       setError('');
       try {
         const response = await api.get(`/stakes/wards/${stakeId}`);

@@ -17,18 +17,6 @@ const Instructors = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if(selectedCountry == "") {
-      setSelectedCountry(user.wardId?.location ?? "");
-      setTimeout(()=>{
-        setSelectedStake(user.wardId?.stakeId?._id ?? "");
-      },50)
-      setTimeout(()=>{
-        setSelectedWard(user.wardId?._id ?? "");
-      },100)
-    }
-  }, []);
-
   const confirmToDelete = (id) => {
     if (window.confirm(`Are you sure you want to delete instructor with ID: ${id}?`)) {
       handleDelete(id);
